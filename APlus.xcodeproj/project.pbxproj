@@ -11,6 +11,50 @@
 		129FBD2828F53AA000BBDC7E /* APlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 129FBD1D28F53A9F00BBDC7E /* APlus.framework */; };
 		129FBD2D28F53AA000BBDC7E /* APlusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD2C28F53AA000BBDC7E /* APlusTests.swift */; };
 		129FBD2E28F53AA000BBDC7E /* APlus.h in Headers */ = {isa = PBXBuildFile; fileRef = 129FBD2028F53A9F00BBDC7E /* APlus.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		129FBD3928F53AF800BBDC7E /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 129FBD3828F53AF800BBDC7E /* SocketIO */; };
+		129FBD7E28F53B6E00BBDC7E /* ChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD3C28F53B6E00BBDC7E /* ChatModel.swift */; };
+		129FBD7F28F53B6E00BBDC7E /* ToastUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD3E28F53B6E00BBDC7E /* ToastUtility.swift */; };
+		129FBD8028F53B6E00BBDC7E /* SocketChatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD3F28F53B6E00BBDC7E /* SocketChatManager.swift */; };
+		129FBD8128F53B6E00BBDC7E /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD4028F53B6E00BBDC7E /* NetworkManager.swift */; };
+		129FBD8228F53B6E00BBDC7E /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD4128F53B6E00BBDC7E /* Reachability.swift */; };
+		129FBD8328F53B6E00BBDC7E /* OwnImgChatBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129FBD4528F53B6E00BBDC7E /* OwnImgChatBubbleCell.xib */; };
+		129FBD8428F53B6E00BBDC7E /* OwnImgChatBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD4628F53B6E00BBDC7E /* OwnImgChatBubbleCell.swift */; };
+		129FBD8528F53B6E00BBDC7E /* OwnChatBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129FBD4828F53B6E00BBDC7E /* OwnChatBubbleCell.xib */; };
+		129FBD8628F53B6E00BBDC7E /* OwnChatBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD4928F53B6E00BBDC7E /* OwnChatBubbleCell.swift */; };
+		129FBD8728F53B6E00BBDC7E /* OtherImgChatBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129FBD4C28F53B6E00BBDC7E /* OtherImgChatBubbleCell.xib */; };
+		129FBD8828F53B6E00BBDC7E /* OtherImgChatBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD4D28F53B6E00BBDC7E /* OtherImgChatBubbleCell.swift */; };
+		129FBD8928F53B6E00BBDC7E /* OtherChatBubbleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD4F28F53B6E00BBDC7E /* OtherChatBubbleCell.swift */; };
+		129FBD8A28F53B6E00BBDC7E /* OtherChatBubbleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129FBD5028F53B6E00BBDC7E /* OtherChatBubbleCell.xib */; };
+		129FBD8B28F53B6E00BBDC7E /* ContactTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD5228F53B6E00BBDC7E /* ContactTVCell.swift */; };
+		129FBD8C28F53B6E00BBDC7E /* ContactTVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129FBD5328F53B6E00BBDC7E /* ContactTVCell.xib */; };
+		129FBD8D28F53B6E00BBDC7E /* UserDetailTVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129FBD5528F53B6E00BBDC7E /* UserDetailTVCell.xib */; };
+		129FBD8E28F53B6E00BBDC7E /* UserDetailTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD5628F53B6E00BBDC7E /* UserDetailTVCell.swift */; };
+		129FBD8F28F53B6E00BBDC7E /* HomeTCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129FBD5828F53B6E00BBDC7E /* HomeTCell.xib */; };
+		129FBD9028F53B6E00BBDC7E /* FirstTCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129FBD5928F53B6E00BBDC7E /* FirstTCell.xib */; };
+		129FBD9128F53B6E00BBDC7E /* FirstTCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD5A28F53B6E00BBDC7E /* FirstTCell.swift */; };
+		129FBD9228F53B6E00BBDC7E /* GrpContactTVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129FBD5C28F53B6E00BBDC7E /* GrpContactTVCell.xib */; };
+		129FBD9328F53B6E00BBDC7E /* GrpContactTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD5D28F53B6E00BBDC7E /* GrpContactTVCell.swift */; };
+		129FBD9428F53B6E00BBDC7E /* ProfileDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD6028F53B6E00BBDC7E /* ProfileDetailVC.swift */; };
+		129FBD9528F53B6E00BBDC7E /* ProfileDetailVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129FBD6128F53B6E00BBDC7E /* ProfileDetailVC.xib */; };
+		129FBD9628F53B6E00BBDC7E /* VideoPlayVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD6328F53B6E00BBDC7E /* VideoPlayVC.swift */; };
+		129FBD9728F53B6E00BBDC7E /* VideoPlayVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129FBD6428F53B6E00BBDC7E /* VideoPlayVC.xib */; };
+		129FBD9828F53B6E00BBDC7E /* CreateGroupVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129FBD6628F53B6E00BBDC7E /* CreateGroupVC.xib */; };
+		129FBD9928F53B6E00BBDC7E /* CreateGroup1VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD6728F53B6E00BBDC7E /* CreateGroup1VC.swift */; };
+		129FBD9A28F53B6E00BBDC7E /* ImageViewerVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129FBD6928F53B6E00BBDC7E /* ImageViewerVC.xib */; };
+		129FBD9B28F53B6E00BBDC7E /* ImageViewer1VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD6A28F53B6E00BBDC7E /* ImageViewer1VC.swift */; };
+		129FBD9C28F53B6E00BBDC7E /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD6C28F53B6E00BBDC7E /* ChatVC.swift */; };
+		129FBD9D28F53B6E00BBDC7E /* ChatVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129FBD6D28F53B6E00BBDC7E /* ChatVC.xib */; };
+		129FBD9E28F53B6E00BBDC7E /* ContactListVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129FBD6F28F53B6E00BBDC7E /* ContactListVC.xib */; };
+		129FBD9F28F53B6E00BBDC7E /* ContactListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD7028F53B6E00BBDC7E /* ContactListVC.swift */; };
+		129FBDA028F53B6E00BBDC7E /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD7228F53B6E00BBDC7E /* FirstViewController.swift */; };
+		129FBDA128F53B6E00BBDC7E /* FirstViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129FBD7328F53B6E00BBDC7E /* FirstViewController.xib */; };
+		129FBDA228F53B6E00BBDC7E /* GroupContact1VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD7528F53B6E00BBDC7E /* GroupContact1VC.swift */; };
+		129FBDA328F53B6E00BBDC7E /* GroupContact1VC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129FBD7628F53B6E00BBDC7E /* GroupContact1VC.xib */; };
+		129FBDA428F53B6E00BBDC7E /* ContactInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD7828F53B6E00BBDC7E /* ContactInfoVC.swift */; };
+		129FBDA528F53B6E00BBDC7E /* ContactInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 129FBD7928F53B6E00BBDC7E /* ContactInfoVC.xib */; };
+		129FBDA628F53B6E00BBDC7E /* Validations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD7B28F53B6E00BBDC7E /* Validations.swift */; };
+		129FBDA728F53B6E00BBDC7E /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD7C28F53B6E00BBDC7E /* Extension.swift */; };
+		129FBDA828F53B6E00BBDC7E /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129FBD7D28F53B6E00BBDC7E /* Utility.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +73,49 @@
 		129FBD2128F53A9F00BBDC7E /* APlus.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = APlus.docc; sourceTree = "<group>"; };
 		129FBD2728F53AA000BBDC7E /* APlusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = APlusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		129FBD2C28F53AA000BBDC7E /* APlusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APlusTests.swift; sourceTree = "<group>"; };
+		129FBD3C28F53B6E00BBDC7E /* ChatModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
+		129FBD3E28F53B6E00BBDC7E /* ToastUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToastUtility.swift; sourceTree = "<group>"; };
+		129FBD3F28F53B6E00BBDC7E /* SocketChatManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketChatManager.swift; sourceTree = "<group>"; };
+		129FBD4028F53B6E00BBDC7E /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		129FBD4128F53B6E00BBDC7E /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		129FBD4528F53B6E00BBDC7E /* OwnImgChatBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OwnImgChatBubbleCell.xib; sourceTree = "<group>"; };
+		129FBD4628F53B6E00BBDC7E /* OwnImgChatBubbleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OwnImgChatBubbleCell.swift; sourceTree = "<group>"; };
+		129FBD4828F53B6E00BBDC7E /* OwnChatBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OwnChatBubbleCell.xib; sourceTree = "<group>"; };
+		129FBD4928F53B6E00BBDC7E /* OwnChatBubbleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OwnChatBubbleCell.swift; sourceTree = "<group>"; };
+		129FBD4C28F53B6E00BBDC7E /* OtherImgChatBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OtherImgChatBubbleCell.xib; sourceTree = "<group>"; };
+		129FBD4D28F53B6E00BBDC7E /* OtherImgChatBubbleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherImgChatBubbleCell.swift; sourceTree = "<group>"; };
+		129FBD4F28F53B6E00BBDC7E /* OtherChatBubbleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherChatBubbleCell.swift; sourceTree = "<group>"; };
+		129FBD5028F53B6E00BBDC7E /* OtherChatBubbleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OtherChatBubbleCell.xib; sourceTree = "<group>"; };
+		129FBD5228F53B6E00BBDC7E /* ContactTVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactTVCell.swift; sourceTree = "<group>"; };
+		129FBD5328F53B6E00BBDC7E /* ContactTVCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactTVCell.xib; sourceTree = "<group>"; };
+		129FBD5528F53B6E00BBDC7E /* UserDetailTVCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserDetailTVCell.xib; sourceTree = "<group>"; };
+		129FBD5628F53B6E00BBDC7E /* UserDetailTVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailTVCell.swift; sourceTree = "<group>"; };
+		129FBD5828F53B6E00BBDC7E /* HomeTCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeTCell.xib; sourceTree = "<group>"; };
+		129FBD5928F53B6E00BBDC7E /* FirstTCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FirstTCell.xib; sourceTree = "<group>"; };
+		129FBD5A28F53B6E00BBDC7E /* FirstTCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstTCell.swift; sourceTree = "<group>"; };
+		129FBD5C28F53B6E00BBDC7E /* GrpContactTVCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GrpContactTVCell.xib; sourceTree = "<group>"; };
+		129FBD5D28F53B6E00BBDC7E /* GrpContactTVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrpContactTVCell.swift; sourceTree = "<group>"; };
+		129FBD6028F53B6E00BBDC7E /* ProfileDetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileDetailVC.swift; sourceTree = "<group>"; };
+		129FBD6128F53B6E00BBDC7E /* ProfileDetailVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileDetailVC.xib; sourceTree = "<group>"; };
+		129FBD6328F53B6E00BBDC7E /* VideoPlayVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayVC.swift; sourceTree = "<group>"; };
+		129FBD6428F53B6E00BBDC7E /* VideoPlayVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoPlayVC.xib; sourceTree = "<group>"; };
+		129FBD6628F53B6E00BBDC7E /* CreateGroupVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateGroupVC.xib; sourceTree = "<group>"; };
+		129FBD6728F53B6E00BBDC7E /* CreateGroup1VC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateGroup1VC.swift; sourceTree = "<group>"; };
+		129FBD6928F53B6E00BBDC7E /* ImageViewerVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageViewerVC.xib; sourceTree = "<group>"; };
+		129FBD6A28F53B6E00BBDC7E /* ImageViewer1VC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewer1VC.swift; sourceTree = "<group>"; };
+		129FBD6C28F53B6E00BBDC7E /* ChatVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
+		129FBD6D28F53B6E00BBDC7E /* ChatVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatVC.xib; sourceTree = "<group>"; };
+		129FBD6F28F53B6E00BBDC7E /* ContactListVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactListVC.xib; sourceTree = "<group>"; };
+		129FBD7028F53B6E00BBDC7E /* ContactListVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactListVC.swift; sourceTree = "<group>"; };
+		129FBD7228F53B6E00BBDC7E /* FirstViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
+		129FBD7328F53B6E00BBDC7E /* FirstViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FirstViewController.xib; sourceTree = "<group>"; };
+		129FBD7528F53B6E00BBDC7E /* GroupContact1VC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupContact1VC.swift; sourceTree = "<group>"; };
+		129FBD7628F53B6E00BBDC7E /* GroupContact1VC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GroupContact1VC.xib; sourceTree = "<group>"; };
+		129FBD7828F53B6E00BBDC7E /* ContactInfoVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactInfoVC.swift; sourceTree = "<group>"; };
+		129FBD7928F53B6E00BBDC7E /* ContactInfoVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactInfoVC.xib; sourceTree = "<group>"; };
+		129FBD7B28F53B6E00BBDC7E /* Validations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Validations.swift; sourceTree = "<group>"; };
+		129FBD7C28F53B6E00BBDC7E /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		129FBD7D28F53B6E00BBDC7E /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +123,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				129FBD3928F53AF800BBDC7E /* SocketIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +159,10 @@
 		129FBD1F28F53A9F00BBDC7E /* APlus */ = {
 			isa = PBXGroup;
 			children = (
+				129FBD3B28F53B6E00BBDC7E /* Model */,
+				129FBD7A28F53B6E00BBDC7E /* Supporting Files */,
+				129FBD4228F53B6E00BBDC7E /* View */,
+				129FBD5E28F53B6E00BBDC7E /* ViewControllers */,
 				129FBD2028F53A9F00BBDC7E /* APlus.h */,
 				129FBD2128F53A9F00BBDC7E /* APlus.docc */,
 			);
@@ -83,6 +175,237 @@
 				129FBD2C28F53AA000BBDC7E /* APlusTests.swift */,
 			);
 			path = APlusTests;
+			sourceTree = "<group>";
+		};
+		129FBD3B28F53B6E00BBDC7E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				129FBD3C28F53B6E00BBDC7E /* ChatModel.swift */,
+				129FBD3D28F53B6E00BBDC7E /* ToastMessage */,
+				129FBD3F28F53B6E00BBDC7E /* SocketChatManager.swift */,
+				129FBD4028F53B6E00BBDC7E /* NetworkManager.swift */,
+				129FBD4128F53B6E00BBDC7E /* Reachability.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		129FBD3D28F53B6E00BBDC7E /* ToastMessage */ = {
+			isa = PBXGroup;
+			children = (
+				129FBD3E28F53B6E00BBDC7E /* ToastUtility.swift */,
+			);
+			path = ToastMessage;
+			sourceTree = "<group>";
+		};
+		129FBD4228F53B6E00BBDC7E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				129FBD4328F53B6E00BBDC7E /* OwnChatCell */,
+				129FBD4A28F53B6E00BBDC7E /* OtherChatCell */,
+				129FBD5128F53B6E00BBDC7E /* ContactTVCell */,
+				129FBD5428F53B6E00BBDC7E /* UserDetailTVCell */,
+				129FBD5728F53B6E00BBDC7E /* Cell */,
+				129FBD5B28F53B6E00BBDC7E /* GroupContactTVCell */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		129FBD4328F53B6E00BBDC7E /* OwnChatCell */ = {
+			isa = PBXGroup;
+			children = (
+				129FBD4428F53B6E00BBDC7E /* OwnImgChatBubbleCell */,
+				129FBD4728F53B6E00BBDC7E /* OwnChatBubbleCell */,
+			);
+			path = OwnChatCell;
+			sourceTree = "<group>";
+		};
+		129FBD4428F53B6E00BBDC7E /* OwnImgChatBubbleCell */ = {
+			isa = PBXGroup;
+			children = (
+				129FBD4528F53B6E00BBDC7E /* OwnImgChatBubbleCell.xib */,
+				129FBD4628F53B6E00BBDC7E /* OwnImgChatBubbleCell.swift */,
+			);
+			path = OwnImgChatBubbleCell;
+			sourceTree = "<group>";
+		};
+		129FBD4728F53B6E00BBDC7E /* OwnChatBubbleCell */ = {
+			isa = PBXGroup;
+			children = (
+				129FBD4828F53B6E00BBDC7E /* OwnChatBubbleCell.xib */,
+				129FBD4928F53B6E00BBDC7E /* OwnChatBubbleCell.swift */,
+			);
+			path = OwnChatBubbleCell;
+			sourceTree = "<group>";
+		};
+		129FBD4A28F53B6E00BBDC7E /* OtherChatCell */ = {
+			isa = PBXGroup;
+			children = (
+				129FBD4B28F53B6E00BBDC7E /* OtherImgChatBubbleCell */,
+				129FBD4E28F53B6E00BBDC7E /* OtherChatBubbleCell */,
+			);
+			path = OtherChatCell;
+			sourceTree = "<group>";
+		};
+		129FBD4B28F53B6E00BBDC7E /* OtherImgChatBubbleCell */ = {
+			isa = PBXGroup;
+			children = (
+				129FBD4C28F53B6E00BBDC7E /* OtherImgChatBubbleCell.xib */,
+				129FBD4D28F53B6E00BBDC7E /* OtherImgChatBubbleCell.swift */,
+			);
+			path = OtherImgChatBubbleCell;
+			sourceTree = "<group>";
+		};
+		129FBD4E28F53B6E00BBDC7E /* OtherChatBubbleCell */ = {
+			isa = PBXGroup;
+			children = (
+				129FBD4F28F53B6E00BBDC7E /* OtherChatBubbleCell.swift */,
+				129FBD5028F53B6E00BBDC7E /* OtherChatBubbleCell.xib */,
+			);
+			path = OtherChatBubbleCell;
+			sourceTree = "<group>";
+		};
+		129FBD5128F53B6E00BBDC7E /* ContactTVCell */ = {
+			isa = PBXGroup;
+			children = (
+				129FBD5228F53B6E00BBDC7E /* ContactTVCell.swift */,
+				129FBD5328F53B6E00BBDC7E /* ContactTVCell.xib */,
+			);
+			path = ContactTVCell;
+			sourceTree = "<group>";
+		};
+		129FBD5428F53B6E00BBDC7E /* UserDetailTVCell */ = {
+			isa = PBXGroup;
+			children = (
+				129FBD5528F53B6E00BBDC7E /* UserDetailTVCell.xib */,
+				129FBD5628F53B6E00BBDC7E /* UserDetailTVCell.swift */,
+			);
+			path = UserDetailTVCell;
+			sourceTree = "<group>";
+		};
+		129FBD5728F53B6E00BBDC7E /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				129FBD5828F53B6E00BBDC7E /* HomeTCell.xib */,
+				129FBD5928F53B6E00BBDC7E /* FirstTCell.xib */,
+				129FBD5A28F53B6E00BBDC7E /* FirstTCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		129FBD5B28F53B6E00BBDC7E /* GroupContactTVCell */ = {
+			isa = PBXGroup;
+			children = (
+				129FBD5C28F53B6E00BBDC7E /* GrpContactTVCell.xib */,
+				129FBD5D28F53B6E00BBDC7E /* GrpContactTVCell.swift */,
+			);
+			path = GroupContactTVCell;
+			sourceTree = "<group>";
+		};
+		129FBD5E28F53B6E00BBDC7E /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				129FBD5F28F53B6E00BBDC7E /* ProfileDetailVC */,
+				129FBD6228F53B6E00BBDC7E /* VideoPlayerVC */,
+				129FBD6528F53B6E00BBDC7E /* CreateGroupVC */,
+				129FBD6828F53B6E00BBDC7E /* ImageViewerVC */,
+				129FBD6B28F53B6E00BBDC7E /* ChatVC */,
+				129FBD6E28F53B6E00BBDC7E /* ContactListVC */,
+				129FBD7128F53B6E00BBDC7E /* FirstVC */,
+				129FBD7428F53B6E00BBDC7E /* GroupContactVC */,
+				129FBD7728F53B6E00BBDC7E /* ContactInfoVC */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		129FBD5F28F53B6E00BBDC7E /* ProfileDetailVC */ = {
+			isa = PBXGroup;
+			children = (
+				129FBD6028F53B6E00BBDC7E /* ProfileDetailVC.swift */,
+				129FBD6128F53B6E00BBDC7E /* ProfileDetailVC.xib */,
+			);
+			path = ProfileDetailVC;
+			sourceTree = "<group>";
+		};
+		129FBD6228F53B6E00BBDC7E /* VideoPlayerVC */ = {
+			isa = PBXGroup;
+			children = (
+				129FBD6328F53B6E00BBDC7E /* VideoPlayVC.swift */,
+				129FBD6428F53B6E00BBDC7E /* VideoPlayVC.xib */,
+			);
+			path = VideoPlayerVC;
+			sourceTree = "<group>";
+		};
+		129FBD6528F53B6E00BBDC7E /* CreateGroupVC */ = {
+			isa = PBXGroup;
+			children = (
+				129FBD6628F53B6E00BBDC7E /* CreateGroupVC.xib */,
+				129FBD6728F53B6E00BBDC7E /* CreateGroup1VC.swift */,
+			);
+			path = CreateGroupVC;
+			sourceTree = "<group>";
+		};
+		129FBD6828F53B6E00BBDC7E /* ImageViewerVC */ = {
+			isa = PBXGroup;
+			children = (
+				129FBD6928F53B6E00BBDC7E /* ImageViewerVC.xib */,
+				129FBD6A28F53B6E00BBDC7E /* ImageViewer1VC.swift */,
+			);
+			path = ImageViewerVC;
+			sourceTree = "<group>";
+		};
+		129FBD6B28F53B6E00BBDC7E /* ChatVC */ = {
+			isa = PBXGroup;
+			children = (
+				129FBD6C28F53B6E00BBDC7E /* ChatVC.swift */,
+				129FBD6D28F53B6E00BBDC7E /* ChatVC.xib */,
+			);
+			path = ChatVC;
+			sourceTree = "<group>";
+		};
+		129FBD6E28F53B6E00BBDC7E /* ContactListVC */ = {
+			isa = PBXGroup;
+			children = (
+				129FBD6F28F53B6E00BBDC7E /* ContactListVC.xib */,
+				129FBD7028F53B6E00BBDC7E /* ContactListVC.swift */,
+			);
+			path = ContactListVC;
+			sourceTree = "<group>";
+		};
+		129FBD7128F53B6E00BBDC7E /* FirstVC */ = {
+			isa = PBXGroup;
+			children = (
+				129FBD7228F53B6E00BBDC7E /* FirstViewController.swift */,
+				129FBD7328F53B6E00BBDC7E /* FirstViewController.xib */,
+			);
+			path = FirstVC;
+			sourceTree = "<group>";
+		};
+		129FBD7428F53B6E00BBDC7E /* GroupContactVC */ = {
+			isa = PBXGroup;
+			children = (
+				129FBD7528F53B6E00BBDC7E /* GroupContact1VC.swift */,
+				129FBD7628F53B6E00BBDC7E /* GroupContact1VC.xib */,
+			);
+			path = GroupContactVC;
+			sourceTree = "<group>";
+		};
+		129FBD7728F53B6E00BBDC7E /* ContactInfoVC */ = {
+			isa = PBXGroup;
+			children = (
+				129FBD7828F53B6E00BBDC7E /* ContactInfoVC.swift */,
+				129FBD7928F53B6E00BBDC7E /* ContactInfoVC.xib */,
+			);
+			path = ContactInfoVC;
+			sourceTree = "<group>";
+		};
+		129FBD7A28F53B6E00BBDC7E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				129FBD7B28F53B6E00BBDC7E /* Validations.swift */,
+				129FBD7C28F53B6E00BBDC7E /* Extension.swift */,
+				129FBD7D28F53B6E00BBDC7E /* Utility.swift */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -113,6 +436,9 @@
 			dependencies = (
 			);
 			name = APlus;
+			packageProductDependencies = (
+				129FBD3828F53AF800BBDC7E /* SocketIO */,
+			);
 			productName = APlus;
 			productReference = 129FBD1D28F53A9F00BBDC7E /* APlus.framework */;
 			productType = "com.apple.product-type.framework";
@@ -162,6 +488,9 @@
 				Base,
 			);
 			mainGroup = 129FBD1328F53A9F00BBDC7E;
+			packageReferences = (
+				129FBD3728F53AF800BBDC7E /* XCRemoteSwiftPackageReference "socket" */,
+			);
 			productRefGroup = 129FBD1E28F53A9F00BBDC7E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -177,6 +506,24 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				129FBD9728F53B6E00BBDC7E /* VideoPlayVC.xib in Resources */,
+				129FBD9228F53B6E00BBDC7E /* GrpContactTVCell.xib in Resources */,
+				129FBD9D28F53B6E00BBDC7E /* ChatVC.xib in Resources */,
+				129FBDA528F53B6E00BBDC7E /* ContactInfoVC.xib in Resources */,
+				129FBD9A28F53B6E00BBDC7E /* ImageViewerVC.xib in Resources */,
+				129FBD8F28F53B6E00BBDC7E /* HomeTCell.xib in Resources */,
+				129FBD8C28F53B6E00BBDC7E /* ContactTVCell.xib in Resources */,
+				129FBD9828F53B6E00BBDC7E /* CreateGroupVC.xib in Resources */,
+				129FBD8D28F53B6E00BBDC7E /* UserDetailTVCell.xib in Resources */,
+				129FBDA328F53B6E00BBDC7E /* GroupContact1VC.xib in Resources */,
+				129FBD9028F53B6E00BBDC7E /* FirstTCell.xib in Resources */,
+				129FBD8728F53B6E00BBDC7E /* OtherImgChatBubbleCell.xib in Resources */,
+				129FBD8528F53B6E00BBDC7E /* OwnChatBubbleCell.xib in Resources */,
+				129FBD9528F53B6E00BBDC7E /* ProfileDetailVC.xib in Resources */,
+				129FBD9E28F53B6E00BBDC7E /* ContactListVC.xib in Resources */,
+				129FBD8A28F53B6E00BBDC7E /* OtherChatBubbleCell.xib in Resources */,
+				129FBD8328F53B6E00BBDC7E /* OwnImgChatBubbleCell.xib in Resources */,
+				129FBDA128F53B6E00BBDC7E /* FirstViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -194,7 +541,32 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				129FBD9B28F53B6E00BBDC7E /* ImageViewer1VC.swift in Sources */,
 				129FBD2228F53A9F00BBDC7E /* APlus.docc in Sources */,
+				129FBD9C28F53B6E00BBDC7E /* ChatVC.swift in Sources */,
+				129FBD8E28F53B6E00BBDC7E /* UserDetailTVCell.swift in Sources */,
+				129FBDA428F53B6E00BBDC7E /* ContactInfoVC.swift in Sources */,
+				129FBD9628F53B6E00BBDC7E /* VideoPlayVC.swift in Sources */,
+				129FBD8828F53B6E00BBDC7E /* OtherImgChatBubbleCell.swift in Sources */,
+				129FBDA028F53B6E00BBDC7E /* FirstViewController.swift in Sources */,
+				129FBD9428F53B6E00BBDC7E /* ProfileDetailVC.swift in Sources */,
+				129FBD8B28F53B6E00BBDC7E /* ContactTVCell.swift in Sources */,
+				129FBDA728F53B6E00BBDC7E /* Extension.swift in Sources */,
+				129FBDA628F53B6E00BBDC7E /* Validations.swift in Sources */,
+				129FBD8928F53B6E00BBDC7E /* OtherChatBubbleCell.swift in Sources */,
+				129FBD8428F53B6E00BBDC7E /* OwnImgChatBubbleCell.swift in Sources */,
+				129FBD8628F53B6E00BBDC7E /* OwnChatBubbleCell.swift in Sources */,
+				129FBD7F28F53B6E00BBDC7E /* ToastUtility.swift in Sources */,
+				129FBD9928F53B6E00BBDC7E /* CreateGroup1VC.swift in Sources */,
+				129FBD9328F53B6E00BBDC7E /* GrpContactTVCell.swift in Sources */,
+				129FBD8228F53B6E00BBDC7E /* Reachability.swift in Sources */,
+				129FBD8128F53B6E00BBDC7E /* NetworkManager.swift in Sources */,
+				129FBDA828F53B6E00BBDC7E /* Utility.swift in Sources */,
+				129FBD9128F53B6E00BBDC7E /* FirstTCell.swift in Sources */,
+				129FBD8028F53B6E00BBDC7E /* SocketChatManager.swift in Sources */,
+				129FBDA228F53B6E00BBDC7E /* GroupContact1VC.swift in Sources */,
+				129FBD7E28F53B6E00BBDC7E /* ChatModel.swift in Sources */,
+				129FBD9F28F53B6E00BBDC7E /* ContactListVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,6 +768,7 @@
 		129FBD3528F53AA000BBDC7E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 27B9XTLYR7;
@@ -412,6 +785,7 @@
 		129FBD3628F53AA000BBDC7E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 27B9XTLYR7;
@@ -456,6 +830,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		129FBD3728F53AF800BBDC7E /* XCRemoteSwiftPackageReference "socket" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/socketio/socket.io-client-swift";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		129FBD3828F53AF800BBDC7E /* SocketIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 129FBD3728F53AF800BBDC7E /* XCRemoteSwiftPackageReference "socket" */;
+			productName = SocketIO;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 129FBD1428F53A9F00BBDC7E /* Project object */;
 }
