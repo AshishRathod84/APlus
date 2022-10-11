@@ -1,3 +1,3 @@
 # APlusChat
 
-Pod 'APlus'
+pod 'APlus'
