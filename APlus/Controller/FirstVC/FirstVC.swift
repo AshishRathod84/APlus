@@ -247,8 +247,7 @@ extension FirstVC : UITableViewDelegate, UITableViewDataSource {
 //        vc.recentChatUser = self.arrRecentChatUserList?[indexPath.row]
 //        self.navigationController?.pushViewController(vc, animated: true)
         
-        let vc = ChatVC(nibName: "UserChatVC", bundle: nil)
-        //vc.myUserId = myUserId
+        let vc = ChatVC()
         vc.recentChatUser = self.arrRecentChatUserList?[indexPath.row]
         self.navigationController?.pushViewController(vc, animated: true)
     }

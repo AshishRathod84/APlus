@@ -48,6 +48,14 @@ public class ChatVC: UIViewController {
     var recentChatUser : GetUserList?
     var isGroup : Bool = false
     var isClear : Bool = false
+    
+    public init() {
+        super.init(nibName: "UserChatVC", bundle: Bundle(for: ChatVC.self))
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented FirstViewController")
+    }
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,18 +100,19 @@ public class ChatVC: UIViewController {
         } else {
             // Fallback on earlier versions
         }
-        
+    
+        let bundle = Bundle(for: ChatVC.self)
         NotificationCenter.default.addObserver(self, selector: #selector(checkConnection), name: .flagsChanged, object: nil)
         
-        tblUserChat.register(UINib(nibName: "OwnChatBubbleCell", bundle: nil), forCellReuseIdentifier: "OwnChatBubbleCell")
-        tblUserChat.register(UINib(nibName: "OwnImgChatBubbleCell", bundle: nil), forCellReuseIdentifier: "OwnImgChatBubbleCell")
-        tblUserChat.register(UINib(nibName: "OwnFileBubbleCell", bundle: nil), forCellReuseIdentifier: "OwnFileBubbleCell")
-        tblUserChat.register(UINib(nibName: "OwnAudioBubbleCell", bundle: nil), forCellReuseIdentifier: "OwnAudioBubbleCell")
+        tblUserChat.register(UINib(nibName: "OwnChatBubbleCell", bundle: bundle), forCellReuseIdentifier: "OwnChatBubbleCell")
+        tblUserChat.register(UINib(nibName: "OwnImgChatBubbleCell", bundle: bundle), forCellReuseIdentifier: "OwnImgChatBubbleCell")
+        tblUserChat.register(UINib(nibName: "OwnFileBubbleCell", bundle: bundle), forCellReuseIdentifier: "OwnFileBubbleCell")
+        tblUserChat.register(UINib(nibName: "OwnAudioBubbleCell", bundle: bundle), forCellReuseIdentifier: "OwnAudioBubbleCell")
         
-        tblUserChat.register(UINib(nibName: "OtherChatBubbleCell", bundle: nil), forCellReuseIdentifier: "OtherChatBubbleCell")
-        tblUserChat.register(UINib(nibName: "OtherImgChatBubbleCell", bundle: nil), forCellReuseIdentifier: "OtherImgChatBubbleCell")
-        tblUserChat.register(UINib(nibName: "OtherFileBubbleCell", bundle: nil), forCellReuseIdentifier: "OtherFileBubbleCell")
-        tblUserChat.register(UINib(nibName: "OtherAudioBubbleCell", bundle: nil), forCellReuseIdentifier: "OtherAudioBubbleCell")
+        tblUserChat.register(UINib(nibName: "OtherChatBubbleCell", bundle: bundle), forCellReuseIdentifier: "OtherChatBubbleCell")
+        tblUserChat.register(UINib(nibName: "OtherImgChatBubbleCell", bundle: bundle), forCellReuseIdentifier: "OtherImgChatBubbleCell")
+        tblUserChat.register(UINib(nibName: "OtherFileBubbleCell", bundle: bundle), forCellReuseIdentifier: "OtherFileBubbleCell")
+        tblUserChat.register(UINib(nibName: "OtherAudioBubbleCell", bundle: bundle), forCellReuseIdentifier: "OtherAudioBubbleCell")
         
     }
     
@@ -334,7 +343,7 @@ public class ChatVC: UIViewController {
             if self.loadChatMsgToArray(msg: msg, timestamp: timestamp) {
                 txtTypeMsg.text = ""
                 tblUserChat.reloadData()
-                tblUserChat.scrollToRow(at: IndexPath(row: (self.arrSectionMsg![arrSectionMsg!.count - 1].count - 1), section: (arrSectionMsg!.count - 1)), at: .bottom, animated: true)
+//                tblUserChat.scrollToRow(at: IndexPath(row: (self.arrSectionMsg![arrSectionMsg!.count - 1].count - 1), section: (arrSectionMsg!.count - 1)), at: .bottom, animated: true)
                 //self.view.endEditing(true)
             }
         }

@@ -131,9 +131,7 @@ extension ContListVC : UITableViewDelegate, UITableViewDataSource {
 //                        self.navigationController?.pushViewController(vc, animated: true)
 //                        isPrevious = true
                         
-                        let vc = ChatVC(nibName: "UserChatVC", bundle: nil)
-                        //vc.myUserId = myUserId
-                        //vc.recentChatUser = self.arrRecentChatUserList?[indexPath.row]
+                        let vc = ChatVC()
                         vc.recentChatUser = arrRecentChatUserList?[i]
                         self.navigationController?.pushViewController(vc, animated: true)
                         isPrevious = true
