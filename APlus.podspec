@@ -3,7 +3,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "APlus"
-  spec.version      = "0.0.2"
+  spec.version      = "0.0.3"
   spec.summary      = "APlus Chat is light weight SDK use for ChatSocket"
 
   spec.description  = "Plus Chat is light weight SDK use Socket.io for Real Time Communication"
@@ -23,7 +23,8 @@ Pod::Spec.new do |spec|
   spec.source       = { :git => "https://github.com/AshishRathod84/APlusChat.git", :tag => spec.version.to_s }
 
 
-  spec.source_files  = "APlus", "APlus/**/*.{h,m,swift}"
+  spec.source_files  = "APlus", "APlus/**/*.{h,m,swift,xib}"
+  #spec.resources = "APlus/**/*.{png,jpeg,jpg,storyboard,xib}"
 	
 
   spec.framework  = "UIKit"
