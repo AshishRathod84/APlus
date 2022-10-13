@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		11623139309EA74E1639CC91 /* Pods_APlus_APlusTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 695D4D1A7D57C747F2A2EB14 /* Pods_APlus_APlusTests.framework */; };
 		12898DB428F7D8BB00DA4F75 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 12898DB328F7D8BB00DA4F75 /* Media.xcassets */; };
 		129196FC28F6F971000AD9D4 /* APlus.docc in Sources */ = {isa = PBXBuildFile; fileRef = 129196FB28F6F971000AD9D4 /* APlus.docc */; };
 		1291970228F6F971000AD9D4 /* APlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 129196F728F6F971000AD9D4 /* APlus.framework */; };
@@ -79,8 +80,7 @@
 		1291983128F6FAAC000AD9D4 /* ExtensionProfileDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129197ED28F6FAAB000AD9D4 /* ExtensionProfileDetailVC.swift */; };
 		1291983228F6FAAC000AD9D4 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129197EE28F6FAAB000AD9D4 /* Utility.swift */; };
 		1291983328F6FAAC000AD9D4 /* Cancellable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129197F028F6FAAC000AD9D4 /* Cancellable.swift */; };
-		1291983628F6FB22000AD9D4 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 1291983528F6FB22000AD9D4 /* ProgressHUD */; };
-		1291983928F6FB3A000AD9D4 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 1291983828F6FB3A000AD9D4 /* SocketIO */; };
+		F49E3526B040BC54DC909468 /* Pods_APlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DAF7C86D16045ADCC91A415 /* Pods_APlus.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -167,6 +167,12 @@
 		129197ED28F6FAAB000AD9D4 /* ExtensionProfileDetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionProfileDetailVC.swift; sourceTree = "<group>"; };
 		129197EE28F6FAAB000AD9D4 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		129197F028F6FAAC000AD9D4 /* Cancellable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cancellable.swift; sourceTree = "<group>"; };
+		1DAF7C86D16045ADCC91A415 /* Pods_APlus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_APlus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3115BCA493C632497F6A63FB /* Pods-APlus-APlusTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-APlus-APlusTests.release.xcconfig"; path = "Target Support Files/Pods-APlus-APlusTests/Pods-APlus-APlusTests.release.xcconfig"; sourceTree = "<group>"; };
+		46550FC3B4B5F7D06EC2C841 /* Pods-APlus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-APlus.release.xcconfig"; path = "Target Support Files/Pods-APlus/Pods-APlus.release.xcconfig"; sourceTree = "<group>"; };
+		695D4D1A7D57C747F2A2EB14 /* Pods_APlus_APlusTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_APlus_APlusTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E6D2E1012389AD7798BCE22 /* Pods-APlus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-APlus.debug.xcconfig"; path = "Target Support Files/Pods-APlus/Pods-APlus.debug.xcconfig"; sourceTree = "<group>"; };
+		970BC37A962F29679241F16E /* Pods-APlus-APlusTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-APlus-APlusTests.debug.xcconfig"; path = "Target Support Files/Pods-APlus-APlusTests/Pods-APlus-APlusTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,8 +180,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1291983628F6FB22000AD9D4 /* ProgressHUD in Frameworks */,
-				1291983928F6FB3A000AD9D4 /* SocketIO in Frameworks */,
+				F49E3526B040BC54DC909468 /* Pods_APlus.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -184,6 +189,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1291970228F6F971000AD9D4 /* APlus.framework in Frameworks */,
+				11623139309EA74E1639CC91 /* Pods_APlus_APlusTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,6 +202,8 @@
 				129196F928F6F971000AD9D4 /* APlus */,
 				1291970528F6F971000AD9D4 /* APlusTests */,
 				129196F828F6F971000AD9D4 /* Products */,
+				506E955B7CAC4006AEF8716D /* Pods */,
+				6CC175992130944ABCC2EA87 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -557,6 +565,27 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
+		506E955B7CAC4006AEF8716D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8E6D2E1012389AD7798BCE22 /* Pods-APlus.debug.xcconfig */,
+				46550FC3B4B5F7D06EC2C841 /* Pods-APlus.release.xcconfig */,
+				970BC37A962F29679241F16E /* Pods-APlus-APlusTests.debug.xcconfig */,
+				3115BCA493C632497F6A63FB /* Pods-APlus-APlusTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		6CC175992130944ABCC2EA87 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1DAF7C86D16045ADCC91A415 /* Pods_APlus.framework */,
+				695D4D1A7D57C747F2A2EB14 /* Pods_APlus_APlusTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -575,6 +604,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1291970B28F6F971000AD9D4 /* Build configuration list for PBXNativeTarget "APlus" */;
 			buildPhases = (
+				8E4A43DCB655DA64011F8F3C /* [CP] Check Pods Manifest.lock */,
 				129196F228F6F971000AD9D4 /* Headers */,
 				129196F328F6F971000AD9D4 /* Sources */,
 				129196F428F6F971000AD9D4 /* Frameworks */,
@@ -585,10 +615,6 @@
 			dependencies = (
 			);
 			name = APlus;
-			packageProductDependencies = (
-				1291983528F6FB22000AD9D4 /* ProgressHUD */,
-				1291983828F6FB3A000AD9D4 /* SocketIO */,
-			);
 			productName = APlus;
 			productReference = 129196F728F6F971000AD9D4 /* APlus.framework */;
 			productType = "com.apple.product-type.framework";
@@ -597,9 +623,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1291970E28F6F971000AD9D4 /* Build configuration list for PBXNativeTarget "APlusTests" */;
 			buildPhases = (
+				FE1CBF6D4C78F5BC16EC315C /* [CP] Check Pods Manifest.lock */,
 				129196FD28F6F971000AD9D4 /* Sources */,
 				129196FE28F6F971000AD9D4 /* Frameworks */,
 				129196FF28F6F971000AD9D4 /* Resources */,
+				C9AEBE6079B65CB654909859 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -638,10 +666,6 @@
 				Base,
 			);
 			mainGroup = 129196ED28F6F971000AD9D4;
-			packageReferences = (
-				1291983428F6FB22000AD9D4 /* XCRemoteSwiftPackageReference "ProgressHUD" */,
-				1291983728F6FB3A000AD9D4 /* XCRemoteSwiftPackageReference "socket" */,
-			);
 			productRefGroup = 129196F828F6F971000AD9D4 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -690,6 +714,70 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8E4A43DCB655DA64011F8F3C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-APlus-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C9AEBE6079B65CB654909859 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-APlus-APlusTests/Pods-APlus-APlusTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-APlus-APlusTests/Pods-APlus-APlusTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-APlus-APlusTests/Pods-APlus-APlusTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FE1CBF6D4C78F5BC16EC315C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-APlus-APlusTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		129196F328F6F971000AD9D4 /* Sources */ = {
@@ -816,7 +904,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -873,7 +961,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -887,6 +975,7 @@
 		};
 		1291970C28F6F971000AD9D4 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8E6D2E1012389AD7798BCE22 /* Pods-APlus.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -915,6 +1004,7 @@
 		};
 		1291970D28F6F971000AD9D4 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 46550FC3B4B5F7D06EC2C841 /* Pods-APlus.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -943,6 +1033,7 @@
 		};
 		1291970F28F6F971000AD9D4 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 970BC37A962F29679241F16E /* Pods-APlus-APlusTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -960,6 +1051,7 @@
 		};
 		1291971028F6F971000AD9D4 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3115BCA493C632497F6A63FB /* Pods-APlus-APlusTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1006,38 +1098,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		1291983428F6FB22000AD9D4 /* XCRemoteSwiftPackageReference "ProgressHUD" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/relatedcode/ProgressHUD";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-		1291983728F6FB3A000AD9D4 /* XCRemoteSwiftPackageReference "socket" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/socketio/socket.io-client-swift";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		1291983528F6FB22000AD9D4 /* ProgressHUD */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1291983428F6FB22000AD9D4 /* XCRemoteSwiftPackageReference "ProgressHUD" */;
-			productName = ProgressHUD;
-		};
-		1291983828F6FB3A000AD9D4 /* SocketIO */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1291983728F6FB3A000AD9D4 /* XCRemoteSwiftPackageReference "socket" */;
-			productName = SocketIO;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 129196EE28F6F971000AD9D4 /* Project object */;
 }
