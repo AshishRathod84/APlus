@@ -130,7 +130,8 @@ public class CreateGrpVC: UIViewController {
                     break
                 }
             }   //  */
-            self.navigationController?.popViewController(animated: true)
+//            self.navigationController?.popViewController(animated: true)
+            self.navigationController?.popToRootViewController(animated: true)
         }
     }
 }

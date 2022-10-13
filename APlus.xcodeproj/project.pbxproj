@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		12898DB428F7D8BB00DA4F75 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 12898DB328F7D8BB00DA4F75 /* Media.xcassets */; };
 		129196FC28F6F971000AD9D4 /* APlus.docc in Sources */ = {isa = PBXBuildFile; fileRef = 129196FB28F6F971000AD9D4 /* APlus.docc */; };
 		1291970228F6F971000AD9D4 /* APlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 129196F728F6F971000AD9D4 /* APlus.framework */; };
 		1291970728F6F971000AD9D4 /* APlusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1291970628F6F971000AD9D4 /* APlusTests.swift */; };
@@ -93,6 +94,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		12898DB328F7D8BB00DA4F75 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		129196F728F6F971000AD9D4 /* APlus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = APlus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		129196FA28F6F971000AD9D4 /* APlus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = APlus.h; sourceTree = "<group>"; };
 		129196FB28F6F971000AD9D4 /* APlus.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = APlus.docc; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 				129197BA28F6FAAB000AD9D4 /* View */,
 				129196FA28F6F971000AD9D4 /* APlus.h */,
 				129196FB28F6F971000AD9D4 /* APlus.docc */,
+				12898DB328F7D8BB00DA4F75 /* Media.xcassets */,
 			);
 			path = APlus;
 			sourceTree = "<group>";
@@ -670,6 +673,7 @@
 				1291981D28F6FAAC000AD9D4 /* OtherAudioBubbleCell.xib in Resources */,
 				1291982128F6FAAC000AD9D4 /* ParticipantsTVCell.xib in Resources */,
 				129197F728F6FAAC000AD9D4 /* ProfileDetail.xib in Resources */,
+				12898DB428F7D8BB00DA4F75 /* Media.xcassets in Resources */,
 				129197F528F6FAAC000AD9D4 /* GroupContVC.xib in Resources */,
 				129197FA28F6FAAC000AD9D4 /* CreateGrpVC.xib in Resources */,
 				1291981228F6FAAC000AD9D4 /* OwnChatBubbleCell.xib in Resources */,
