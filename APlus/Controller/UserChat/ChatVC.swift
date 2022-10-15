@@ -205,7 +205,7 @@ public class ChatVC: UIViewController {
     
     @IBAction func btnBackTap(_ sender: UIButton) {
         //SocketChatManager.sharedInstance.leaveChat(roomid: groupId)
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.popToViewController(ofClass: FirstVC.self)
     }
     
     @IBAction func btnUserInfoTap(_ sender: UIButton) {
@@ -343,7 +343,7 @@ public class ChatVC: UIViewController {
             if self.loadChatMsgToArray(msg: msg, timestamp: timestamp) {
                 txtTypeMsg.text = ""
                 tblUserChat.reloadData()
-//                tblUserChat.scrollToRow(at: IndexPath(row: (self.arrSectionMsg![arrSectionMsg!.count - 1].count - 1), section: (arrSectionMsg!.count - 1)), at: .bottom, animated: true)
+                tblUserChat.scrollToRow(at: IndexPath(row: (self.arrSectionMsg![arrSectionMsg!.count - 1].count - 1), section: (arrSectionMsg!.count - 1)), at: .bottom, animated: true)
                 //self.view.endEditing(true)
             }
         }

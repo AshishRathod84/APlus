@@ -17,13 +17,19 @@ protocol SocketDelegate {
     func getPreviousChatMsg(message : String)
 }
 
-class SocketChatManager {
+public class SocketChatManager {
     
     // MARK: - Properties
-    static let sharedInstance = SocketChatManager()
-    private var manager : SocketManager?
-    public var socket : SocketIOClient?
-    var socketDelegate : SocketDelegate?
+//    static let sharedInstance = SocketChatManager()
+//    private var manager : SocketManager?
+//    public var socket : SocketIOClient?
+//    var socketDelegate : SocketDelegate?
+    
+    public static let sharedInstance = SocketChatManager()
+     public var manager : SocketManager?
+     public var socket : SocketIOClient?
+     var socketDelegate : SocketDelegate?
+    
 //    var serverURL : String = "http://14.99.147.156:5000"   //  Live Test server
     var serverURL : String = "http://3.139.188.226:5000"   //  Live Production server
 //    var serverURL : String = "http://192.168.1.94:5000"   //  Local server
@@ -365,6 +371,20 @@ class SocketChatManager {
     // MARK: -
     
     // MARK: - Socket Emits
+    
+    public func socketLogin(userId: String, secretKey: String) {
+        print("User Id: \(userId)")
+        print("secretKey : \(secretKey)")
+    }
+    
+    public func socketSignUp() {
+        print("Signup Function Call")
+    }
+    
+    public func socketLogOut(userId: String, secretKey: String) {
+        print("Logout Function Call")
+    }
+    
     func joinGroup(param: String) {
         socket?.emit("join", param)
     }   //  */

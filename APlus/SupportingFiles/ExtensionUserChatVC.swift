@@ -29,7 +29,8 @@ extension ChatVC : UITextFieldDelegate {
     @objc func keyboardWillShow(notification: NSNotification) {
         self.isKeyboardActive = true
         if let keyboardSize = (notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            constMainChatViewBottom.constant = keyboardSize.height - 35
+//            constMainChatViewBottom.constant = keyboardSize.height - 35
+               constMainChatViewBottom.constant = -(keyboardSize.height - 35)
         }
     }
     
