@@ -27,7 +27,6 @@ Pod::Spec.new do |spec|
   spec.resources = "APlus/**/*.{png,jpeg,jpg,storyboard,xib,xcasset}"
 
   #spec.resource_bundle = "APlus/*/Media.xcassets"
-  spec.resource_bundle = "APlus", "APlus/*/Media"
 
   spec.framework  = "UIKit"
 
