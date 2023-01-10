@@ -234,12 +234,12 @@
 			isa = PBXGroup;
 			children = (
 				12B1614328FFFDD700FEB361 /* Images */,
-				1291978D28F6FAAA000AD9D4 /* Controller */,
 				129197A928F6FAAA000AD9D4 /* Model */,
 				129197EF28F6FAAC000AD9D4 /* Protocols */,
 				129197E128F6FAAB000AD9D4 /* SharedManagers */,
-				129197E728F6FAAB000AD9D4 /* SupportingFiles */,
+				1291978D28F6FAAA000AD9D4 /* Controller */,
 				129197BA28F6FAAB000AD9D4 /* View */,
+				129197E728F6FAAB000AD9D4 /* SupportingFiles */,
 				129196FA28F6F971000AD9D4 /* APlus.h */,
 				129196FB28F6F971000AD9D4 /* APlus.docc */,
 				12898DB328F7D8BB00DA4F75 /* Media.xcassets */,
@@ -276,6 +276,7 @@
 			children = (
 				1291978F28F6FAAA000AD9D4 /* UserChatVC.xib */,
 				1291979028F6FAAA000AD9D4 /* ChatVC.swift */,
+				129197EB28F6FAAB000AD9D4 /* ExtensionUserChatVC.swift */,
 			);
 			path = UserChat;
 			sourceTree = "<group>";
@@ -294,6 +295,7 @@
 			children = (
 				1291979528F6FAAA000AD9D4 /* GroupContVC.xib */,
 				1291979628F6FAAA000AD9D4 /* GroupContVC.swift */,
+				129197E928F6FAAB000AD9D4 /* ExtensionGroupContactVC.swift */,
 			);
 			path = GroupContVC;
 			sourceTree = "<group>";
@@ -303,6 +305,7 @@
 			children = (
 				1291979828F6FAAA000AD9D4 /* ProfileDetail.xib */,
 				1291979928F6FAAA000AD9D4 /* ProfDetailVC.swift */,
+				129197ED28F6FAAB000AD9D4 /* ExtensionProfileDetailVC.swift */,
 			);
 			path = ProfileDetailVC;
 			sourceTree = "<group>";
@@ -330,6 +333,7 @@
 			children = (
 				129197A128F6FAAA000AD9D4 /* ContactInfo.xib */,
 				129197A228F6FAAA000AD9D4 /* ContactInfoVC.swift */,
+				129197E828F6FAAB000AD9D4 /* ExtensionContectInfoVC.swift */,
 			);
 			path = ContentInfoVC;
 			sourceTree = "<group>";
@@ -561,12 +565,8 @@
 		129197E728F6FAAB000AD9D4 /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
-				129197E828F6FAAB000AD9D4 /* ExtensionContectInfoVC.swift */,
-				129197E928F6FAAB000AD9D4 /* ExtensionGroupContactVC.swift */,
 				129197EA28F6FAAB000AD9D4 /* Validations.swift */,
-				129197EB28F6FAAB000AD9D4 /* ExtensionUserChatVC.swift */,
 				129197EC28F6FAAB000AD9D4 /* Extension.swift */,
-				129197ED28F6FAAB000AD9D4 /* ExtensionProfileDetailVC.swift */,
 				129197EE28F6FAAB000AD9D4 /* Utility.swift */,
 			);
 			path = SupportingFiles;
