@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GroupContVC" customModule="ConvertedAGS" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GroupContVC" customModule="APlus" customModuleProvider="target">
             <connections>
                 <outlet property="btnBack" destination="SsV-B6-qu3" id="TkC-Gp-1rB"/>
                 <outlet property="btnNext" destination="jsB-2M-iOt" id="c2p-sR-Pdo"/>

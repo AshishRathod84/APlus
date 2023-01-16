@@ -21,6 +21,7 @@
                 <outlet property="imgBack" destination="r1I-ub-zbd" id="YLG-ci-6EU"/>
                 <outlet property="imgChatBackground" destination="cRV-uj-Y4B" id="ei5-qD-4eL"/>
                 <outlet property="imgProfilePic" destination="H4e-VS-XiG" id="ucT-R8-1BU"/>
+                <outlet property="lblOnline" destination="ZlG-ay-t4I" id="UsT-2U-1Fq"/>
                 <outlet property="lblUserName" destination="7Jo-RE-Fcn" id="tei-TD-eut"/>
                 <outlet property="tblUserChat" destination="6C1-r0-AUs" id="aGg-rT-GeW"/>
                 <outlet property="txtTypeMsg" destination="2d5-Xd-ydd" id="CvC-l1-Dd1"/>
@@ -113,6 +114,12 @@
                                                 <action selector="btnOptionTap:" destination="-1" eventType="touchUpInside" id="cVc-rY-rjE"/>
                                             </connections>
                                         </button>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZlG-ay-t4I">
+                                            <rect key="frame" x="3" y="40" width="235" height="12"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
@@ -122,11 +129,14 @@
                                         <constraint firstItem="7Jo-RE-Fcn" firstAttribute="leading" secondItem="okl-MG-G72" secondAttribute="leading" constant="3" id="Jil-Q8-GgO"/>
                                         <constraint firstItem="7Jo-RE-Fcn" firstAttribute="top" secondItem="okl-MG-G72" secondAttribute="top" constant="12" id="Voc-LT-1eg"/>
                                         <constraint firstItem="oZe-2T-KAS" firstAttribute="trailing" secondItem="7Jo-RE-Fcn" secondAttribute="trailing" id="Wn1-8x-CVY"/>
+                                        <constraint firstItem="ZlG-ay-t4I" firstAttribute="width" secondItem="oZe-2T-KAS" secondAttribute="width" id="Z8s-NQ-vCr"/>
                                         <constraint firstItem="s75-f1-89z" firstAttribute="top" secondItem="okl-MG-G72" secondAttribute="top" constant="12" id="jaM-Xb-6Vz"/>
                                         <constraint firstAttribute="bottom" secondItem="s75-f1-89z" secondAttribute="bottom" constant="12" id="jpr-tF-Y0B"/>
                                         <constraint firstItem="oZe-2T-KAS" firstAttribute="bottom" secondItem="7Jo-RE-Fcn" secondAttribute="bottom" id="jxP-iC-cWC"/>
                                         <constraint firstAttribute="trailing" secondItem="s75-f1-89z" secondAttribute="trailing" constant="15" id="pNp-CN-FLC"/>
+                                        <constraint firstAttribute="bottom" secondItem="ZlG-ay-t4I" secondAttribute="bottom" constant="3" id="qux-0S-End"/>
                                         <constraint firstItem="oZe-2T-KAS" firstAttribute="leading" secondItem="7Jo-RE-Fcn" secondAttribute="leading" id="tuh-Do-9cf"/>
+                                        <constraint firstItem="ZlG-ay-t4I" firstAttribute="leading" secondItem="okl-MG-G72" secondAttribute="leading" constant="3" id="yoD-gx-DIr"/>
                                     </constraints>
                                 </view>
                             </subviews>

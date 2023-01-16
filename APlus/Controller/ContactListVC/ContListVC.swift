@@ -41,7 +41,8 @@ public class ContListVC: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-
+        // Do any additional setup after loading the view.
+        
         self.searchBar.delegate = self
         self.searchBar.showsCancelButton = true
         self.searchBar.enablesReturnKeyAutomatically = true
@@ -84,7 +85,6 @@ public class ContListVC: UIViewController {
         tblContact.reloadData()
         ProgressHUD.dismiss()
     }
-
 }
 
 
@@ -100,15 +100,15 @@ extension ContListVC : UITableViewDelegate, UITableViewDataSource {
         cell.lblSeparator.backgroundColor = .gray.withAlphaComponent(0.5)
         
         cell.imgContactImg.image = UIImage(named: "placeholder-profile-img")
-        cell.configure(contactList?.list![indexPath.row].profilePicture ?? "")
-        //cell.lblName.text = arrUserList![indexPath.row].userDisName!
-        cell.lblName.text = contactList?.list![indexPath.row].name ?? ""
+        cell.configure(self.arrContactList![indexPath.row].profilePicture ?? "")
+        //cell.lblName.text = contactList?.list![indexPath.row].name ?? ""
+        cell.lblName.text = self.arrContactList![indexPath.row].name ?? ""
         
         return cell
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70
+        return 60
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -198,8 +198,13 @@ extension ContListVC : UISearchBarDelegate {
     }
     
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        self.arrContactList = self.arrAllContactList?.filter{ ($0.name?.lowercased().prefix(searchText.count))! == searchText.lowercased() }
-        //print(searchText)
+        self.arrContactList = self.arrAllContactList
+        if searchText != "" {
+            self.arrContactList = self.arrAllContactList?.filter{
+                ($0.name!.lowercased()).contains(searchText.lowercased())
+            }
+        }
+        print(searchText)
         self.tblContact.reloadData()
     }
     

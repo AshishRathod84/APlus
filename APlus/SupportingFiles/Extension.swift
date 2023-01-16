@@ -27,10 +27,14 @@ extension Date {
    }
 }
 
-extension UINavigationController {
-  func popToViewController(ofClass: AnyClass, animated: Bool = true) {
-    if let vc = viewControllers.last(where: { $0.isKind(of: ofClass) }) {
-      popToViewController(vc, animated: animated)
+extension UIView {
+    func dropShadow(scale: Bool = true) {
+        layer.masksToBounds = false
+        layer.shadowColor = Colors.shadow.returnColor().cgColor
+        layer.shadowOpacity = 0.7
+        layer.shadowOffset = .zero
+        layer.shadowRadius = 3
+        layer.shouldRasterize = true
+        layer.rasterizationScale = scale ? UIScreen.main.scale : 1
     }
-  }
 }

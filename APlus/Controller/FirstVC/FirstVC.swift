@@ -10,9 +10,13 @@ import SocketIO
 import ProgressHUD
 
 var secretKey : String = "U2FsdGVkX18AsTXTniJJwZ9KaiRWQki0Gike3TN%2BQyXws0hyLIdcRN4abTk84a7r"
-//var myUserId : String = "6271005aa0b24b24eb781674"      // My id
-var myUserId : String = "6270fff1b2000e317f955d75"      //another user id for chat -
-//var myUserId : String = ""      //another user id for chat -
+//var myUserId : String = "6271005aa0b24b24eb781674"
+//var myUserId : String = "6270fff1b2000e317f955d75"
+//var myUserId : String = "6229f5e5b501ab796bf5b255"
+var myUserId : String = "623c6522402fc241ccd065ff"
+var myUserName : String = ""
+
+let imageCache = NSCache<AnyObject, AnyObject>()
 
 public class FirstVC: UIViewController {
     
@@ -24,6 +28,9 @@ public class FirstVC: UIViewController {
     @IBOutlet weak var btnViewUserProfile: UIButton!
     @IBOutlet weak var viewSearchBar: UIView!
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var constTrailNewChat: NSLayoutConstraint!
+    @IBOutlet weak var constTrailNewGrpChat: NSLayoutConstraint!
+    @IBOutlet weak var viewProfileImg: UIView!
 
     var userName : String = "ABC"
     var isNetworkAvailable : Bool = false
@@ -32,6 +39,8 @@ public class FirstVC: UIViewController {
     var arrRecentChatUserList : [GetUserList]? = []
     private var imageRequest: Cancellable?
     var profileDetail : ProfileDetail?
+    
+    let activityIndicator = UIActivityIndicatorView()
     
     public init() {
         super.init(nibName: "FirstVC", bundle: Bundle(for: FirstVC.self))
@@ -87,6 +96,9 @@ public class FirstVC: UIViewController {
             isNetworkAvailable = true
         }
         NotificationCenter.default.addObserver(self, selector: #selector(checkConnection), name: .flagsChanged, object: nil)
+        
+        self.btnNewChat.isHidden = true
+        self.btnNewGroupChat.isHidden = true
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -96,7 +108,7 @@ public class FirstVC: UIViewController {
         isGetUserList = false
         
         if (SocketChatManager.sharedInstance.socket?.status == .connected) {
-            isGetUserList = true
+            //            isGetUserList = true
             SocketChatManager.sharedInstance.reqProfileDetails(param: ["userId" : myUserId], from: false)
             SocketChatManager.sharedInstance.reqRecentChatList(param: ["secretKey" : secretKey, "_id" : myUserId])
         }
@@ -157,7 +169,6 @@ public class FirstVC: UIViewController {
         let vc = ContListVC()
         vc.arrRecentChatUserList = arrAllRecentChatUserList
         self.navigationController?.pushViewController(vc, animated: true)
-        
     }
     
     @IBAction func btnNewGroupChatTap(_ sender: UIButton) {
@@ -167,27 +178,70 @@ public class FirstVC: UIViewController {
         
         let vc =  GroupContVC()
         self.navigationController?.pushViewController(vc, animated: true)
-        
     }
     
     func getProfileDetail(_ profileDetail : ProfileDetail) {
+        
+        ProgressHUD.dismiss()
         print("Get response of profile details.")
         self.profileDetail = profileDetail
+        
+        myUserName = self.profileDetail?.name ?? ""
+        
         imgProfilePic.image = UIImage(named: "placeholder-profile-img")
         if profileDetail.profilePicture! != "" {
+            // setup activityIndicator...
+            activityIndicator.color = .darkGray
+            
+            activityIndicator.center = self.viewProfileImg.center
+            self.imgProfilePic.addSubview(activityIndicator)
+            
+            activityIndicator.frame = CGRect(x: 0, y: 0, width: 41, height: 41)
+            
+            var imageURL: URL?
+            imageURL = URL(string: profileDetail.profilePicture!)!
+            
+            self.imgProfilePic.image = nil
+            activityIndicator.startAnimating()
+            
+            // retrieves image if already available in cache
+            if let imageFromCache = imageCache.object(forKey: imageURL as AnyObject) as? UIImage {
+                self.imgProfilePic.image = imageFromCache
+                activityIndicator.stopAnimating()
+                return
+            }
+            
             imageRequest = NetworkManager.sharedInstance.getData(from: URL(string: profileDetail.profilePicture!)!) { data, resp, err in
                 guard let data = data, err == nil else {
                     print("Error in download from url")
+                    self.activityIndicator.stopAnimating()
                     return
                 }
                 DispatchQueue.main.async {
-                    let dataImg : UIImage = UIImage(data: data)!
-                    self.imgProfilePic.image = dataImg
+                    if let imageToCache = UIImage(data: data) {
+                        self.imgProfilePic.image = imageToCache
+                        imageCache.setObject(imageToCache, forKey: imageURL as AnyObject)
+                    }
+                    self.activityIndicator.stopAnimating()
                 }
             }
-        }   //  */
+        }
     }
-
+    
+    func getUserRole(userRole : UserRole) {
+        print("Get User Role - - - \(userRole)")
+        btnNewGroupChat.isHidden = true
+        btnNewChat.isHidden = true
+        
+        if SocketChatManager.sharedInstance.userRole?.createOneToOneChat ?? 0 == 1 {
+            btnNewChat.isHidden = false
+        }
+        
+        if SocketChatManager.sharedInstance.userRole?.createGroup ?? 0 == 1 {
+            btnNewGroupChat.isHidden = false
+            constTrailNewGrpChat.priority = SocketChatManager.sharedInstance.userRole?.createOneToOneChat ?? 0 == 1 ? .defaultLow : .required
+        }
+    }
 }
 
 extension FirstVC : UITableViewDelegate, UITableViewDataSource {
@@ -198,22 +252,27 @@ extension FirstVC : UITableViewDelegate, UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UserDetailTVCell", for: indexPath) as! UserDetailTVCell
+        
+        cell.viewMainBG.backgroundColor = .white
+        //cell.viewMainBG.layer.shadowColor
+        cell.viewMainBG.dropShadow()
+        
         var msgType : String = ""
         if (self.arrRecentChatUserList?[indexPath.row].recentMessage?.type != nil) {
             msgType = (self.arrRecentChatUserList?[indexPath.row].recentMessage?.type)!
         }
         
+        cell.imgProfile.image = UIImage(named: "placeholder-profile-img")
         if (self.arrRecentChatUserList?[indexPath.row].isGroup)! {
-            cell.configure((self.arrRecentChatUserList?[indexPath.row].name)!, self.arrRecentChatUserList?[indexPath.row].groupImage ?? "", msgType)
+            cell.imgProfile.image = UIImage(named: "group-placeholder")
+            cell.configure((self.arrRecentChatUserList?[indexPath.row].name)!, self.arrRecentChatUserList?[indexPath.row].groupImage ?? "", msgType, isGroup: true)
         } else {
             for (_, item) in ((self.arrRecentChatUserList?[indexPath.row].users)!).enumerated() {
                 if (item.userId)! != myUserId {
-                    cell.configure(item.name ?? "", item.profilePicture ?? "", msgType)
+                    cell.configure(item.name ?? "", item.profilePicture ?? "", msgType, isGroup: false)
                 }
             }
         }
-        
-        cell.imgProfile.image = UIImage(named: "placeholder-profile-img")
         
         if msgType == "text" {
             cell.lblLastMsg.text = (self.arrRecentChatUserList?[indexPath.row].recentMessage?.message)!
@@ -260,8 +319,26 @@ extension FirstVC : UISearchBarDelegate, ProfileImgDelegate {
     }
     
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        self.arrRecentChatUserList = self.arrAllRecentChatUserList?.filter{ ($0.name?.lowercased().prefix(searchText.count))! == searchText.lowercased() }
-        print(searchText)
+        
+        self.arrRecentChatUserList = self.arrAllRecentChatUserList
+        if searchText.count > 0 {
+            self.arrRecentChatUserList?.removeAll()
+            for (_, item) in self.arrAllRecentChatUserList!.enumerated() {
+                if item.name ?? "" != "" {
+                    if item.name!.lowercased().contains(searchText.lowercased()) {
+                        self.arrRecentChatUserList?.append(item)
+                    }
+                } else {
+                    for (_, user) in ((item.users)!).enumerated() {
+                        if (user.userId)! != myUserId {
+                            if user.name!.lowercased().contains(searchText.lowercased()) {
+                                self.arrRecentChatUserList?.append(item)
+                            }
+                        }
+                    }
+                }
+            }
+        }
         self.tblChatList.reloadData()
     }
     
@@ -293,14 +370,13 @@ extension FirstVC : SocketDelegate {
     }
     
     func getRecentUser(message: String) {
-        print(message)
-        
-        if (SocketChatManager.sharedInstance.socket?.status == .connected) {
+        if (SocketChatManager.sharedInstance.socket?.status == .connected) && !isGetUserList {
             isGetUserList = true
+            SocketChatManager.sharedInstance.onlineStatus(param: ["id": myUserId])
+            SocketChatManager.sharedInstance.getUserRole(param: ["secretKey": secretKey, "userId": myUserId])
             //ProgressHUD.show()
             SocketChatManager.sharedInstance.reqProfileDetails(param: ["userId" : myUserId], from: false)
-            //  ["secretKey" : secretKey, "_id" : myUserId]
-            SocketChatManager.sharedInstance.reqRecentChatList(param: ["secretKey" : secretKey, "_id" : myUserId])
+            SocketChatManager.sharedInstance.reqRecentChatList(param: ["secretKey" : secretKey, "_id" : myUserId])  //  ["secretKey" : secretKey, "_id" : myUserId]
         }
     }
 }

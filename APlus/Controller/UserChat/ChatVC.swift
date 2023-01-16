@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import AVKit
+import MobileCoreServices
 
 public class ChatVC: UIViewController {
 
@@ -27,14 +29,16 @@ public class ChatVC: UIViewController {
     @IBOutlet weak var imgChatBackground: UIImageView!
     @IBOutlet weak var constMainChatViewBottom: NSLayoutConstraint!
     @IBOutlet weak var tblUserChat: UITableView!
-    
+    @IBOutlet weak var lblOnline: UILabel!
+    @IBOutlet weak var constViewTypeMsgHeight: NSLayoutConstraint!
+
     var strDisName : String?
     var strProfileImg : String? = ""
     var isNetworkAvailable : Bool = false
     var isKeyboardActive : Bool = false
     var imagePicker = UIImagePickerController()
     var arrImageExtension : [String] = ["jpg", "png", "jpeg", "gif", "svg"]
-    var arrDocExtension : [String] = ["doc", "docx", "xml", "xmlx", "pdf", "rtf", ""]
+    var arrDocExtension : [String] = ["doc", "docx", "xls", "xlsx", "pdf", "rtf", "txt", ""]
     var arrAudioExtension : [String] = ["mp3", "aac", "wav", "ogg", "m4a"]
     var arrVideoExtension : [String] = ["mp4", "avi", "mov", "3gp", "3gpp", "mpg", "mpeg", "webm", "flv", "m4v", "wmv", "asx", "asf"]
     var isCameraClick : Bool = false
@@ -49,6 +53,13 @@ public class ChatVC: UIViewController {
     var isGroup : Bool = false
     var isClear : Bool = false
     
+    var imgFileName : String = ""
+    var isDocumentPickerOpen : Bool = false
+    var isTyping : Bool = false
+    var timer = Timer()
+    var timeSeconds = 1
+    var onlineUser : String = ""
+    
     public init() {
         super.init(nibName: "UserChatVC", bundle: Bundle(for: ChatVC.self))
     }
@@ -60,36 +71,14 @@ public class ChatVC: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.viewTypeMsg.backgroundColor = .clear
+        btnAttach.backgroundColor = .white
+        btnAttach.layer.cornerRadius = btnAttach.frame.height / 2
+        btnSend.backgroundColor = .white
+        btnSend.layer.cornerRadius = btnSend.frame.width / 2
+        
         groupId = recentChatUser?.groupId ?? ""
-        if recentChatUser?.isGroup ?? false {
-            isGroup = true
-            strDisName = (recentChatUser?.name)!
-            strProfileImg = recentChatUser?.groupImage ?? ""
-        } else {
-            isGroup = false
-            for i in 0 ..< (recentChatUser?.users?.count ?? 0) {
-                if (recentChatUser?.users?[i].userId)! != myUserId {
-                    strDisName = (recentChatUser?.users?[i].name)!
-                    strProfileImg = recentChatUser?.users?[i].profilePicture ?? ""
-                }
-            }
-        }
-        
-        
-        if strProfileImg != "" {
-            NetworkManager.sharedInstance.getData(from: URL(string: strProfileImg!)!) { data, response, err in
-                if err == nil {
-                    DispatchQueue.main.async {
-                        self.imgProfilePic.image = UIImage(data: data!)
-                    }
-                }
-            }
-        }
-        
-        btnOption.tintColor = UIColor.black
-        self.btnOption.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 2.0)
-        registerKeyboardNotifications()
-        lblUserName.text = strDisName
+        self.setData()
         
         if Network.reachability.isReachable {
             isNetworkAvailable = true
@@ -121,12 +110,17 @@ public class ChatVC: UIViewController {
         txtTypeMsg.delegate = self
         imgProfilePic.layer.cornerRadius = imgProfilePic.frame.width / 2
         
-        SocketChatManager.sharedInstance.joinGroup(param: groupId)
-        //SocketChatManager.sharedInstance.joinGroup(param: ["groupId" : groupId, "_id" : myUserId, "name" : "Pranay"])
-        SocketChatManager.sharedInstance.userChatVC = {
-            return self
+        if !isDocumentPickerOpen {
+            SocketChatManager.sharedInstance.joinGroup(param: groupId)
+            //SocketChatManager.sharedInstance.joinGroup(param: ["groupId" : groupId, "_id" : myUserId, "name" : "Pranay"])
+            SocketChatManager.sharedInstance.userChatVC = {
+                return self
+            }
+            SocketChatManager.sharedInstance.reqGroupDetail(param: ["userId": myUserId, "secretKey": secretKey, "groupId": groupId])
+            SocketChatManager.sharedInstance.reqPreviousChatMsg(param: ["groupId" : groupId, "_id" : myUserId])
+        } else {
+            self.isDocumentPickerOpen = false
         }
-        SocketChatManager.sharedInstance.reqPreviousChatMsg(param: ["groupId" : groupId, "_id" : myUserId])
         
         if #available(iOS 14.0, *) {
             self.loadPopup()
@@ -137,7 +131,81 @@ public class ChatVC: UIViewController {
         SocketChatManager.sharedInstance.socketDelegate = self
     }
     
-    func gotPreviousChat(chat : [GetPreviousChat]) {
+    public override func viewWillDisappear(_ animated: Bool) {
+        if !isDocumentPickerOpen {
+            SocketChatManager.sharedInstance.leaveChat(roomid: groupId)
+            SocketChatManager.sharedInstance.socket?.off("typing-res")
+        }
+    }
+    
+    func setData() {
+        
+        btnOption.tintColor = UIColor.black
+        self.btnOption.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 2.0)
+        registerKeyboardNotifications()
+        lblUserName.text = strDisName
+        onlineUser = isGroup ? "" : "Online"
+        
+        if recentChatUser?.isGroup ?? false {
+            self.imgProfilePic.image = UIImage(named: "group-placeholder")
+            isGroup = true
+            strDisName = (recentChatUser?.name)!
+            strProfileImg = recentChatUser?.groupImage ?? ""
+            lblOnline.text = ""
+        } else {
+            //btnSend.isEnabled = false
+            //btnAttach.isEnabled = false
+            //txtTypeMsg.isEnabled = false
+            viewTypeMsg.isHidden = true
+            constViewTypeMsgHeight.constant = 0
+            
+            if SocketChatManager.sharedInstance.userRole?.sendMessage ?? 0 == 1 {
+                viewTypeMsg.isHidden = false
+                constViewTypeMsgHeight.constant = 55
+            }
+            
+            isGroup = false
+            self.imgProfilePic.image = UIImage(named: "placeholder-profile-img")
+            for i in 0 ..< (recentChatUser?.users?.count ?? 0) {
+                if (recentChatUser?.users?[i].userId)! != myUserId {
+                    strDisName = (recentChatUser?.users?[i].name)!
+                    strProfileImg = recentChatUser?.users?[i].profilePicture ?? ""
+                }
+            }
+            lblOnline.text = "Online"
+        }
+        
+        if strProfileImg != "" {
+            var imageURL: URL?
+            imageURL = URL(string: strProfileImg!)!
+            // retrieves image if already available in cache
+            if let imageFromCache = imageCache.object(forKey: imageURL as AnyObject) as? UIImage {
+                self.imgProfilePic.image = imageFromCache
+                return
+            }
+            NetworkManager.sharedInstance.getData(from: URL(string: strProfileImg!)!) { data, response, err in
+                if err == nil {
+                    DispatchQueue.main.async {
+                        //self.imgProfilePic.image = UIImage(data: data!)
+                        if let imageToCache = UIImage(data: data!) {
+                            self.imgProfilePic.image = imageToCache
+                            imageCache.setObject(imageToCache, forKey: imageURL as AnyObject)
+                        } else {
+                            self.imgProfilePic.image = self.isGroup ? UIImage(named: "group-placeholder") : UIImage(named: "placeholder-profile-img")
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    func getGroupDetail(groupDetail : GetUserList) {
+        recentChatUser = groupDetail
+        self.setData()
+    }
+    
+    func getPreviousChat(chat : [GetPreviousChat]) {
         self.arrGetPreviousChat = chat
         //Call func for get section.
         self.arrDtForSection?.removeAll()
@@ -145,13 +213,30 @@ public class ChatVC: UIViewController {
         self.getDateforSection()
         self.tblUserChat.reloadData()
         if (arrDtForSection!.count > 0) && (arrSectionMsg!.count > 0) {
-            print("crash")
-//            tblUserChat.scrollToRow(at: IndexPath(row: (self.arrSectionMsg![arrSectionMsg!.count - 1].count - 1), section: (arrSectionMsg!.count - 1)), at: .bottom, animated: false)
-        } else {
-            print("else part of table reload")
+            tblUserChat.scrollToRow(at: IndexPath(row: (self.arrSectionMsg![arrSectionMsg!.count - 1].count - 1), section: (arrSectionMsg!.count - 1)), at: .bottom, animated: false)
         }
-        
+        SocketChatManager.sharedInstance.typingRes()
         SocketChatManager.sharedInstance.unreadCountZero(param: ["userId" : myUserId, "secretKey" : secretKey, "groupId" : groupId])
+    }
+    
+    func getTypingResponse(typingResponse : TypingResponse) {
+        if (typingResponse.groupId == groupId)  {
+            if typingResponse.isTyping == "true" {
+                if recentChatUser?.isGroup ?? false {
+                    onlineUser = "\(typingResponse.name ?? "") typing"
+                } else {
+                    onlineUser = "typing..."
+                }
+                lblOnline.text = onlineUser
+            } else if typingResponse.isTyping == "false" {
+                if recentChatUser?.isGroup ?? false {
+                    onlineUser = ""
+                } else {
+                    onlineUser = "Online"
+                }
+                lblOnline.text = onlineUser
+            }
+        }
     }
     
     func getDateforSection() {
@@ -199,13 +284,10 @@ public class ChatVC: UIViewController {
         }
     }
     
-    public override func viewWillDisappear(_ animated: Bool) {
-        SocketChatManager.sharedInstance.leaveChat(roomid: groupId)
-    }
-    
     @IBAction func btnBackTap(_ sender: UIButton) {
         //SocketChatManager.sharedInstance.leaveChat(roomid: groupId)
-        self.navigationController?.popToViewController(ofClass: FirstVC.self)
+        self.navigationController?.popToRootViewController(animated: true)
+        SocketChatManager.sharedInstance.socket?.off("typing-res")
     }
     
     @IBAction func btnUserInfoTap(_ sender: UIButton) {
@@ -227,7 +309,16 @@ public class ChatVC: UIViewController {
             //ellipses.bubble.fill - image
             self.clearChat()
         }
-        let menu = UIMenu(title: "", options: .displayInline, children: [contectInfo , deleteChat , clearChat])
+        
+        var menu = UIMenu()
+        if isGroup {
+            menu = UIMenu(title: "", options: .displayInline, children: [contectInfo , deleteChat, clearChat])
+        } else {
+            menu = UIMenu(title: "", options: .displayInline, children: [contectInfo , deleteChat])
+            if SocketChatManager.sharedInstance.userRole?.deleteMessage ?? 0 == 1 {
+                menu = UIMenu(title: "", options: .displayInline, children: [contectInfo , deleteChat , clearChat])
+            }
+        }
         btnOption.menu = menu
     }
     
@@ -327,24 +418,25 @@ public class ChatVC: UIViewController {
     }
     
     @IBAction func btnSendTap(_ sender: UIButton) {
-        
-        let param : [String : Any] = ["message": txtTypeMsg.text!, "isRead" : false, "type" : "text", "viewBy" : (recentChatUser?.members)!, "readBy" : myUserId, "sentAt" : "", "sentBy" : myUserId, "timeMilliSeconds" : ""]
-        let param1 : [String : Any] = ["messageObj" : param, "groupId" : (recentChatUser?.groupId)!, "secretKey" : secretKey]
-        //SocketChatManager.sharedInstance.sendMsg(message: param1)
-        
-        if self.sendMessage(param: param1) {
-            let timestamp : Int = Int(NSDate().timeIntervalSince1970)
-            let sentAt : [String : Any] = ["seconds" : timestamp]
-            let msg : [String : Any] = ["sentBy" : myUserId,
-                                        "type" : "text",
-                                        "sentAt" : sentAt,
-                                        "message" : txtTypeMsg.text!]
+        if txtTypeMsg.text! != "" {
+            let param : [String : Any] = ["message": txtTypeMsg.text!, "isRead" : false, "type" : "text", "viewBy" : (recentChatUser?.members)!, "readBy" : myUserId, "sentAt" : "", "sentBy" : myUserId, "timeMilliSeconds" : ""]
+            let param1 : [String : Any] = ["messageObj" : param, "groupId" : (recentChatUser?.groupId)!, "secretKey" : secretKey, "userId": myUserId, "userName": myUserName]
+            //SocketChatManager.sharedInstance.sendMsg(message: param1)
             
-            if self.loadChatMsgToArray(msg: msg, timestamp: timestamp) {
-                txtTypeMsg.text = ""
-                tblUserChat.reloadData()
-                tblUserChat.scrollToRow(at: IndexPath(row: (self.arrSectionMsg![arrSectionMsg!.count - 1].count - 1), section: (arrSectionMsg!.count - 1)), at: .bottom, animated: true)
-                //self.view.endEditing(true)
+            if self.sendMessage(param: param1) {
+                let timestamp : Int = Int(NSDate().timeIntervalSince1970)
+                let sentAt : [String : Any] = ["seconds" : timestamp]
+                let msg : [String : Any] = ["sentBy" : myUserId,
+                                            "type" : "text",
+                                            "sentAt" : sentAt,
+                                            "message" : txtTypeMsg.text!]
+                
+                if self.loadChatMsgToArray(msg: msg, timestamp: timestamp) {
+                    txtTypeMsg.text = ""
+                    tblUserChat.reloadData()
+                    tblUserChat.scrollToRow(at: IndexPath(row: (self.arrSectionMsg![arrSectionMsg!.count - 1].count - 1), section: (arrSectionMsg!.count - 1)), at: .bottom, animated: true)
+                    //self.view.endEditing(true)
+                }
             }
         }
     }
@@ -367,6 +459,4 @@ public class ChatVC: UIViewController {
             return false
         }   //  */
     }
-    
-    
 }

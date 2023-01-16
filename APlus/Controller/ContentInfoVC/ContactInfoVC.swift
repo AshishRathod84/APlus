@@ -7,6 +7,7 @@
 
 import UIKit
 import ProgressHUD
+import Photos
 
 public class ContactInfoVC: UIViewController {
 
@@ -57,6 +58,11 @@ public class ContactInfoVC: UIViewController {
     var strRemovedUserId : String = ""
     var userChatVC: (()->ChatVC)?
     
+    var imgFileName : String = ""
+    var isCameraOpen : Bool = false
+    var mimeType : String = ""
+    var isPictureSelect : Bool = false
+    
     public init() {
         super.init(nibName: "ContactInfo", bundle: Bundle(for: ContactInfoVC.self))
     }
@@ -87,6 +93,7 @@ public class ContactInfoVC: UIViewController {
         btnProfilePic.isHidden = true
         
         if (recentChatUser?.isGroup)! {
+            self.imgProfile.image = UIImage(named: "group-placeholder")
             viewExit.isHidden = false
             viewTblAddParticiExitGrp.isHidden = false
             strProfileImg = recentChatUser?.groupImage ?? ""
@@ -104,18 +111,13 @@ public class ContactInfoVC: UIViewController {
                 lblParticipants.text = "\((recentChatUser?.users?.count)!) participants"
                 constraintHeightParticipants.constant = 40
                 btnDelete.setTitle("Delete Group", for: .normal)
-                //constraintTopViewDelete.priority = .defaultHigh
             } else {
-                //if (recentChatUser?.users?.count)! > 3 {
                     constraintHeightDeleteGroup.constant = 0
                     constraintBottomDeleteGroup.constant = 0
-                //}
-                //constraintTopViewDelete.constant = -8
-                //constraintHeightViewDelete.constant = 0
             }
         } else {
+            self.imgProfile.image = UIImage(named: "placeholder-profile-img")
             viewTblAddParticiExitGrp.isHidden = true
-            
             constraintHeighttblParticipants.priority = .defaultLow
             constraintBottomDeleteGroup.priority = .defaultLow
             constraintHeightViewTblAddParticipants.priority = .required
@@ -139,10 +141,24 @@ public class ContactInfoVC: UIViewController {
         }
         
         if strProfileImg != "" {
-            NetworkManager.sharedInstance.getData(from: URL(string: strProfileImg!)!) { data, response, err in
-                if err == nil {
-                    DispatchQueue.main.async {
-                        self.imgProfile.image = UIImage(data: data!)
+            var imageURL: URL?
+            var isFromCatch : Bool = false
+            imageURL = URL(string: strProfileImg!)!
+            // retrieves image if already available in cache
+            if let imageFromCache = imageCache.object(forKey: imageURL as AnyObject) as? UIImage {
+                self.imgProfile.image = imageFromCache
+                isFromCatch = true
+            }
+            if isFromCatch {
+                NetworkManager.sharedInstance.getData(from: imageURL!) { data, response, err in
+                    if err == nil {
+                        DispatchQueue.main.async {
+                            //self.imgProfile.image = UIImage(data: data!)
+                            if let imageToCache = UIImage(data: data!) {
+                                self.imgProfile.image = imageToCache
+                                imageCache.setObject(imageToCache, forKey: imageURL as AnyObject)
+                            }
+                        }
                     }
                 }
             }
@@ -159,7 +175,6 @@ public class ContactInfoVC: UIViewController {
         self.navigationController?.isNavigationBarHidden = true
         viewProfilePic.layer.cornerRadius = viewProfilePic.frame.width / 2
         imgProfile.layer.cornerRadius = imgProfile.frame.width / 2
-        imgProfile.backgroundColor = .cyan
         
         self.constraintHeighttblParticipants.constant = CGFloat((self.recentChatUser?.users?.count)! * 70)
         self.viewScrollView.layoutIfNeeded()
@@ -262,7 +277,8 @@ public class ContactInfoVC: UIViewController {
     }
     
     @IBAction func btnUpdateTap(_ sender: UIButton) {
-        let param = ["groupId" : groupId, "name" : txtUserName.text!, "profilePicture" : ""]
+        var param = ["groupId" : groupId, "name" : txtUserName.text!, "groupImage" : isPictureSelect ? (imgProfile.image)?.pngData() : "", "fileName" : imgFileName, "contentType" : mimeType] as [String : Any]
+        isPictureSelect = false
         
         ProgressHUD.show()
         SocketChatManager.sharedInstance.updateGroup(param: param)
@@ -316,6 +332,7 @@ public class ContactInfoVC: UIViewController {
 extension ContactInfoVC : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func openCamera() {
         if UIImagePickerController.isSourceTypeAvailable(.camera){
+            isCameraOpen = false
             imagePicker.delegate = self
             imagePicker.allowsEditing = true
             imagePicker.sourceType = .camera
@@ -341,12 +358,45 @@ extension ContactInfoVC : UIImagePickerControllerDelegate, UINavigationControlle
         if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             self.dismiss(animated: true) {
             }
-            imgProfile.contentMode = .scaleAspectFill
-            imgProfile.image = pickedImage
+            
+            var isImgLoad : Bool = false
+            if !isCameraOpen {
+                let photo = info[.phAsset] as? PHAsset
+                imgFileName = photo?.value(forKey: "filename") as? String ?? ""
+                print(imgFileName)
+                mimeType = imgFileName.mimeType()
+                isImgLoad = true
+            } else {
+                guard let image = info[.editedImage] as? UIImage else {
+                    print("No image found")
+                    return
+                }
+                guard let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+                //let imageName = "\(Utility.fileName()).JPEG"
+                imgFileName = "\(Utility.fileName()).JPEG"
+                let fileUrl = documentsDirectory.appendingPathComponent(imgFileName)
+                mimeType = fileUrl.mimeType()
+                //guard let data = image.jpegData(compressionQuality: 1) else { return }
+                guard let data = image.pngData() else { return }
+                do {
+                    try data.write(to: fileUrl)
+                    isImgLoad = true
+                } catch let error {
+                    print("error saving file with error --", error)
+                }
+                isCameraOpen = false
+            }
+            
+            if isImgLoad {
+                imgProfile.contentMode = .scaleAspectFill
+                imgProfile.image = pickedImage
+                isPictureSelect = true
+            }
         }
     }
     
     public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        isCameraOpen = false
         self.dismiss(animated: true) {
         }
     }

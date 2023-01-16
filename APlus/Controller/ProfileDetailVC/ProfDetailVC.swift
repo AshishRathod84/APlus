@@ -27,7 +27,13 @@ public class ProfDetailVC: UIViewController {
     var imagePicker = UIImagePickerController()
     var profileImgDelegate : ProfileImgDelegate?
     var profileDetail : ProfileDetail?
+    var imgFileName : String = ""
     
+    var isCameraOpen : Bool = false
+    var mimeType : String = ""
+    var isPictureSelect : Bool = false
+    
+    //var myUserId : String = "0"
     private var imageRequest: Cancellable?
     
     public init() {
@@ -40,13 +46,24 @@ public class ProfDetailVC: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
+        // Do any additional setup after loading the view.
         if self.profileDetail != nil {
             self.getProfileDetail(self.profileDetail!)
         } else {
             
         }
         
+        txtUserName.isEnabled = false
+        btnProfileImg.isEnabled = false
+        btnSave.isEnabled = false
+        btnSave.backgroundColor = Colors.disableButton.returnColor()
+        
+        if SocketChatManager.sharedInstance.userRole?.updateProfile ?? 0 == 1 {
+            txtUserName.isEnabled = true
+            btnProfileImg.isEnabled = true
+            btnSave.isEnabled = true
+            btnSave.backgroundColor = Colors.themeBlueBtn.returnColor()
+        }
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -62,8 +79,6 @@ public class ProfDetailVC: UIViewController {
         SocketChatManager.sharedInstance.profileDetailVC = {
             return self
         }
-        ///["userId" : ""]
-        //SocketChatManager.sharedInstance.reqProfileDetails(param: ["userId" : myUserId], from: true)
     }
     
     @IBAction func btnBackTap(_ sender: UIButton) {
@@ -89,18 +104,9 @@ public class ProfDetailVC: UIViewController {
     
     @IBAction func btnSaveTap(_ sender: UIButton) {
         if !Validations.isValidUserName(userName: txtUserName.text!) {
-            // Save data
-            //["userId" : "" , "name": "" , "profilePicture" : "" ]
-            //let imgData = imgProfile.image?.pngData()
-            
-            if Network.reachability.isReachable {
-                if SocketChatManager.sharedInstance.socket?.status == .connected {
-                    ProgressHUD.show()
-                    //SocketChatManager.sharedInstance.updateProfile(param: ["userId" : myUserId , "name": txtUserName.text! , "profilePicture" : imgData! ])
-                    SocketChatManager.sharedInstance.updateProfile(param: ["userId" : myUserId , "name": txtUserName.text! , "profilePicture" : "imgData!" ])
-                }
-            }
-            
+            let imgData = imgProfile.image?.pngData()
+            SocketChatManager.sharedInstance.updateProfile(param: ["userId" : myUserId, "secretKey" : secretKey, "name": txtUserName.text! , "profilePicture" : isPictureSelect ? imgData : "", "fileName" : imgFileName, "contentType" : mimeType])
+            isPictureSelect = false
         } else {
             let alertWarning = UIAlertController(title: "", message: "Enter username.", preferredStyle: .alert)
             alertWarning.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { alert in
@@ -111,40 +117,45 @@ public class ProfDetailVC: UIViewController {
     
     func getProfileDetail(_ profileDetail : ProfileDetail) {
         print("Get response of profile details.")
-        txtUserName.text = profileDetail.name!
+        txtUserName.text = profileDetail.name ?? ""
         
         imgProfile.image = UIImage(named: "placeholder-profile-img")
         if profileDetail.profilePicture! != "" {
-            imageRequest = NetworkManager.sharedInstance.getData(from: URL(string: profileDetail.profilePicture!)!) { data, resp, err in
+            var imageURL: URL?
+            imageURL = URL(string: profileDetail.profilePicture!)!
+            if let imageFromCache = imageCache.object(forKey: imageURL as AnyObject) as? UIImage {
+                self.imgProfile.image = imageFromCache
+                return
+            }
+            imageRequest = NetworkManager.sharedInstance.getData(from: imageURL!) { data, resp, err in
                 guard let data = data, err == nil else {
                     print("Error in download from url")
                     return
                 }
                 DispatchQueue.main.async {
-                    let dataImg : UIImage = UIImage(data: data)!
-                    self.imgProfile.image = dataImg
+                    if let imageToCache = UIImage(data: data) {
+                        self.imgProfile.image = imageToCache
+                        imageCache.setObject(imageToCache, forKey: imageURL as AnyObject)
+                    }
                 }
             }
         }
     }
     
     func profileUpdate(_ isUpdate : Bool) {
-        //update-profile = socket emit (request body: userId, name, profilePicture)
-        //update-profile-res = socket on
         ProgressHUD.dismiss()
+        var msg : String = ""
         if isUpdate {
-            let alertWarning = UIAlertController(title: "", message: "Profile updated successfully.", preferredStyle: .alert)
-            alertWarning.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { alert in
-            }))
-            self.present(alertWarning, animated: true)
+            msg = "Profile updated successfully."
         } else {
-            let alertWarning = UIAlertController(title: "", message: "Profile not updated.", preferredStyle: .alert)
-            alertWarning.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { alert in
-            }))
-            self.present(alertWarning, animated: true)
+            msg = "Profile not updated."
         }
+        let alertWarning = UIAlertController(title: "", message: msg, preferredStyle: .alert)
+        alertWarning.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { alert in
+            if isUpdate {
+                self.navigationController?.popViewController(animated: true)
+            }
+        }))
+        self.present(alertWarning, animated: true)
     }
-    
-
-
 }

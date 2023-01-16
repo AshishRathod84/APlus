@@ -25,6 +25,8 @@ struct ReceiveMessage: Codable {
     var document : String?
     var audio : String?
     var video : String?
+    
+    var fileName : String?
 }
 
 struct ProfileDetail: Codable {
@@ -45,4 +47,23 @@ struct reqResponse: Codable {
 struct UnreadCount {
     var unreadCount: Int
     var userId:String
+}
+
+// MARK: - TypingResponse
+struct TypingResponse: Codable {
+    var groupId: String?
+    var isTyping: String?
+    var name: String?
+    var secretKey: String?
+    var userId: String?
+}
+
+// MARK: - UserRole
+struct UserRole: Codable {
+    var createGroup: Int?
+    var createOneToOneChat: Int?
+    var deleteMessage: Int?
+    var editMessage: Int?
+    var sendMessage: Int?
+    var updateProfile: Int?
 }

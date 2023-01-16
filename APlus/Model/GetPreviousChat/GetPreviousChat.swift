@@ -28,6 +28,7 @@ struct GetPreviousChat: Codable {
         case message
         case isPrevious
         case name
+        case fileName
     }
     
     var video: String?
@@ -49,6 +50,8 @@ struct GetPreviousChat: Codable {
     
     var isPrevious: Bool? = true
     var name: String?
+    var fileName: String?
+    var contentType: String?
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -71,6 +74,7 @@ struct GetPreviousChat: Codable {
         
         isPrevious = try container.decodeIfPresent(Bool.self, forKey: .isPrevious)
         name = try container.decodeIfPresent(String.self, forKey: .name)
+        fileName = try container.decodeIfPresent(String.self, forKey: .fileName)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -95,5 +99,6 @@ struct GetPreviousChat: Codable {
         
         try container.encodeIfPresent(isPrevious, forKey: .isPrevious)
         try container.encodeIfPresent(name, forKey: .name)
+        try container.encodeIfPresent(fileName, forKey: .fileName)
     }
 }

@@ -20,19 +20,15 @@ protocol SocketDelegate {
 public class SocketChatManager {
     
     // MARK: - Properties
-//    static let sharedInstance = SocketChatManager()
-//    private var manager : SocketManager?
-//    public var socket : SocketIOClient?
-//    var socketDelegate : SocketDelegate?
-    
     public static let sharedInstance = SocketChatManager()
-     public var manager : SocketManager?
-     public var socket : SocketIOClient?
-     var socketDelegate : SocketDelegate?
-    
-//    var serverURL : String = "http://14.99.147.156:5000"   //  Live Test server
-    var serverURL : String = "http://3.139.188.226:5000"   //  Live Production server
-//    var serverURL : String = "http://192.168.1.94:5000"   //  Local server
+    public var manager : SocketManager?
+    public var socket : SocketIOClient?
+    var socketDelegate : SocketDelegate?
+    //    var serverURL : String = "http://14.99.147.156:5000"  //  Live Test server
+    var serverURL : String = "http://3.139.188.226:5000"  //  Live Production server
+    //    var serverURL : String = "http://192.168.1.94:5000"   //  Local server
+    //    var serverURL : String = "http://192.168.1.69:5000"   //  Local server
+    //    var serverURL : String = "https://e20e-14-99-145-222.in.ngrok.io"   //  Local server Vedand
     
     //closer
     var viewController: (()->FirstVC)?
@@ -42,6 +38,8 @@ public class SocketChatManager {
     var createGroupVC: (()->CreateGrpVC)?
     var contactListVC: (()->ContListVC)?
     var groupContactVC: (()->GroupContVC)?
+    
+    var userRole: UserRole?
     
     /*let specs: SocketIOClientConfiguration = [.connectParams(["access_token": token]), .log(true), .forceNew(true), .selfSigned(true), .forcePolling(true), .secure(true), .reconnects(true), .forceWebsockets(true), .reconnectAttempts(3), .reconnectWait(3), .security(SSLSecurity(usePublicKeys: true)), .sessionDelegate(self)]  //  */
     
@@ -59,7 +57,7 @@ public class SocketChatManager {
     func stop() {
         socket?.removeAllHandlers()
     }
-
+    
     // MARK: - Socket Setup
     func initializeSocket() {
         //let manager = SocketManager(socketURL: URL(string: "")!, config: [.log(true), .compress])
@@ -108,24 +106,13 @@ public class SocketChatManager {
     }
     
     func stringArrayToData(stringArray: [Any]) -> Data? {
-      return try? JSONSerialization.data(withJSONObject: stringArray, options: [])
+        return try? JSONSerialization.data(withJSONObject: stringArray, options: [])
     }
     func dataToStringArray(data: Data) -> [Any]? {
-      return (try? JSONSerialization.jsonObject(with: data, options: [])) as? [String]
+        return (try? JSONSerialization.jsonObject(with: data, options: [])) as? [String]
     }
     
     func setupSocketEvents() {
-        socket?.on("group-list", callback: { (data, ack) in
-            print("Received user list - \(data)")
-            guard let responseData = try? JSONSerialization.data(withJSONObject: data[0], options: []) else { return }
-            do {
-                let recentUserList = try JSONDecoder().decode([GetUserList].self, from: responseData)
-                print(recentUserList)
-                self.socketDelegate?.recentChatUserList(userList: recentUserList)
-            } catch let err {
-                print(err)
-            }
-        })
         
         socket?.on(clientEvent: .connect){ (data,ack) in
             print("Hey Socket Connected")
@@ -149,23 +136,41 @@ public class SocketChatManager {
         socket?.on(clientEvent: .pong){ (data,ack) in
             print("Event: Socket ponged\(data)")
         }
-        /*
-        socket.on("allChat") { (data, ack) in
-            guard let dataInfo = data.first else { return }
-//            if let response : allChatUser = try? SocketParser.convert(data: dataInfo) {
-//                print("Now this chat has \(response.numUsers) users.")
-//            }
-        }
-        socket.on("user left") { (data, ack) in
-            guard let dataInfo = data.first else { return }
-//            if let response: SocketUserLeft = try? SocketParser.convert(data: dataInfo) {
-//                print("User '\(response.username)' left...")
-//                print("Now this chat has \(response.numUsers) users.")
-//            }
-        }   //  */
     }
-
+    
     // MARK: - Get previous, current chat message and leave chat
+    
+    func getGroupList(event : String) {
+        socket?.on("group-list", callback: { (data, ack) in
+            print("Received user list - \(data)")
+            guard let responseData = try? JSONSerialization.data(withJSONObject: data[0], options: []) else { return }
+            do {
+                let recentUserList = try JSONDecoder().decode([GetUserList].self, from: responseData)
+                print(recentUserList)
+                self.socket?.off("get-groups")
+                //self.socket?.off("group-list")
+                self.socketDelegate?.recentChatUserList(userList: recentUserList)
+            } catch let err {
+                print(err)
+            }
+        })
+    }
+    
+    func getGroupDetail(event : String) {
+        socket?.on(event, callback: { (data, ack) in
+            print("Group Detail - \(data)")
+            guard let responseData = try? JSONSerialization.data(withJSONObject: data[0], options: []) else { return }
+            do {
+                let groupDetail = try JSONDecoder().decode(GetUserList.self, from: responseData)
+                self.socket?.off("get-group")
+                self.socket?.off("get-group-res")
+                //self.socketDelegate?.recentChatUserList(userList: recentUserList)
+                self.userChatVC!().getGroupDetail(groupDetail: groupDetail)
+            } catch let err {
+                print(err)
+            }
+        })
+    }
     
     func getPreviousChatMsg(event : String) {
         socket?.on("get-previous-chat", callback: { (data, ack) in
@@ -176,7 +181,7 @@ public class SocketChatManager {
                 print(previousChat)
                 self.socket?.off("get-chat")
                 self.socket?.off("get-previous-chat")
-                self.userChatVC!().gotPreviousChat(chat: previousChat)
+                self.userChatVC!().getPreviousChat(chat: previousChat)
             } catch let err {
                 print(err)
             }
@@ -186,7 +191,7 @@ public class SocketChatManager {
     
     func getCurrentChatMsg(event : String) {
         socket?.on("receive-message", callback: { (data, ack) in
-            //print("Received message - \((data.first)!)")
+            print("Received message - \((data.first)!)")
             guard let responseData = try? JSONSerialization.data(withJSONObject: data[0], options: []) else { return }
             print(responseData)
             let receiveMessage : ReceiveMessage = try! JSONDecoder().decode(ReceiveMessage.self, from: responseData)
@@ -205,7 +210,7 @@ public class SocketChatManager {
             self.socket?.off("get-profile")
             self.socket?.off("profile-res")
             if isProfile {
-                self.profileDetailVC!().getProfileDetail(receiveMessage)
+                //self.profileDetailVC!().getProfileDetail(receiveMessage)
             } else {
                 self.viewController!().getProfileDetail(receiveMessage)
             }
@@ -323,7 +328,7 @@ public class SocketChatManager {
         socket?.on("user-list-res", callback: { (data, ack) in
             print("Received message - \((data.first)!)")
             guard let responseData = try? JSONSerialization.data(withJSONObject: data[0], options: []) else { return }
-//            print(responseData)
+            //            print(responseData)
             let receiveMessage : ContactList = try! JSONDecoder().decode(ContactList.self, from: responseData)
             self.socket?.off("user-list")
             self.socket?.off("user-list-res")
@@ -368,6 +373,29 @@ public class SocketChatManager {
             print((self.socket?.status)!)
         })  //  */
     }
+    
+    func typingRes() {
+        socket?.on("typing-res", callback: { (data, ack) in
+            print("typing-res - \((data.first)!)")
+            print("Hello get response.")
+            guard let responseData = try? JSONSerialization.data(withJSONObject: data[0], options: []) else { return }
+            let receiveMessage : TypingResponse = try! JSONDecoder().decode(TypingResponse.self, from: responseData)
+            self.userChatVC!().getTypingResponse(typingResponse: receiveMessage)
+        })
+    }
+    
+    func getUserRoleRes(event : String) {
+        socket?.on(event, callback: { (data, ack) in
+            print("Received message - \((data.first)!)")
+            guard let responseData = try? JSONSerialization.data(withJSONObject: data[0], options: []) else { return }
+            //print(responseData)
+            self.userRole = try! JSONDecoder().decode(UserRole.self, from: responseData)
+            self.socket?.off("user-role")
+            self.socket?.off("user-role-res")
+            self.viewController!().getUserRole(userRole: self.userRole!)
+        })
+    }
+    
     // MARK: -
     
     // MARK: - Socket Emits
@@ -387,14 +415,12 @@ public class SocketChatManager {
     
     func joinGroup(param: String) {
         socket?.emit("join", param)
-    }   //  */
-    
-    /*func joinGroup(param: [String : Any]) {
-        socket?.emit("join", param)
-    }   //  */
+    }
     
     func reqRecentChatList(param: [String : String]) {
         socket?.emit("get-groups", param)
+        socket?.off("get-groups")
+        self.getGroupList(event: "group-list")
     }
     
     func reqPreviousChatMsg(param: [String : String]) {
@@ -417,8 +443,15 @@ public class SocketChatManager {
         //User's profiles
         if Network.reachability.isReachable {
             socket?.emit("get-profile", param)
+            self.socket?.off("get-profile")
             self.getProfileDetails(from: isProfile)
         }
+    }
+    
+    func reqGroupDetail(param: [String : String]) {
+        socket?.emit("get-group", param)
+        socket?.off("get-group")
+        self.getGroupDetail(event: "get-group-res")
     }
     
     func updateProfile(param : [String : Any]) {
@@ -426,6 +459,7 @@ public class SocketChatManager {
         //["userId" : "" , "name": "" , "profilePicture" : "" ]
         if Network.reachability.isReachable {
             socket?.emit("update-profile", param)
+            socket?.off("update-profile")
             self.profileUpdated()
         }
     }
@@ -506,6 +540,28 @@ public class SocketChatManager {
         //["msg": , "rid": , "type" : , "name" : ]
         if Network.reachability.isReachable {
             socket?.emit("send-message", message)
+        }
+    }
+    
+    func userTyping(message: [String : Any]) {
+        if Network.reachability.isReachable {
+            socket?.emit("typing", message)
+            socket?.off("typing")
+        }
+    }
+    
+    func onlineStatus(param: [String : Any]) {
+        if Network.reachability.isReachable {
+            socket?.emit("online-status", param)
+            //socket?.off("online-status")
+        }
+    }
+    
+    func getUserRole(param: [String : Any]) {
+        if Network.reachability.isReachable {
+            socket?.emit("user-role", param)
+            socket?.off("user-role")
+            self.getUserRoleRes(event: "user-role-res")
         }
     }
     

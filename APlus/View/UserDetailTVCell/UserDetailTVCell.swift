@@ -20,6 +20,7 @@ class UserDetailTVCell: UITableViewCell {
     @IBOutlet weak var viewRecentPhoto: UIView!
     @IBOutlet weak var imgRecentPhoto: UIImageView!
     @IBOutlet weak var lblRecentPhotoVideoFile: UILabel!
+    @IBOutlet weak var viewMainBG: UIView!
     
     private var imageRequest: Cancellable?
     
@@ -31,7 +32,7 @@ class UserDetailTVCell: UITableViewCell {
         viewRecentPhoto.isHidden = true
     }
     
-    func configure(_ name : String,_ grupImage : String,_ msgType : String) {
+    func configure(_ name : String,_ groupImage : String,_ msgType : String, isGroup : Bool) {
         viewProfileImg.layer.cornerRadius = viewProfileImg.frame.height / 2
         imgProfile.layer.cornerRadius = imgProfile.frame.height / 2
         lblUnreadMsgCount.layer.cornerRadius = lblUnreadMsgCount.frame.height / 2
@@ -65,13 +66,24 @@ class UserDetailTVCell: UITableViewCell {
         }
         
         imgProfile.image = UIImage(named: "placeholder-profile-img")
-        if grupImage != "" {
-            imageRequest = NetworkManager.sharedInstance.getData(from: URL(string: grupImage)!) { data, resp, err in
+        if groupImage != "" {
+            var imageURL: URL?
+            imageURL = URL(string: groupImage)!
+            //self.imgProfile.image = nil
+            // retrieves image if already available in cache
+            if let imageFromCache = imageCache.object(forKey: imageURL as AnyObject) as? UIImage {
+                self.imgProfile.image = imageFromCache
+                return
+            }
+            imageRequest = NetworkManager.sharedInstance.getData(from: imageURL!) { data, resp, err in
                 guard let data = data, err == nil else { return }
                 DispatchQueue.main.async {
-                    self.imgProfile.image = UIImage(data: data)
-                    //self.imgProfile.contentMode = .scaleAspectFit
-                    //self.imgProfile.contentMode = .scaleAspectFill
+                    if let imageToCache = UIImage(data: data) {
+                        self.imgProfile.image = imageToCache
+                        imageCache.setObject(imageToCache, forKey: imageURL as AnyObject)
+                    } else {
+                        self.imgProfile.image = isGroup ? UIImage(named: "group-placeholder") : UIImage(named: "placeholder-profile-img")
+                    }
                 }
             }
         }   //  */

@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import ProgressHUD
+//import JGProgressHUD
 
 class OwnImgChatBubbleCell: UITableViewCell {
 
@@ -15,6 +17,7 @@ class OwnImgChatBubbleCell: UITableViewCell {
     @IBOutlet weak var imgVideo: UIImageView!
     
     private var imageRequest: Cancellable?
+//    let hud = JGProgressHUD()
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -28,35 +31,43 @@ class OwnImgChatBubbleCell: UITableViewCell {
             img.image = UIImage(named: "default")
             imgVideo.isHidden = false
             imgVideo.image = UIImage(named: "Play")
-            
-            let imageData = try? Data(contentsOf: URL(string: data)!)
-            if let imageData = imageData {
-                img.image = UIImage(data: imageData)
+            if data != "" {
+                let imageData = try? Data(contentsOf: URL(string: data)!)
+                if let imageData = imageData {
+                    img.image = UIImage(data: imageData)
+                }
             }
         }
         else if msgType == "image" {
+            if image.contains("firebasestorage") {
+                //hud.dismiss()
+            } else {
+                //hud.show(in: viewImg)
+            }
             img.image = UIImage(named: "default")
-            //img.image = UIImage(contentsOfFile: image)
+            img.image = UIImage(contentsOfFile: image)
             if image != "" {
+                var imageURL: URL?
+                imageURL = URL(string: image)!
+                //self.imgProfile.image = nil
+                // retrieves image if already available in cache
+                if let imageFromCache = imageCache.object(forKey: imageURL as AnyObject) as? UIImage {
+                    self.img.image = imageFromCache
+                    return
+                }
                 imageRequest = NetworkManager.sharedInstance.getData(from: URL(string: image)!) { data, resp, err in
                     guard let data = data, err == nil else {
                         print("Error in download from url")
                         return
                     }
                     DispatchQueue.main.async {
-                        let dataImg : UIImage = UIImage(data: data)!
-                        
-                        /*if (dataImg.size.height) > (dataImg.size.width) {
-                            self.img.widthAnchor.constraint(equalTo: self.img.heightAnchor, multiplier: 0.5)
-                        } else if (dataImg.size.height) < (dataImg.size.width) {
-                            self.img.widthAnchor.constraint(equalTo: self.img.heightAnchor, multiplier: 2)
-                        }   //  */
-                        self.img.image = dataImg
-                        //self.imgProfile.contentMode = .scaleAspectFit
-                        //self.imgProfile.contentMode = .scaleAspectFill
+                        if let imageToCache = UIImage(data: data) {
+                            self.img.image = imageToCache
+                            imageCache.setObject(imageToCache, forKey: imageURL as AnyObject)
+                        }
                     }
                 }
-            }   //  */
+            }
         }
     }
     

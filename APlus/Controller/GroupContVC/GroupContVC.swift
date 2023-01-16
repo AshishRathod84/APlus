@@ -126,7 +126,6 @@ public class GroupContVC: UIViewController {
                                      "groups" : arrSelectedContactList![i].groups ?? []] as [String : Any]
                 arrSelectedUser.append(contectDetail)
             }
-            
             let param = [
               "secretKey": secretKey,
               "groupId": groupId ?? "",
@@ -155,7 +154,7 @@ public class GroupContVC: UIViewController {
     func addMemberRes(_ isSuccess : Bool) {
         ProgressHUD.dismiss()
         if isSuccess {
-            //self.navigationController?.popViewController(animated: true)
+            //self.navigationController?.popToRootViewController(animated: true)
             for i in 0 ..< (arrSelectedContactList?.count ?? 0) {
                 let newUser : Users = Users(serverUserId: arrSelectedContactList![i].serverUserId ?? "", profilePicture: arrSelectedContactList![i].profilePicture ?? "", userId: arrSelectedContactList![i].userId ?? "", groups: arrSelectedContactList![i].groups ?? [], name: arrSelectedContactList![i].name ?? "", mobileEmail: arrSelectedContactList![i].mobile_email ?? "")
                 recentChatUser?.users?.append(newUser)
@@ -165,6 +164,4 @@ public class GroupContVC: UIViewController {
             self.navigationController?.popViewController(animated: true)
         }
     }
-
-
 }

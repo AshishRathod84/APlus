@@ -49,7 +49,6 @@ extension ContactInfoVC : UITableViewDelegate, UITableViewDataSource {
         return 70
     }
     
-    //func removeUserTap(_ sender: UIButton) {
     func removeUserTap(_ id: String) {
         arrSelectedUser.removeAll()
         strRemovedUserId = id
@@ -65,10 +64,6 @@ extension ContactInfoVC : UITableViewDelegate, UITableViewDataSource {
                 arrSelectedUser.append(contectDetail)
             }
         }   //  */
-        
-        //strRemovedUserId = arrUserIds[sender.tag]
-        //arrUserIds.remove(at: sender.tag)
-        //arrSelectedUser.remove(at: sender.tag)
         
         let param = [
           "secretKey": secretKey,
