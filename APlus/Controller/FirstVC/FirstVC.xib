@@ -14,6 +14,7 @@
                 <outlet property="btnNewChat" destination="hTM-un-Ofk" id="Q7m-Dt-oMf"/>
                 <outlet property="btnNewGroupChat" destination="Yts-Ya-Wv9" id="bvO-Ib-PfM"/>
                 <outlet property="btnViewUserProfile" destination="c72-mu-gIv" id="adG-0g-xSP"/>
+                <outlet property="constHeightviewTopChatGrp" destination="ylY-rR-GUo" id="6pg-wR-h0o"/>
                 <outlet property="constTrailNewChat" destination="sre-ua-YH7" id="vb2-bL-3rB"/>
                 <outlet property="constTrailNewGrpChat" destination="feM-vA-EHS" id="X5H-oE-G07"/>
                 <outlet property="imgProfilePic" destination="21v-A6-iMG" id="dGw-HT-FjP"/>

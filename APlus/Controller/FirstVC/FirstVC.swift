@@ -31,6 +31,7 @@ public class FirstVC: UIViewController {
     @IBOutlet weak var constTrailNewChat: NSLayoutConstraint!
     @IBOutlet weak var constTrailNewGrpChat: NSLayoutConstraint!
     @IBOutlet weak var viewProfileImg: UIView!
+    @IBOutlet weak var constHeightviewTopChatGrp: NSLayoutConstraint!
 
     var userName : String = "ABC"
     var isNetworkAvailable : Bool = false
@@ -39,6 +40,7 @@ public class FirstVC: UIViewController {
     var arrRecentChatUserList : [GetUserList]? = []
     private var imageRequest: Cancellable?
     var profileDetail : ProfileDetail?
+    public var hideTopView : Bool = false
     
     let activityIndicator = UIActivityIndicatorView()
     
@@ -99,6 +101,14 @@ public class FirstVC: UIViewController {
         
         self.btnNewChat.isHidden = true
         self.btnNewGroupChat.isHidden = true
+        
+        if self.hideTopView {
+            self.viewTopChatGrp.isHidden = true
+            self.constHeightviewTopChatGrp.constant = 0
+        } else {
+            self.viewTopChatGrp.isHidden = false
+            self.constHeightviewTopChatGrp.constant = 55
+        }
     }
     
     public override func viewWillAppear(_ animated: Bool) {
