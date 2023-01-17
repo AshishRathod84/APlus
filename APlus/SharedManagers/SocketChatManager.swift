@@ -392,7 +392,8 @@ public class SocketChatManager {
             self.userRole = try! JSONDecoder().decode(UserRole.self, from: responseData)
             self.socket?.off("user-role")
             self.socket?.off("user-role-res")
-            self.viewController!().getUserRole(userRole: self.userRole!)
+            //self.viewController!().getUserRole(userRole: self.userRole!)
+            self.viewController!().getUserRole()
         })
     }
     

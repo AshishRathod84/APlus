@@ -30,6 +30,9 @@ class UserDetailTVCell: UITableViewCell {
         lblUnreadMsgCount.clipsToBounds = true
         lblLastMsg.isHidden = true
         viewRecentPhoto.isHidden = true
+        
+        viewMainBG.layer.cornerRadius = 10
+        self.lblSeparator.backgroundColor = .clear
     }
     
     func configure(_ name : String,_ groupImage : String,_ msgType : String, isGroup : Bool) {
@@ -65,7 +68,7 @@ class UserDetailTVCell: UITableViewCell {
             lblRecentPhotoVideoFile.text = "File"
         }
         
-        imgProfile.image = UIImage(named: "placeholder-profile-img")
+        imgProfile.image = UIImage(named: "placeholder-profile-img.png")
         if groupImage != "" {
             var imageURL: URL?
             imageURL = URL(string: groupImage)!
@@ -82,7 +85,7 @@ class UserDetailTVCell: UITableViewCell {
                         self.imgProfile.image = imageToCache
                         imageCache.setObject(imageToCache, forKey: imageURL as AnyObject)
                     } else {
-                        self.imgProfile.image = isGroup ? UIImage(named: "group-placeholder") : UIImage(named: "placeholder-profile-img")
+                        self.imgProfile.image = isGroup ? UIImage(named: "group-placeholder.jpg") : UIImage(named: "placeholder-profile-img.png")
                     }
                 }
             }

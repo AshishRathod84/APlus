@@ -80,7 +80,7 @@ public class FirstVC: UIViewController {
             return self
         }
         
-        imgProfilePic.image = UIImage(named: "placeholder-profile-img")
+        imgProfilePic.image = UIImage(named: "placeholder-profile-img.png")
         
         self.searchBar.delegate = self
         self.searchBar.showsCancelButton = true
@@ -108,9 +108,10 @@ public class FirstVC: UIViewController {
         isGetUserList = false
         
         if (SocketChatManager.sharedInstance.socket?.status == .connected) {
-            //            isGetUserList = true
+            //isGetUserList = true
             SocketChatManager.sharedInstance.reqProfileDetails(param: ["userId" : myUserId], from: false)
             SocketChatManager.sharedInstance.reqRecentChatList(param: ["secretKey" : secretKey, "_id" : myUserId])
+            self.getUserRole()
         }
     }
     
@@ -188,7 +189,7 @@ public class FirstVC: UIViewController {
         
         myUserName = self.profileDetail?.name ?? ""
         
-        imgProfilePic.image = UIImage(named: "placeholder-profile-img")
+        imgProfilePic.image = UIImage(named: "placeholder-profile-img.png")
         if profileDetail.profilePicture! != "" {
             // setup activityIndicator...
             activityIndicator.color = .darkGray
@@ -228,8 +229,9 @@ public class FirstVC: UIViewController {
         }
     }
     
-    func getUserRole(userRole : UserRole) {
-        print("Get User Role - - - \(userRole)")
+    //func getUserRole(userRole : UserRole) {
+    func getUserRole() {
+        print("Get User Role - - - ")
         btnNewGroupChat.isHidden = true
         btnNewChat.isHidden = true
         
@@ -262,9 +264,9 @@ extension FirstVC : UITableViewDelegate, UITableViewDataSource {
             msgType = (self.arrRecentChatUserList?[indexPath.row].recentMessage?.type)!
         }
         
-        cell.imgProfile.image = UIImage(named: "placeholder-profile-img")
+        cell.imgProfile.image = UIImage(named: "placeholder-profile-img.png")
         if (self.arrRecentChatUserList?[indexPath.row].isGroup)! {
-            cell.imgProfile.image = UIImage(named: "group-placeholder")
+            cell.imgProfile.image = UIImage(named: "group-placeholder.jpg")
             cell.configure((self.arrRecentChatUserList?[indexPath.row].name)!, self.arrRecentChatUserList?[indexPath.row].groupImage ?? "", msgType, isGroup: true)
         } else {
             for (_, item) in ((self.arrRecentChatUserList?[indexPath.row].users)!).enumerated() {

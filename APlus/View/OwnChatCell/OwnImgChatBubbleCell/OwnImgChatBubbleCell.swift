@@ -7,7 +7,7 @@
 
 import UIKit
 import ProgressHUD
-//import JGProgressHUD
+import JGProgressHUD
 
 class OwnImgChatBubbleCell: UITableViewCell {
 
@@ -17,7 +17,7 @@ class OwnImgChatBubbleCell: UITableViewCell {
     @IBOutlet weak var imgVideo: UIImageView!
     
     private var imageRequest: Cancellable?
-//    let hud = JGProgressHUD()
+    let hud = JGProgressHUD()
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -40,9 +40,9 @@ class OwnImgChatBubbleCell: UITableViewCell {
         }
         else if msgType == "image" {
             if image.contains("firebasestorage") {
-                //hud.dismiss()
+                hud.dismiss()
             } else {
-                //hud.show(in: viewImg)
+                hud.show(in: viewImg)
             }
             img.image = UIImage(named: "default")
             img.image = UIImage(contentsOfFile: image)

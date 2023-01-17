@@ -119,7 +119,7 @@ public class ProfDetailVC: UIViewController {
         print("Get response of profile details.")
         txtUserName.text = profileDetail.name ?? ""
         
-        imgProfile.image = UIImage(named: "placeholder-profile-img")
+        imgProfile.image = UIImage(named: "placeholder-profile-img.png")
         if profileDetail.profilePicture! != "" {
             var imageURL: URL?
             imageURL = URL(string: profileDetail.profilePicture!)!
@@ -136,6 +136,8 @@ public class ProfDetailVC: UIViewController {
                     if let imageToCache = UIImage(data: data) {
                         self.imgProfile.image = imageToCache
                         imageCache.setObject(imageToCache, forKey: imageURL as AnyObject)
+                    } else {
+                        self.imgProfile.image = UIImage(named: "placeholder-profile-img.png")
                     }
                 }
             }

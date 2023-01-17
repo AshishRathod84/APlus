@@ -33,16 +33,32 @@ class ParticipantsTVCell: UITableViewCell {
     }
     
     func configure(_ image : String) {
-        imgProfile.image = UIImage(named: "default")
+        imgProfile.image = UIImage(named: "placeholder-profile-img.png")
         if image != "" {
+            var imageURL: URL?
+            imageURL = URL(string: image)!
+            //self.imgProfilePic.image = nil
+            // retrieves image if already available in cache
+            if let imageFromCache = imageCache.object(forKey: imageURL as AnyObject) as? UIImage {
+                self.imgProfile.image = imageFromCache
+                return
+            }
             imageRequest = NetworkManager.sharedInstance.getData(from: URL(string: image)!) { data, resp, err in
                 guard let data = data, err == nil else {
                     print("Error in download from url")
                     return
                 }
                 DispatchQueue.main.async {
-                    let dataImg : UIImage = UIImage(data: data)!
-                    self.imgProfile.image = dataImg
+                    //let dataImg : UIImage = UIImage(data: data)!
+                    //self.imgProfile.image = dataImg
+                    //self.imgProfile.image = UIImage(data: data)!
+                    
+                    if let imageToCache = UIImage(data: data) {
+                        self.imgProfile.image = imageToCache
+                        imageCache.setObject(imageToCache, forKey: imageURL as AnyObject)
+                    } else {
+                        self.imgProfile.image = UIImage(named: "placeholder-profile-img.png")
+                    }
                 }
             }
         }   //  */

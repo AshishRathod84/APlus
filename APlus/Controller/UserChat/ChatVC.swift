@@ -147,7 +147,7 @@ public class ChatVC: UIViewController {
         onlineUser = isGroup ? "" : "Online"
         
         if recentChatUser?.isGroup ?? false {
-            self.imgProfilePic.image = UIImage(named: "group-placeholder")
+            self.imgProfilePic.image = UIImage(named: "group-placeholder.jpg")
             isGroup = true
             strDisName = (recentChatUser?.name)!
             strProfileImg = recentChatUser?.groupImage ?? ""
@@ -165,7 +165,7 @@ public class ChatVC: UIViewController {
             }
             
             isGroup = false
-            self.imgProfilePic.image = UIImage(named: "placeholder-profile-img")
+            self.imgProfilePic.image = UIImage(named: "placeholder-profile-img.png")
             for i in 0 ..< (recentChatUser?.users?.count ?? 0) {
                 if (recentChatUser?.users?[i].userId)! != myUserId {
                     strDisName = (recentChatUser?.users?[i].name)!
@@ -191,7 +191,7 @@ public class ChatVC: UIViewController {
                             self.imgProfilePic.image = imageToCache
                             imageCache.setObject(imageToCache, forKey: imageURL as AnyObject)
                         } else {
-                            self.imgProfilePic.image = self.isGroup ? UIImage(named: "group-placeholder") : UIImage(named: "placeholder-profile-img")
+                            self.imgProfilePic.image = self.isGroup ? UIImage(named: "group-placeholder.jpg") : UIImage(named: "placeholder-profile-img.png")
                         }
                     }
                 }

@@ -36,14 +36,27 @@ class OtherImgChatBubbleCell: UITableViewCell {
         }
         else if msgType == "image" {
             img.image = UIImage(named: "default")
-            //img.image = UIImage(contentsOfFile: image)
+            img.image = UIImage(contentsOfFile: image)
             if image != "" {
+                var imageURL: URL?
+                if !(image.contains("firebasestorage")) {
+                    imageURL = URL(string: image)!
+                }
+                imageURL = URL(string: image)!
+                // retrieves image if already available in cache
+                if let imageFromCache = imageCache.object(forKey: imageURL as AnyObject) as? UIImage {
+                    self.img.image = imageFromCache
+                    return
+                }
                 imageRequest = NetworkManager.sharedInstance.getData(from: URL(string: image)!) { data, resp, err in
                     guard let data = data, err == nil else { return }
                     DispatchQueue.main.async {
-                        self.img.image = UIImage(data: data)
-                        //self.imgProfile.contentMode = .scaleAspectFit
-                        //self.imgProfile.contentMode = .scaleAspectFill
+                        if let imageToCache = UIImage(data: data) {
+                            self.img.image = imageToCache
+                            imageCache.setObject(imageToCache, forKey: imageURL as AnyObject)
+                        } else {
+                            self.img.image = UIImage(named: "default")
+                        }
                     }
                 }
             }   //  */

@@ -93,7 +93,7 @@ public class ContactInfoVC: UIViewController {
         btnProfilePic.isHidden = true
         
         if (recentChatUser?.isGroup)! {
-            self.imgProfile.image = UIImage(named: "group-placeholder")
+            self.imgProfile.image = UIImage(named: "group-placeholder.jpg")
             viewExit.isHidden = false
             viewTblAddParticiExitGrp.isHidden = false
             strProfileImg = recentChatUser?.groupImage ?? ""
@@ -116,7 +116,7 @@ public class ContactInfoVC: UIViewController {
                     constraintBottomDeleteGroup.constant = 0
             }
         } else {
-            self.imgProfile.image = UIImage(named: "placeholder-profile-img")
+            self.imgProfile.image = UIImage(named: "placeholder-profile-img.png")
             viewTblAddParticiExitGrp.isHidden = true
             constraintHeighttblParticipants.priority = .defaultLow
             constraintBottomDeleteGroup.priority = .defaultLow

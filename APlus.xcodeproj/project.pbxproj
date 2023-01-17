@@ -60,6 +60,7 @@
 		126323A5296D517E001AD625 /* video@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 126323A2296D517E001AD625 /* video@3x.png */; };
 		126323A6296D517E001AD625 /* video@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 126323A3296D517E001AD625 /* video@1x.png */; };
 		1269DA5D297558DB003DA764 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 1269DA5C297558DB003DA764 /* SocketIO */; };
+		1269DA60297573F1003DA764 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 1269DA5F297573F1003DA764 /* ProgressHUD */; };
 		12898DB428F7D8BB00DA4F75 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 12898DB328F7D8BB00DA4F75 /* Media.xcassets */; };
 		129196FC28F6F971000AD9D4 /* APlus.docc in Sources */ = {isa = PBXBuildFile; fileRef = 129196FB28F6F971000AD9D4 /* APlus.docc */; };
 		1291970228F6F971000AD9D4 /* APlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 129196F728F6F971000AD9D4 /* APlus.framework */; };
@@ -257,6 +258,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1269DA60297573F1003DA764 /* ProgressHUD in Frameworks */,
 				F49E3526B040BC54DC909468 /* Pods_APlus.framework in Frameworks */,
 				1269DA5D297558DB003DA764 /* SocketIO in Frameworks */,
 			);
@@ -804,6 +806,7 @@
 			name = APlus;
 			packageProductDependencies = (
 				1269DA5C297558DB003DA764 /* SocketIO */,
+				1269DA5F297573F1003DA764 /* ProgressHUD */,
 			);
 			productName = APlus;
 			productReference = 129196F728F6F971000AD9D4 /* APlus.framework */;
@@ -858,6 +861,7 @@
 			mainGroup = 129196ED28F6F971000AD9D4;
 			packageReferences = (
 				1269DA5B297558DB003DA764 /* XCRemoteSwiftPackageReference "socket" */,
+				1269DA5E297573F1003DA764 /* XCRemoteSwiftPackageReference "ProgressHUD" */,
 			);
 			productRefGroup = 129196F828F6F971000AD9D4 /* Products */;
 			projectDirPath = "";
@@ -1339,6 +1343,14 @@
 				kind = branch;
 			};
 		};
+		1269DA5E297573F1003DA764 /* XCRemoteSwiftPackageReference "ProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/relatedcode/ProgressHUD";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1346,6 +1358,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1269DA5B297558DB003DA764 /* XCRemoteSwiftPackageReference "socket" */;
 			productName = SocketIO;
+		};
+		1269DA5F297573F1003DA764 /* ProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1269DA5E297573F1003DA764 /* XCRemoteSwiftPackageReference "ProgressHUD" */;
+			productName = ProgressHUD;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

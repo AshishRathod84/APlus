@@ -27,16 +27,27 @@ class ContactTVCell: UITableViewCell {
     }
     
     func configure(_ image : String) {
-        imgContactImg.image = UIImage(named: "default")
+        imgContactImg.image = UIImage(named: "placeholder-profile-img.png")
         if image != "" {
+            var imageURL: URL?
+            imageURL = URL(string: image)!
+            print("Image URL - \(image)")
+            if let imageFromCache = imageCache.object(forKey: imageURL as AnyObject) as? UIImage {
+                self.imgContactImg.image = imageFromCache
+                return
+            }
             imageRequest = NetworkManager.sharedInstance.getData(from: URL(string: image)!) { data, resp, err in
                 guard let data = data, err == nil else {
                     print("Error in download from url")
                     return
                 }
                 DispatchQueue.main.async {
-                    let dataImg : UIImage = UIImage(data: data)!
-                    self.imgContactImg.image = dataImg
+                    if let imageToCache = UIImage(data: data) {
+                        self.imgContactImg.image = imageToCache
+                        imageCache.setObject(imageToCache, forKey: imageURL as AnyObject)
+                    } else {
+                        self.imgContactImg.image = UIImage(named: "placeholder-profile-img.png")
+                    }
                 }
             }
         }   //  */

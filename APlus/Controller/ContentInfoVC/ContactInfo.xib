@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ContactInfoVC" customModule="ConvertedAGS" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ContactInfoVC" customModule="APlus" customModuleProvider="target">
             <connections>
                 <outlet property="btnAddMember" destination="EUU-z9-gl8" id="gaJ-l2-cfR"/>
                 <outlet property="btnBack" destination="KW3-gu-Dau" id="QAk-dB-U6Q"/>
@@ -119,7 +119,7 @@
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ist-zR-fNG">
                                                                     <rect key="frame" x="71" y="25" width="248" height="248"/>
                                                                     <subviews>
-                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder-profile-img" translatesAutoresizingMaskIntoConstraints="NO" id="4g7-0h-olu">
+                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder-profile-img.png" translatesAutoresizingMaskIntoConstraints="NO" id="4g7-0h-olu">
                                                                             <rect key="frame" x="0.0" y="0.0" width="248" height="248"/>
                                                                         </imageView>
                                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kpc-wG-08f">
@@ -394,7 +394,7 @@
     <resources>
         <image name="camera" catalog="system" width="128" height="93"/>
         <image name="multiply" catalog="system" width="128" height="111"/>
-        <image name="placeholder-profile-img" width="600" height="600"/>
+        <image name="placeholder-profile-img.png" width="600" height="600"/>
         <image name="trash.fill" catalog="system" width="119" height="128"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

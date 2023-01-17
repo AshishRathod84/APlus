@@ -34,16 +34,27 @@ class GrpContactTVCell: UITableViewCell {
     }
     
     func configure(_ image : String) {
-        imgContact.image = UIImage(named: "default")
+        imgContact.image = UIImage(named: "placeholder-profile-img.png")
         if image != "" {
+            var imageURL: URL?
+            imageURL = URL(string: image)!
+            print("Image URL - \(image)")
+            if let imageFromCache = imageCache.object(forKey: imageURL as AnyObject) as? UIImage {
+                self.imgContact.image = imageFromCache
+                return
+            }
             imageRequest = NetworkManager.sharedInstance.getData(from: URL(string: image)!) { data, resp, err in
                 guard let data = data, err == nil else {
                     print("Error in download from url")
                     return
                 }
                 DispatchQueue.main.async {
-                    let dataImg : UIImage = UIImage(data: data)!
-                    self.imgContact.image = dataImg
+                    if let imageToCache = UIImage(data: data) {
+                        self.imgContact.image = imageToCache
+                        imageCache.setObject(imageToCache, forKey: imageURL as AnyObject)
+                    } else {
+                        self.imgContact.image = UIImage(named: "placeholder-profile-img.png")
+                    }
                 }
             }
         }   //  */
