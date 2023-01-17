@@ -31,7 +31,6 @@ class ContactTVCell: UITableViewCell {
         if image != "" {
             var imageURL: URL?
             imageURL = URL(string: image)!
-            print("Image URL - \(image)")
             if let imageFromCache = imageCache.object(forKey: imageURL as AnyObject) as? UIImage {
                 self.imgContactImg.image = imageFromCache
                 return
