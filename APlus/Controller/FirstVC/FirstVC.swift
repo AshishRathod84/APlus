@@ -33,7 +33,7 @@ public class FirstVC: UIViewController {
     @IBOutlet weak var viewProfileImg: UIView!
     @IBOutlet weak var constHeightviewTopChatGrp: NSLayoutConstraint!
 
-    var userName : String = "ABC"
+    var userName : String = "A"
     var isNetworkAvailable : Bool = false
     var isGetUserList : Bool = false
     var arrAllRecentChatUserList : [GetUserList]? = []
