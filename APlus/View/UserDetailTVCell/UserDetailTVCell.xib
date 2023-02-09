@@ -69,14 +69,14 @@
                                         <rect key="frame" x="0.0" y="30" width="308" height="22"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="photo" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Wc0-sr-vhw">
-                                                <rect key="frame" x="3" y="4" width="16" height="13.5"/>
+                                                <rect key="frame" x="3" y="4.6666666666666643" width="16" height="13.000000000000004"/>
                                                 <color key="tintColor" red="0.0078431372550000003" green="0.0" blue="0.32156862749999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="Wc0-sr-vhw" secondAttribute="height" id="RdC-3K-UbN"/>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Photo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q2u-4u-xHU">
-                                                <rect key="frame" x="22" y="4" width="286" height="14.5"/>
+                                                <rect key="frame" x="22" y="3.6666666666666634" width="286" height="14.666666666666664"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -173,7 +173,7 @@
                 <outlet property="viewProfileImg" destination="Ilq-Ca-YzW" id="fsb-VZ-vWx"/>
                 <outlet property="viewRecentPhoto" destination="eoq-wV-oxS" id="n9p-sN-Qgd"/>
             </connections>
-            <point key="canvasLocation" x="-113.768115942029" y="54.910714285714285"/>
+            <point key="canvasLocation" x="92" y="54"/>
         </tableViewCell>
     </objects>
     <resources>
