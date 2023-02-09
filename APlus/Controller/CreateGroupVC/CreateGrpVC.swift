@@ -143,20 +143,6 @@ public class CreateGrpVC: UIViewController {
 }
 
 extension CreateGrpVC : UITextFieldDelegate {
-    /*func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField.text!.count > 1 {
-            btnCreateGroup.backgroundColor = UIColor(red: 15/255.0, green: 101/255.0, blue: 158/255.0, alpha: 1)
-            btnCreateGroup.isEnabled = true
-        } else if txtGroupName.text!.count == 1 {
-            btnCreateGroup.backgroundColor = UIColor(red: 15/255.0, green: 101/255.0, blue: 158/255.0, alpha: 1)
-            btnCreateGroup.isEnabled = true
-        } else {
-            btnCreateGroup.backgroundColor = UIColor(red: 207/255.0, green: 229/255.0, blue: 245/255.0, alpha: 1)
-            btnCreateGroup.isEnabled = false
-        }
-        return true
-    }   //  */
-    
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder() // dismiss keyboard
         return true
