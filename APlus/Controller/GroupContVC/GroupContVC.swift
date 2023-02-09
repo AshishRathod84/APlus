@@ -137,17 +137,10 @@ public class GroupContVC: UIViewController {
             ProgressHUD.show()
             SocketChatManager.sharedInstance.addMember(param: param)
         } else {
-//            let sb = UIStoryboard(name: "Main", bundle: nil)
-//            let vc =  sb.instantiateViewController(withIdentifier: "CreateGroupVC") as! CreateGroupVC
-//            vc.arrSelectedContactList = self.arrSelectedContactList
-//            vc.myContactDetail = self.myContactDetail
-//            self.navigationController?.pushViewController(vc, animated: true)
-            
             let vc =  CreateGrpVC()
             vc.arrSelectedContactList = self.arrSelectedContactList
             vc.myContactDetail = self.myContactDetail
             self.navigationController?.pushViewController(vc, animated: true)
-            
         }
     }
     
