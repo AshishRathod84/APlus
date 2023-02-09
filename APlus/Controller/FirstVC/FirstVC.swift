@@ -42,7 +42,7 @@ public class FirstVC: UIViewController {
     var arrRecentChatUserList : [GetUserList]? = []
     private var imageRequest: Cancellable?
     var profileDetail : ProfileDetail?
-    var hideTopView : Bool = false   //  for hide top bar from chat.
+    public var hideTopView : Bool = false   //  for hide top bar from chat.
     
     let activityIndicator = UIActivityIndicatorView()
     
