@@ -18,6 +18,8 @@
                 <outlet property="btnSend" destination="l79-Vx-RRj" id="St1-eF-TNF"/>
                 <outlet property="btnUserInfo" destination="oZe-2T-KAS" id="LmZ-Mi-4j8"/>
                 <outlet property="constMainChatViewBottom" destination="aps-CY-2hc" id="mKE-Li-UcG"/>
+                <outlet property="constViewTypeMsgHeight" destination="k8H-Ln-ndY" id="cCe-i9-zsg"/>
+                <outlet property="constViewUserDetailHeight" destination="vlF-ue-GEP" id="anG-Id-FSG"/>
                 <outlet property="imgBack" destination="r1I-ub-zbd" id="YLG-ci-6EU"/>
                 <outlet property="imgChatBackground" destination="cRV-uj-Y4B" id="ei5-qD-4eL"/>
                 <outlet property="imgProfilePic" destination="H4e-VS-XiG" id="ucT-R8-1BU"/>

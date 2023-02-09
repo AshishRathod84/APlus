@@ -49,10 +49,6 @@ class ParticipantsTVCell: UITableViewCell {
                     return
                 }
                 DispatchQueue.main.async {
-                    //let dataImg : UIImage = UIImage(data: data)!
-                    //self.imgProfile.image = dataImg
-                    //self.imgProfile.image = UIImage(data: data)!
-                    
                     if let imageToCache = UIImage(data: data) {
                         self.imgProfile.image = imageToCache
                         imageCache.setObject(imageToCache, forKey: imageURL as AnyObject)

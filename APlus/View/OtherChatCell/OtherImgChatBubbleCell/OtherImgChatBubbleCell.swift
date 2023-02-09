@@ -13,6 +13,9 @@ class OtherImgChatBubbleCell: UITableViewCell {
     @IBOutlet weak var img: UIImageView!
     @IBOutlet weak var lblTime: UILabel!
     @IBOutlet weak var imgVideo: UIImageView!
+    @IBOutlet weak var lblUserName: UILabel!
+    @IBOutlet weak var constTopImg: NSLayoutConstraint!
+    @IBOutlet weak var constTopImgToUser: NSLayoutConstraint!
     
     private var imageRequest: Cancellable?
     
@@ -21,6 +24,10 @@ class OtherImgChatBubbleCell: UITableViewCell {
         // Initialization code
         self.viewImg.layer.cornerRadius = 5
         imgVideo.isHidden = true
+        
+        lblUserName.isHidden = true
+        constTopImg.priority = .required
+        //constTopImgToUser.priority = .defaultLow
     }
     
     func configure(_ msgType : String,_ image : String,_ data : String) {
@@ -29,9 +36,11 @@ class OtherImgChatBubbleCell: UITableViewCell {
             imgVideo.isHidden = false
             imgVideo.image = UIImage(named: "Play")
             
-            let imageData = try? Data(contentsOf: URL(string: data)!)
-            if let imageData = imageData {
-                img.image = UIImage(data: imageData)
+            if data != "" {
+                let imageData = try? Data(contentsOf: URL(string: data)!)
+                if let imageData = imageData {
+                    img.image = UIImage(data: imageData)
+                }
             }
         }
         else if msgType == "image" {
@@ -39,9 +48,6 @@ class OtherImgChatBubbleCell: UITableViewCell {
             img.image = UIImage(contentsOfFile: image)
             if image != "" {
                 var imageURL: URL?
-                if !(image.contains("firebasestorage")) {
-                    imageURL = URL(string: image)!
-                }
                 imageURL = URL(string: image)!
                 // retrieves image if already available in cache
                 if let imageFromCache = imageCache.object(forKey: imageURL as AnyObject) as? UIImage {
@@ -54,8 +60,6 @@ class OtherImgChatBubbleCell: UITableViewCell {
                         if let imageToCache = UIImage(data: data) {
                             self.img.image = imageToCache
                             imageCache.setObject(imageToCache, forKey: imageURL as AnyObject)
-                        } else {
-                            self.img.image = UIImage(named: "default")
                         }
                     }
                 }

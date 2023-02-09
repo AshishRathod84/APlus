@@ -14,11 +14,18 @@ class OtherAudioBubbleCell: UITableViewCell {
     @IBOutlet weak var imgAudio: UIImageView!
     @IBOutlet weak var lblFileName: UILabel!
     @IBOutlet weak var lblTime: UILabel!
+    @IBOutlet weak var lblUserName: UILabel!
+    @IBOutlet weak var constTopMsg: NSLayoutConstraint!
+    @IBOutlet weak var constTopMsgToUser: NSLayoutConstraint!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         self.viewMsg.layer.cornerRadius = 5
+        
+        lblUserName.isHidden = true
+        constTopMsg.priority = .required
+        //constTopMsgToUser.priority = .defaultLow
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

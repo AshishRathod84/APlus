@@ -13,6 +13,9 @@ import AVFoundation
 import AVFAudio
 import Photos
 
+import JGProgressHUD
+import UniformTypeIdentifiers
+
 // MARK: - Textfiled Delegate
 extension ChatVC : UITextFieldDelegate {
     
@@ -126,7 +129,7 @@ extension ChatVC : UITableViewDelegate, UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "OwnFileBubbleCell", for: indexPath) as! OwnFileBubbleCell
                 //cell.viewMsg.backgroundColor = Colors.themeRED.returnColor()
                 cell.viewMsg.backgroundColor = Colors.lightTheme.returnColor()
-                cell.imgDocument.image = UIImage(named: "document")
+                cell.imgDocument.image = UIImage(named: "document.png")
                 //cell.lblFileName.text = "Document File"
                 let fileName : String = self.arrSectionMsg![indexPath.section][indexPath.row].fileName ?? "Document File"
                 cell.lblFileName.text = fileName == "" ? "Document File" : fileName
@@ -184,6 +187,11 @@ extension ChatVC : UITableViewDelegate, UITableViewDataSource {
                 let fileName : String = self.arrSectionMsg![indexPath.section][indexPath.row].fileName ?? "Document File"
                 cell.lblFileName.text = fileName == "" ? "Document File" : fileName
                 cell.lblTime.text = Utility.convertTimestamptoTimeString(timestamp: "\((self.arrSectionMsg![indexPath.section][indexPath.row].sentAt?.seconds)!)")
+                if isGroup {
+                    cell.lblUserName.isHidden = false
+                    cell.lblUserName.text = getUserName(userId: self.arrSectionMsg![indexPath.section][indexPath.row].sentBy!)
+                    cell.constTopMsg.priority = .defaultLow
+                }
                 return cell
             }
             else if msgType == "image"
@@ -192,6 +200,11 @@ extension ChatVC : UITableViewDelegate, UITableViewDataSource {
                 cell.viewImg.backgroundColor = .white
                 cell.configure(msgType, (self.arrSectionMsg![indexPath.section][indexPath.row].image)!, "")
                 cell.lblTime.text = Utility.convertTimestamptoTimeString(timestamp: "\((self.arrSectionMsg![indexPath.section][indexPath.row].sentAt?.seconds)!)")
+                if isGroup {
+                    cell.lblUserName.isHidden = false
+                    cell.lblUserName.text = getUserName(userId: self.arrSectionMsg![indexPath.section][indexPath.row].sentBy!)
+                    cell.constTopImg.priority = .defaultLow
+                }
                 return cell
             }
             else if msgType == "video"
@@ -217,6 +230,11 @@ extension ChatVC : UITableViewDelegate, UITableViewDataSource {
                 cell.viewMsg.backgroundColor = .white
                 cell.lblMsg.text = (self.arrSectionMsg![indexPath.section][indexPath.row].message)!
                 cell.lblTime.text = Utility.convertTimestamptoTimeString(timestamp: "\((self.arrSectionMsg![indexPath.section][indexPath.row].sentAt?.seconds)!)")
+                if isGroup {
+                    cell.lblUserName.isHidden = false
+                    cell.lblUserName.text = getUserName(userId: self.arrSectionMsg![indexPath.section][indexPath.row].sentBy!)
+                    cell.constTopMsg.priority = .defaultLow
+                }
                 return cell
             }
         }
@@ -385,10 +403,36 @@ extension ChatVC : UIImagePickerControllerDelegate, UINavigationControllerDelega
                     print(self.imgFileName)
                     
                     let appImage = UIImage(contentsOfFile: fileUrl.path)
-                    let imgData = appImage?.pngData()
-                    print(imgData!)
+                    let imgData = appImage?.pngData()?.bytes
+                    //print(imgData!)
                     
-                    let param : [String : Any] = ["file": imgData!, "isRead" : false, "type" : "image", "viewBy" : (self.recentChatUser?.members)!, "readBy" : myUserId, "sentAt" : "", "sentBy" : myUserId, "timeMilliSeconds" : "", "fileName" : self.imgFileName, "contentType" : self.imgFileName.mimeType()]
+                    let timestamp : Int = Int(NSDate().timeIntervalSince1970)
+                    let sentAt : [String : Any] = ["seconds" : timestamp]
+                    let msg : [String : Any] = ["sentBy" : myUserId,
+                                                "type" : "image",
+                                                "sentAt" : sentAt,
+                                                "image" : fileUrl.path]
+                    
+                    if self.loadChatMsgToArray(msg: msg, timestamp: timestamp) {
+                        DispatchQueue.main.async {
+                            self.tblUserChat.reloadData()
+                            self.tblUserChat.scrollToRow(at: IndexPath(row: (self.arrSectionMsg![self.arrSectionMsg!.count - 1].count - 1), section: (self.arrSectionMsg!.count - 1)), at: .bottom, animated: true)
+                        }
+                    }
+                    
+                    DispatchQueue.main.async {
+                        NetworkManager.sharedInstance.uploadMedia(fileName: self.imgFileName, image: imgData!, contentType: self.imgFileName.mimeType()) { url in
+                            print(url)
+                            if url != "" {
+                                let param : [String : Any] = ["file": url, "isRead" : false, "type" : "image", "viewBy" : (self.recentChatUser?.members)!, "readBy" : myUserId, "sentAt" : "", "sentBy" : myUserId, "timeMilliSeconds" : "", "fileName" : self.imgFileName, "contentType" : self.imgFileName.mimeType()]
+                                let param1 : [String : Any] = ["messageObj" : param, "groupId" : (self.recentChatUser?.groupId)!, "secretKey" : secretKey, "userId": myUserId, "userName": myUserName]
+                                
+                                self.sendMessage(param: param1)
+                            }
+                        }
+                    }
+                    
+                    /*let param : [String : Any] = ["file": imgData!, "isRead" : false, "type" : "image", "viewBy" : (self.recentChatUser?.members)!, "readBy" : myUserId, "sentAt" : "", "sentBy" : myUserId, "timeMilliSeconds" : "", "fileName" : self.imgFileName, "contentType" : self.imgFileName.mimeType()]
                     let param1 : [String : Any] = ["messageObj" : param, "groupId" : (self.recentChatUser?.groupId)!, "secretKey" : secretKey, "userId": myUserId, "userName": myUserName]
                     
                     if self.sendMessage(param: param1) {
@@ -399,18 +443,17 @@ extension ChatVC : UIImagePickerControllerDelegate, UINavigationControllerDelega
                                                     "sentAt" : sentAt,
                                                     "image" : fileUrl.path]
                         
-                        /*if self.loadChatMsgToArray(msg: msg, timestamp: timestamp) {
+                        if self.loadChatMsgToArray(msg: msg, timestamp: timestamp) {
                             self.tblUserChat.reloadData()
                             self.tblUserChat.scrollToRow(at: IndexPath(row: (self.arrSectionMsg![self.arrSectionMsg!.count - 1].count - 1), section: (self.arrSectionMsg!.count - 1)), at: .bottom, animated: true)
-                        }   //  */
-                    }
+                        }
+                    }       /// */
                 }
             }
         } else if info[UIImagePickerController.InfoKey.originalImage] is UIImage {
             self.dismiss(animated: true) {
                 //let imageUrl = info[UIImagePickerController.InfoKey.imageURL] as? URL
                 let imageUrl = info[.imageURL] as? URL
-                print("Image Url - \(imageUrl!)")
                 
                 let photo = info[.phAsset] as? PHAsset
                 self.imgFileName = photo?.value(forKey: "filename") as? String ?? ""
@@ -418,26 +461,35 @@ extension ChatVC : UIImagePickerControllerDelegate, UINavigationControllerDelega
                 
                 //let appImage = UIImage(named: "\(imageUrl!)")
                 let appImage = UIImage(contentsOfFile: imageUrl!.path)
-                let imgData = appImage?.pngData()
+                let imgData = appImage?.pngData()?.bytes
                 
-                let param : [String : Any] = ["file": imgData!, "isRead" : false, "type" : "image", "viewBy" : (self.recentChatUser?.members)!, "readBy" : myUserId, "sentAt" : "", "sentBy" : myUserId, "timeMilliSeconds" : "", "fileName" : self.imgFileName, "contentType" : self.imgFileName.mimeType()]
-                let param1 : [String : Any] = ["messageObj" : param, "groupId" : (self.recentChatUser?.groupId)!, "secretKey" : secretKey, "userId": myUserId, "userName": myUserName]
+                self.imgFileName = self.imgFileName != "" ? self.imgFileName : "\(Utility.fileName()).png"
                 
-                if self.sendMessage(param: param1) {
-                    let timestamp : Int = Int(NSDate().timeIntervalSince1970)
-                    let sentAt : [String : Any] = ["seconds" : timestamp]
-                    let msg : [String : Any] = ["sentBy" : myUserId,
-                                                "type" : "image",
-                                                "sentAt" : sentAt,
-                                                "image" : imageUrl!.path]
-                    
-                    if self.loadChatMsgToArray(msg: msg, timestamp: timestamp) {
-                        self.tblUserChat.reloadData()
-                        self.tblUserChat.scrollToRow(at: IndexPath(row: (self.arrSectionMsg![self.arrSectionMsg!.count - 1].count - 1), section: (self.arrSectionMsg!.count - 1)), at: .bottom, animated: true)
-                    }   //  */
+                let timestamp : Int = Int(NSDate().timeIntervalSince1970)
+                let sentAt : [String : Any] = ["seconds" : timestamp]
+                let msg : [String : Any] = ["sentBy" : myUserId,
+                                            "type" : "image",
+                                            "sentAt" : sentAt,
+                                            "image" : (imageUrl?.path)!]
+                
+                if self.loadChatMsgToArray(msg: msg, timestamp: timestamp) {
+                    //DispatchQueue.main.async {
+                    self.tblUserChat.reloadData()
+                    self.tblUserChat.scrollToRow(at: IndexPath(row: (self.arrSectionMsg![self.arrSectionMsg!.count - 1].count - 1), section: (self.arrSectionMsg!.count - 1)), at: .bottom, animated: true)
+                    //}
                 }
-                //SocketChatManager.sharedInstance.sendMsg(message: ["image": imgData!, "sentBy" : myUserId, "rid": self.groupId, "type" : "image", "name" : (imageUrl?.lastPathComponent)!])
                 
+                DispatchQueue.main.async {
+                    NetworkManager.sharedInstance.uploadMedia(fileName: self.imgFileName, image: imgData!, contentType: self.imgFileName.mimeType()) { url in
+                        print(url)
+                        if url != "" {
+                            let param : [String : Any] = ["file": url, "isRead" : false, "type" : "image", "viewBy" : (self.recentChatUser?.members)!, "readBy" : myUserId, "sentAt" : "", "sentBy" : myUserId, "timeMilliSeconds" : "", "fileName" : self.imgFileName, "contentType" : self.imgFileName.mimeType()]
+                            let param1 : [String : Any] = ["messageObj" : param, "groupId" : (self.recentChatUser?.groupId)!, "secretKey" : secretKey, "userId": myUserId, "userName": myUserName]
+
+                            self.sendMessage(param: param1)
+                        }
+                    }
+                }
             }
         } else {
             let videoUrl = info[UIImagePickerController.InfoKey.mediaURL] as? URL
@@ -524,28 +576,35 @@ extension ChatVC : UIDocumentPickerDelegate, UIDocumentMenuDelegate {
             //Need to make a new image with the jpeg data to be able to close the security resources!
             guard let image = UIImage(contentsOfFile: url.path), let imageCopy = UIImage(data: image.jpegData(compressionQuality: 1.0)!) else { return }
             
-            let imgData = image.pngData()
-            print(imgData!)
+            let imgData = image.pngData()?.bytes
+            //print(imgData!)
             
             imgFileName = url.lastPathComponent
             
-            let param : [String : Any] = ["file": imgData!, "isRead" : false, "type" : "image", "viewBy" : (self.recentChatUser?.members)!, "readBy" : myUserId, "sentAt" : "", "sentBy" : myUserId, "timeMilliSeconds" : "", "fileName" : imgFileName, "contentType" : imgFileName.mimeType()]
-            let param1 : [String : Any] = ["messageObj" : param, "groupId" : (self.recentChatUser?.groupId)!, "secretKey" : secretKey, "userId": myUserId, "userName": myUserName]
+            let timestamp : Int = Int(NSDate().timeIntervalSince1970)
+            let sentAt : [String : Any] = ["seconds" : timestamp]
+            let msg : [String : Any] = ["sentBy" : myUserId,
+                                        "type" : "image",
+                                        "sentAt" : sentAt,
+                                        "image" : url.path]
             
-            if self.sendMessage(param: param1) {
-                let timestamp : Int = Int(NSDate().timeIntervalSince1970)
-                let sentAt : [String : Any] = ["seconds" : timestamp]
-                let msg : [String : Any] = ["sentBy" : myUserId,
-                                            "type" : "image",
-                                            "sentAt" : sentAt,
-                                            "image" : url.path]
-                
-                if self.loadChatMsgToArray(msg: msg, timestamp: timestamp) {
+            if self.loadChatMsgToArray(msg: msg, timestamp: timestamp) {
+                //DispatchQueue.main.async {
                     self.tblUserChat.reloadData()
                     self.tblUserChat.scrollToRow(at: IndexPath(row: (self.arrSectionMsg![self.arrSectionMsg!.count - 1].count - 1), section: (self.arrSectionMsg!.count - 1)), at: .bottom, animated: true)
-                }   //  */
+                //}
             }
-            
+            DispatchQueue.main.async {
+                NetworkManager.sharedInstance.uploadMedia(fileName: self.imgFileName, image: imgData!, contentType: self.imgFileName.mimeType()) { url in
+                    print(url)
+                    if url != "" {
+                        let param : [String : Any] = ["file": url, "isRead" : false, "type" : "image", "viewBy" : (self.recentChatUser?.members)!, "readBy" : myUserId, "sentAt" : "", "sentBy" : myUserId, "timeMilliSeconds" : "", "fileName" : self.imgFileName, "contentType" : self.imgFileName.mimeType()]
+                        let param1 : [String : Any] = ["messageObj" : param, "groupId" : (self.recentChatUser?.groupId)!, "secretKey" : secretKey, "userId": myUserId, "userName": myUserName]
+                        
+                        self.sendMessage(param: param1)
+                    }
+                }
+            }
         } else if arrDocExtension.contains((url.pathExtension).lowercased()) {
             do {
                 //var myData = NSData(contentsOfURL: url)
@@ -645,27 +704,24 @@ extension ChatVC : UIDocumentPickerDelegate, UIDocumentMenuDelegate {
                 print(error.localizedDescription)
             }
         }
-        
-        //print(url)
-        //print("\n\nOther URLs")
-        //print(urls)
-        //print("\n\nurl component.")
-        //print(url.lastPathComponent)
-        //print(url.pathExtension)
-        
         controller.dismiss(animated: true)
     }
     
     public func documentMenu(_ documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
         print("Document picked.")
+        //self.isDocumentPickerOpen = false
     }
     
     public func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
         print("Document picker cancel.")
+        //self.isDocumentPickerOpen = false
     }
 }
 
 extension ChatVC : SocketDelegate {
+    func getUnreadChat(noOfChat: Int) {
+    }
+    
     func getPreviousChatMsg(message: String) {
         print("Previous chat message.")
     }
@@ -710,7 +766,7 @@ extension ChatVC : SocketDelegate {
         
         if message.sentBy != myUserId {
             if self.loadChatMsgToArray(msg: msg, timestamp: timestamp) {
-                txtTypeMsg.text = ""
+                //txtTypeMsg.text = ""
                 tblUserChat.reloadData()
                 tblUserChat.scrollToRow(at: IndexPath(row: (self.arrSectionMsg![arrSectionMsg!.count - 1].count - 1), section: (arrSectionMsg!.count - 1)), at: .bottom, animated: true)
             }
@@ -719,7 +775,7 @@ extension ChatVC : SocketDelegate {
                 self.arrSectionMsg![arrSectionMsg!.count - 1].removeLast()
             }
             if self.loadChatMsgToArray(msg: msg, timestamp: timestamp) {
-                txtTypeMsg.text = ""
+                //txtTypeMsg.text = ""
                 tblUserChat.reloadData()
                 tblUserChat.scrollToRow(at: IndexPath(row: (self.arrSectionMsg![arrSectionMsg!.count - 1].count - 1), section: (arrSectionMsg!.count - 1)), at: .bottom, animated: true)
             }
@@ -728,10 +784,19 @@ extension ChatVC : SocketDelegate {
                 self.arrSectionMsg![arrSectionMsg!.count - 1].removeLast()
             }
             if self.loadChatMsgToArray(msg: msg, timestamp: timestamp) {
-                txtTypeMsg.text = ""
+                //txtTypeMsg.text = ""
                 tblUserChat.reloadData()
                 tblUserChat.scrollToRow(at: IndexPath(row: (self.arrSectionMsg![arrSectionMsg!.count - 1].count - 1), section: (arrSectionMsg!.count - 1)), at: .bottom, animated: true)
             }
+        }
+        
+        guard let responseData = try? JSONSerialization.data(withJSONObject: msg, options: []) else { return }
+        do {
+            let newMsg = try JSONDecoder().decode(GetPreviousChat.self, from: responseData)
+            print(newMsg)
+            
+        } catch let err {
+            print(err)
         }
         /*///
         if self.loadChatMsgToArray(msg: msg, timestamp: timestamp) {
@@ -748,6 +813,32 @@ extension ChatVC : SocketDelegate {
 
 extension ChatVC {
     func loadChatMsgToArray(msg : [String : Any], timestamp : Int) -> Bool {
+        let strDate : String = Utility.convertTimestamptoDateString(timestamp: timestamp)
+        guard let responseData = try? JSONSerialization.data(withJSONObject: msg, options: []) else { return false }
+        do {
+            let newMsg = try JSONDecoder().decode(GetPreviousChat.self, from: responseData)
+            print(newMsg)
+            if (arrDtForSection?.contains(strDate))! {
+                for j in 0 ..< arrDtForSection!.count {
+                    if arrDtForSection![j] == strDate {
+                        //arrSectionMsg?[j].append((self.arrGetPreviousChat?[i])!)
+                        arrSectionMsg?[j].append(newMsg)
+                    }
+                }
+            } else {
+                var tempMsg : [GetPreviousChat] = []
+                tempMsg.append(newMsg)
+                arrSectionMsg?.append(tempMsg)
+                arrDtForSection?.append(strDate)
+            }
+            return true
+        } catch let err {
+            print(err)
+            return false
+        }
+    }
+    
+    func loadChatMsgToArray(msg : GetPreviousChat, timestamp : Int) -> Bool {
         let strDate : String = Utility.convertTimestamptoDateString(timestamp: timestamp)
         guard let responseData = try? JSONSerialization.data(withJSONObject: msg, options: []) else { return false }
         do {

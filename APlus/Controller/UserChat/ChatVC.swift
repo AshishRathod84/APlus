@@ -31,6 +31,7 @@ public class ChatVC: UIViewController {
     @IBOutlet weak var tblUserChat: UITableView!
     @IBOutlet weak var lblOnline: UILabel!
     @IBOutlet weak var constViewTypeMsgHeight: NSLayoutConstraint!
+    @IBOutlet weak var constViewUserDetailHeight: NSLayoutConstraint!
 
     var strDisName : String?
     var strProfileImg : String? = ""
@@ -60,6 +61,13 @@ public class ChatVC: UIViewController {
     var timeSeconds = 1
     var onlineUser : String = ""
     
+    struct AllUser: Codable {
+        var userId: String?
+        var userName: String?
+    }
+    var arrUserName : [AllUser]? = []
+    var isHideUserDetailView: Bool = false
+    
     public init() {
         super.init(nibName: "UserChatVC", bundle: Bundle(for: ChatVC.self))
     }
@@ -77,7 +85,9 @@ public class ChatVC: UIViewController {
         btnSend.backgroundColor = .white
         btnSend.layer.cornerRadius = btnSend.frame.width / 2
         
+        btnUserInfo.isEnabled = false
         groupId = recentChatUser?.groupId ?? ""
+        isGroup = recentChatUser?.isGroup ?? false
         self.setData()
         
         if Network.reachability.isReachable {
@@ -103,6 +113,13 @@ public class ChatVC: UIViewController {
         tblUserChat.register(UINib(nibName: "OtherFileBubbleCell", bundle: bundle), forCellReuseIdentifier: "OtherFileBubbleCell")
         tblUserChat.register(UINib(nibName: "OtherAudioBubbleCell", bundle: bundle), forCellReuseIdentifier: "OtherAudioBubbleCell")
         
+        if isHideUserDetailView {
+            self.viewBackUserName.isHidden = true
+            self.constViewUserDetailHeight.constant = 0
+        } else {
+            self.viewBackUserName.isHidden = false
+            self.constViewUserDetailHeight.constant = 55
+        }
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -117,7 +134,7 @@ public class ChatVC: UIViewController {
                 return self
             }
             SocketChatManager.sharedInstance.reqGroupDetail(param: ["userId": myUserId, "secretKey": secretKey, "groupId": groupId])
-            SocketChatManager.sharedInstance.reqPreviousChatMsg(param: ["groupId" : groupId, "_id" : myUserId])
+            //SocketChatManager.sharedInstance.reqPreviousChatMsg(param: ["groupId" : groupId, "_id" : myUserId])
         } else {
             self.isDocumentPickerOpen = false
         }
@@ -133,25 +150,42 @@ public class ChatVC: UIViewController {
     
     public override func viewWillDisappear(_ animated: Bool) {
         if !isDocumentPickerOpen {
-            SocketChatManager.sharedInstance.leaveChat(roomid: groupId)
             SocketChatManager.sharedInstance.socket?.off("typing-res")
+            SocketChatManager.sharedInstance.socket?.off("online-status")
+            SocketChatManager.sharedInstance.leaveChat(roomid: groupId)
         }
     }
     
     func setData() {
-        
         btnOption.tintColor = UIColor.black
         self.btnOption.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 2.0)
         registerKeyboardNotifications()
-        lblUserName.text = strDisName
-        onlineUser = isGroup ? "" : "Online"
+        onlineUser = isGroup ? "" : "Offline"
         
+        var otherUserId : String = ""
+        if !(recentChatUser?.isGroup ?? false) {
+            for (_, item) in self.recentChatUser!.users!.enumerated() {
+                if item.userId != myUserId {
+                    otherUserId = item.userId!
+                    break
+                }
+            }
+            if self.recentChatUser!.online!.contains(otherUserId) {
+                onlineUser = "Online"
+            }
+        }
+        lblOnline.text = onlineUser
+        
+        var isSendMsg: Bool = false
         if recentChatUser?.isGroup ?? false {
             self.imgProfilePic.image = UIImage(named: "group-placeholder.jpg")
             isGroup = true
             strDisName = (recentChatUser?.name)!
             strProfileImg = recentChatUser?.groupImage ?? ""
-            lblOnline.text = ""
+            
+            if recentChatUser?.groupPermission?[0].permission?.sendMessage ?? 0 == 1 {
+                isSendMsg = true
+            }
         } else {
             //btnSend.isEnabled = false
             //btnAttach.isEnabled = false
@@ -160,8 +194,7 @@ public class ChatVC: UIViewController {
             constViewTypeMsgHeight.constant = 0
             
             if SocketChatManager.sharedInstance.userRole?.sendMessage ?? 0 == 1 {
-                viewTypeMsg.isHidden = false
-                constViewTypeMsgHeight.constant = 55
+                isSendMsg = true
             }
             
             isGroup = false
@@ -172,12 +205,24 @@ public class ChatVC: UIViewController {
                     strProfileImg = recentChatUser?.users?[i].profilePicture ?? ""
                 }
             }
-            lblOnline.text = "Online"
+        }
+        lblUserName.text = strDisName
+        
+        if isSendMsg {
+            viewTypeMsg.isHidden = false
+            constViewTypeMsgHeight.constant = 55
+        }
+        
+        if #available(iOS 14.0, *) {
+            self.loadPopup()
+        } else {
+            // Fallback on earlier versions
         }
         
         if strProfileImg != "" {
             var imageURL: URL?
             imageURL = URL(string: strProfileImg!)!
+            //self.imgProfilePic.image = nil
             // retrieves image if already available in cache
             if let imageFromCache = imageCache.object(forKey: imageURL as AnyObject) as? UIImage {
                 self.imgProfilePic.image = imageFromCache
@@ -203,6 +248,11 @@ public class ChatVC: UIViewController {
     func getGroupDetail(groupDetail : GetUserList) {
         recentChatUser = groupDetail
         self.setData()
+        btnUserInfo.isEnabled = true
+        if !isGroup {
+            SocketChatManager.sharedInstance.getOnlineRes(event: "online-status")
+        }
+        SocketChatManager.sharedInstance.reqPreviousChatMsg(param: ["groupId" : groupId, "_id" : myUserId])
     }
     
     func getPreviousChat(chat : [GetPreviousChat]) {
@@ -211,12 +261,30 @@ public class ChatVC: UIViewController {
         self.arrDtForSection?.removeAll()
         self.arrSectionMsg?.removeAll()
         self.getDateforSection()
-        self.tblUserChat.reloadData()
-        if (arrDtForSection!.count > 0) && (arrSectionMsg!.count > 0) {
-            tblUserChat.scrollToRow(at: IndexPath(row: (self.arrSectionMsg![arrSectionMsg!.count - 1].count - 1), section: (arrSectionMsg!.count - 1)), at: .bottom, animated: false)
+        setUserArray()
+        DispatchQueue.main.async {
+            self.tblUserChat.reloadData()
+            if (self.arrDtForSection!.count > 0) && (self.arrSectionMsg!.count > 0) {
+                self.tblUserChat.scrollToRow(at: IndexPath(row: (self.arrSectionMsg![self.arrSectionMsg!.count - 1].count - 1), section: (self.arrSectionMsg!.count - 1)), at: .bottom, animated: false)
+            }
         }
         SocketChatManager.sharedInstance.typingRes()
         SocketChatManager.sharedInstance.unreadCountZero(param: ["userId" : myUserId, "secretKey" : secretKey, "groupId" : groupId])
+    }
+    
+    func setUserArray() {
+        self.arrUserName?.removeAll()
+        for (_, user) in self.recentChatUser!.users!.enumerated() {
+            self.arrUserName?.append(AllUser(userId: user.userId, userName: user.name))
+        }
+        print(self.arrUserName)
+    }
+    
+    func getUserName(userId : String) -> String {
+        let userName : [AllUser] = (arrUserName?.filter({
+            $0.userId == userId
+        }))!
+        return (userName.count > 0) ? userName[0].userName! : "Unknown User"
     }
     
     func getTypingResponse(typingResponse : TypingResponse) {
@@ -257,6 +325,22 @@ public class ChatVC: UIViewController {
         }
     }
     
+    func getOnlineStatus(onlineStatus : OnlineStatus) {
+        print("Online Status -> \(onlineStatus.userId ?? "") - \(onlineStatus.isOnline ?? false)")
+        
+        for (_, item) in self.recentChatUser!.users!.enumerated() {
+            if (item.userId == onlineStatus.userId ?? "") && (item.userId != myUserId) {
+                print("Online Status -> \(onlineStatus.userId ?? "") - \(onlineStatus.isOnline ?? false)")
+                if onlineStatus.isOnline! {
+                    onlineUser = "Online"
+                } else {
+                    onlineUser = "Offline"
+                }
+            }
+        }
+        lblOnline.text = onlineUser
+    }
+    
     @objc func checkConnection(_ notification: Notification) {
         updateUserInterface()
     }
@@ -285,9 +369,10 @@ public class ChatVC: UIViewController {
     }
     
     @IBAction func btnBackTap(_ sender: UIButton) {
-        //SocketChatManager.sharedInstance.leaveChat(roomid: groupId)
+        SocketChatManager.sharedInstance.leaveChat(roomid: groupId)
         self.navigationController?.popToRootViewController(animated: true)
         SocketChatManager.sharedInstance.socket?.off("typing-res")
+        SocketChatManager.sharedInstance.socket?.off("online-status")
     }
     
     @IBAction func btnUserInfoTap(_ sender: UIButton) {
@@ -310,27 +395,30 @@ public class ChatVC: UIViewController {
             self.clearChat()
         }
         
-        var menu = UIMenu()
+        var menuAction : [UIAction] = []
+        menuAction.append(contectInfo)
+        //menuAction.append(deleteChat)
+        //menuAction.append(clearChat)
+        
         if isGroup {
-            menu = UIMenu(title: "", options: .displayInline, children: [contectInfo , deleteChat, clearChat])
-        } else {
-            menu = UIMenu(title: "", options: .displayInline, children: [contectInfo , deleteChat])
-            if SocketChatManager.sharedInstance.userRole?.deleteMessage ?? 0 == 1 {
-                menu = UIMenu(title: "", options: .displayInline, children: [contectInfo , deleteChat , clearChat])
+            if recentChatUser?.groupPermission?[0].permission?.deleteChat ?? 0 == 1 {
+                menuAction.append(deleteChat)
             }
-        }
-        btnOption.menu = menu
+            if recentChatUser?.groupPermission?[0].permission?.clearChat ?? 0 == 1 {
+                menuAction.append(clearChat)
+            }
+        } else {
+            if SocketChatManager.sharedInstance.userRole?.deleteChat ?? 0 == 1 {
+                menuAction.append(deleteChat)
+            }
+            if SocketChatManager.sharedInstance.userRole?.clearChat ?? 0 == 1 {
+                menuAction.append(clearChat)
+            }
+        }   ///  */
+        btnOption.menu = UIMenu(title: "", options: .displayInline, children: menuAction)
     }
     
     func moveToContactInfo() {
-//        let sb = UIStoryboard(name: "Main", bundle: nil)
-//        let vc = sb.instantiateViewController(withIdentifier: "ContectInfoVC") as! ContectInfoVC
-//        //vc.myUserId = self.myUserId
-//        vc.groupId = self.groupId
-//        vc.recentChatUser = self.recentChatUser
-//        vc.userChatVC = { return self }
-//        self.navigationController?.pushViewController(vc, animated: true)
-        
         let vc = ContactInfoVC()
         vc.groupId = self.groupId
         vc.recentChatUser = self.recentChatUser
@@ -399,19 +487,23 @@ public class ChatVC: UIViewController {
         
         let alert = UIAlertController(title: "", message: "Please select an option", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { alert in
+            self.isDocumentPickerOpen = true
             self.openCamera()
         }))
         alert.addAction(UIAlertAction(title: "From library", style: .default, handler: { alert in
+            self.isDocumentPickerOpen = true
             self.fromLibrary()
         }))
-        alert.addAction(UIAlertAction(title: "Document", style: .default, handler: { alert in
+        /*alert.addAction(UIAlertAction(title: "Document", style: .default, handler: { alert in
             if #available(iOS 14.0, *) {
+                self.isDocumentPickerOpen = true
                 self.selectFiles()
             } else {
                 // Fallback on earlier versions
             }
-        }))
+        })) //  */
         alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: { alert in
+            self.isDocumentPickerOpen = false
         }))
         self.present(alert, animated: true) {
         }
