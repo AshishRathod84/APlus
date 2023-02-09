@@ -38,3 +38,9 @@ extension UIView {
         layer.rasterizationScale = scale ? UIScreen.main.scale : 1
     }
 }
+
+extension Data {
+    var bytes: [UInt8] {
+        return [UInt8](self)
+    }
+}

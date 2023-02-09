@@ -7,13 +7,6 @@
 
 import Foundation
 
-/*struct recentChatList : Codable {
- //{ secretKey : '' , _id: ''}
- var secretKey : String?
- var _id : String?
- }   //  */
-
-//["msg": videoD!, "rid": self.groupId, "type" : "video", "name" : (videoUrl?.lastPathComponent)!, "thumbnail" : imgData!]
 struct ReceiveMessage: Codable {
     var msg : String?
     var thumbnail : String?
@@ -27,21 +20,27 @@ struct ReceiveMessage: Codable {
     var video : String?
     
     var fileName : String?
+    var msgId : String?
 }
 
 struct ProfileDetail: Codable {
-    let mobileEmail, name, profilePicture, userID: String?
+    var mobileEmail: String?
+    var name: String?
+    var profilePicture: String?
+    var userID: String?
     
     enum CodingKeys: String, CodingKey {
         case mobileEmail = "mobile_email"
-        case name, profilePicture
+        case name
+        case profilePicture
         case userID = "userId"
     }
 }
 
 struct reqResponse: Codable {
-    let isSuccess: Bool?
-    let msg: String?
+    var isSuccess: Bool?
+    var msg: String?
+    var isUpdate: Bool?
 }
 
 struct UnreadCount {
@@ -66,4 +65,12 @@ struct UserRole: Codable {
     var editMessage: Int?
     var sendMessage: Int?
     var updateProfile: Int?
+    var deleteChat: Int?
+    var clearChat: Int?
+}
+
+// MARK: - OnlineStaus
+struct OnlineStatus: Codable {
+    let isOnline: Bool?
+    let userId: String?
 }

@@ -52,6 +52,7 @@ struct GetPreviousChat: Codable {
     var name: String?
     var fileName: String?
     var contentType: String?
+    //var file
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)

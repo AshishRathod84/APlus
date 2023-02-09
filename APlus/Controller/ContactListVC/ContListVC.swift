@@ -123,19 +123,10 @@ extension ContListVC : UITableViewDelegate, UITableViewDataSource {
             if !(arrRecentChatUserList?[i].isGroup ?? false) {
                 for (_, info) in (arrRecentChatUserList?[i].users)!.enumerated() {
                     if info.userId == selectUserId {
-//                        let sb = UIStoryboard(name: "Main", bundle: nil)
-//                        let vc =  sb.instantiateViewController(withIdentifier: "UserChatVC") as! UserChatVC
-//                        //vc.myUserId = myUserId
-//                        //vc.recentChatUser = self.arrRecentChatUserList?[indexPath.row]
-//                        vc.recentChatUser = arrRecentChatUserList?[i]
-//                        self.navigationController?.pushViewController(vc, animated: true)
-//                        isPrevious = true
-                        
                         let vc = ChatVC()
                         vc.recentChatUser = arrRecentChatUserList?[i]
                         self.navigationController?.pushViewController(vc, animated: true)
                         isPrevious = true
-                        
                         break
                     }
                 }

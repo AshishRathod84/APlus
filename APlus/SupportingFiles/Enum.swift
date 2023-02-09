@@ -13,8 +13,7 @@ enum Colors {
     case black, gray, lightGray, shadow, border, theme, themeDisable ,disable, themeBlue, disableButton, themeSSBU, themeRED, lightTheme, themeBlueBtn
     
     func returnColor() -> UIColor {
-        switch self
-        {
+        switch self {
             case .black:
                 return UIColor(red: 35.0/255.0, green: 35.0/255.0, blue: 35.0/255.0, alpha: 1.0)
             case .gray:

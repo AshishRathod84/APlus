@@ -8,12 +8,14 @@
 import UIKit
 import SocketIO
 import ProgressHUD
+import JGProgressHUD
 
-var secretKey : String = "U2FsdGVkX18AsTXTniJJwZ9KaiRWQki0Gike3TN%2BQyXws0hyLIdcRN4abTk84a7r"
-//var myUserId : String = "6271005aa0b24b24eb781674"
-//var myUserId : String = "6270fff1b2000e317f955d75"
-//var myUserId : String = "6229f5e5b501ab796bf5b255"
-var myUserId : String = "623c6522402fc241ccd065ff"
+//public var secretKey : String = "U2FsdGVkX18AsTXTniJJwZ9KaiRWQki0Gike3TN%2BQyXws0hyLIdcRN4abTk84a7r"  //-   old
+public var secretKey : String = "U2FsdGVkX192tCACGjzd4CmNdA3zxj2OEy%2BHEvcLvaFDjpCyLnhjGDV9tt%2Fx2exZ"  //-   new
+//public var secretKey : String = "U2FsdGVkX1%2BdKnWn5ngCut4b2pG%2FM2H8%2FdDTxTKWzmz%2FFgcSYyKoeHp83UBOkxYL"    //- GE
+
+var myUserId : String = "63e377720d573f76b2811bce"          //  Pranay
+
 var myUserName : String = ""
 
 let imageCache = NSCache<AnyObject, AnyObject>()
@@ -40,7 +42,7 @@ public class FirstVC: UIViewController {
     var arrRecentChatUserList : [GetUserList]? = []
     private var imageRequest: Cancellable?
     var profileDetail : ProfileDetail?
-    public var hideTopView : Bool = false   //  for hide top bar from chat.
+    var hideTopView : Bool = false   //  for hide top bar from chat.
     
     let activityIndicator = UIActivityIndicatorView()
     
@@ -121,7 +123,7 @@ public class FirstVC: UIViewController {
             //isGetUserList = true
             SocketChatManager.sharedInstance.reqProfileDetails(param: ["userId" : myUserId], from: false)
             SocketChatManager.sharedInstance.reqRecentChatList(param: ["secretKey" : secretKey, "_id" : myUserId])
-            self.getUserRole()
+            //self.getUserRole()
         }
     }
     
@@ -168,31 +170,17 @@ public class FirstVC: UIViewController {
     }
     
     @IBAction func btnNewChatTap(_ sender: UIButton) {
-//        let sb = UIStoryboard(name: "Main", bundle: nil)
-//        let vc =  sb.instantiateViewController(withIdentifier: "ContactListVC") as! ContactListVC
-//        vc.arrRecentChatUserList = arrAllRecentChatUserList
-//        self.navigationController?.pushViewController(vc, animated: true)   //  */
-        
-//        let vc =  ContListVC()
-//        vc.arrRecentChatUserList = arrAllRecentChatUserList
-//        self.navigationController?.pushViewController(vc, animated: true)
-        
         let vc = ContListVC()
         vc.arrRecentChatUserList = arrAllRecentChatUserList
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @IBAction func btnNewGroupChatTap(_ sender: UIButton) {
-//        let sb = UIStoryboard(name: "Main", bundle: nil)
-//        let vc =  sb.instantiateViewController(withIdentifier: "GroupContactVC") as! GroupContactVC
-//        self.navigationController?.pushViewController(vc, animated: true)   //  */
-        
         let vc =  GroupContVC()
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func getProfileDetail(_ profileDetail : ProfileDetail) {
-        
         ProgressHUD.dismiss()
         print("Get response of profile details.")
         self.profileDetail = profileDetail
@@ -239,9 +227,8 @@ public class FirstVC: UIViewController {
         }
     }
     
-    //func getUserRole(userRole : UserRole) {
-    func getUserRole() {
-        print("Get User Role - - - ")
+    func getUserRole(userRole : UserRole) {
+        print("Get User Role - - - \(userRole)")
         btnNewGroupChat.isHidden = true
         btnNewChat.isHidden = true
         
@@ -252,6 +239,13 @@ public class FirstVC: UIViewController {
         if SocketChatManager.sharedInstance.userRole?.createGroup ?? 0 == 1 {
             btnNewGroupChat.isHidden = false
             constTrailNewGrpChat.priority = SocketChatManager.sharedInstance.userRole?.createOneToOneChat ?? 0 == 1 ? .defaultLow : .required
+        }
+    }
+    
+    func getNewChatMsg(isNew: Bool) {
+        print("New message arrive == \(isNew)")
+        if isNew {
+            SocketChatManager.sharedInstance.reqRecentChatList(param: ["secretKey" : secretKey, "_id" : myUserId])  //  ["secretKey" : secretKey, "_id" : myUserId]
         }
     }
 }
@@ -274,9 +268,9 @@ extension FirstVC : UITableViewDelegate, UITableViewDataSource {
             msgType = (self.arrRecentChatUserList?[indexPath.row].recentMessage?.type)!
         }
         
-        cell.imgProfile.image = UIImage(named: "placeholder-profile-img.png")
+        cell.imgProfile.image = UIImage(named: "placeholder-profile-img")
         if (self.arrRecentChatUserList?[indexPath.row].isGroup)! {
-            cell.imgProfile.image = UIImage(named: "group-placeholder.jpg")
+            cell.imgProfile.image = UIImage(named: "group-placeholder")
             cell.configure((self.arrRecentChatUserList?[indexPath.row].name)!, self.arrRecentChatUserList?[indexPath.row].groupImage ?? "", msgType, isGroup: true)
         } else {
             for (_, item) in ((self.arrRecentChatUserList?[indexPath.row].users)!).enumerated() {
@@ -319,6 +313,7 @@ extension FirstVC : UITableViewDelegate, UITableViewDataSource {
 //        self.navigationController?.pushViewController(vc, animated: true)
         
         let vc = ChatVC()
+        vc.isHideUserDetailView = false
         vc.recentChatUser = self.arrRecentChatUserList?[indexPath.row]
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -331,7 +326,6 @@ extension FirstVC : UISearchBarDelegate, ProfileImgDelegate {
     }
     
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
         self.arrRecentChatUserList = self.arrAllRecentChatUserList
         if searchText.count > 0 {
             self.arrRecentChatUserList?.removeAll()
@@ -368,6 +362,9 @@ extension FirstVC : UISearchBarDelegate, ProfileImgDelegate {
 }
 
 extension FirstVC : SocketDelegate {
+    func getUnreadChat(noOfChat: Int) {
+    }
+    
     func msgReceived(message: ReceiveMessage) {
     }
     
@@ -384,7 +381,7 @@ extension FirstVC : SocketDelegate {
     func getRecentUser(message: String) {
         if (SocketChatManager.sharedInstance.socket?.status == .connected) && !isGetUserList {
             isGetUserList = true
-            SocketChatManager.sharedInstance.onlineStatus(param: ["id": myUserId])
+            SocketChatManager.sharedInstance.online(param: ["userId": myUserId, "secretKey": secretKey])
             SocketChatManager.sharedInstance.getUserRole(param: ["secretKey": secretKey, "userId": myUserId])
             //ProgressHUD.show()
             SocketChatManager.sharedInstance.reqProfileDetails(param: ["userId" : myUserId], from: false)

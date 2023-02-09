@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GetUserList: Decodable {
+struct GetUserList: Codable {
     
     enum CodingKeys: String, CodingKey {
         case createAt
@@ -30,6 +30,7 @@ struct GetUserList: Decodable {
         case readCount
         case modifiedAt
         case typing
+        case groupPermission
     }
     
     var createAt: CreateAt?
@@ -52,7 +53,7 @@ struct GetUserList: Decodable {
     var readCount: [ReadCount]?
     var modifiedAt: ModifiedAt?
     var typing: [String]?
-    
+    var groupPermission: [GroupPermission]?
     
     
     init(from decoder: Decoder) throws {
@@ -77,9 +78,10 @@ struct GetUserList: Decodable {
         readCount = try container.decodeIfPresent([ReadCount].self, forKey: .readCount)
         modifiedAt = try container.decodeIfPresent(ModifiedAt.self, forKey: .modifiedAt)
         typing = try container.decodeIfPresent([String].self, forKey: .typing)
+        groupPermission = try container.decodeIfPresent([GroupPermission].self, forKey: .groupPermission)
     }
     
-    func encode(to encoder: Encoder) throws {
+    /*func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encodeIfPresent(createAt, forKey: .createAt)

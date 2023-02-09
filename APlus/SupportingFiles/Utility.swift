@@ -156,7 +156,7 @@ class Utility {
         //dateFormatter.timeZone = TimeZone(abbreviation: "UTC") //Set timezone that you want
         dateFormatter.locale = NSLocale.current
         dateFormatter.timeZone = TimeZone.current
-        dateFormatter.dateFormat = "h:mm a" 
+        dateFormatter.dateFormat = "h:mm a"
         
         return dateFormatter.string(from: date)
     }

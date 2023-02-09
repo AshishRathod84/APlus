@@ -30,12 +30,26 @@ extension ContactInfoVC : UITableViewDelegate, UITableViewDataSource {
             cell.lblUserName.text = (recentChatUser?.users?[indexPath.row].name)!
         }
         
+        /*///
         if isAdmin {
             if (recentChatUser?.users?[indexPath.row].userId)! == myUserId {
                 cell.lblAdmin.isHidden = false
                 cell.btnRemove.isHidden = true
             } else {
                 cell.lblAdmin.isHidden = true
+                cell.btnRemove.isHidden = false
+            }
+        }
+        /// */
+        cell.lblAdmin.isHidden = true
+        cell.btnRemove.isHidden = true
+        if isAdmin {
+            if (recentChatUser?.users?[indexPath.row].userId)! == myUserId {
+                cell.lblAdmin.isHidden = false
+            }
+        }
+        if isRemoveMember {
+            if (recentChatUser?.users?[indexPath.row].userId)! != myUserId {
                 cell.btnRemove.isHidden = false
             }
         }
