@@ -433,7 +433,7 @@ extension ChatVC : UIImagePickerControllerDelegate, UINavigationControllerDelega
                     }
                     
                     /*let param : [String : Any] = ["file": imgData!, "isRead" : false, "type" : "image", "viewBy" : (self.recentChatUser?.members)!, "readBy" : SocketChatManager.sharedInstance.myUserId, "sentAt" : "", "sentBy" : SocketChatManager.sharedInstance.myUserId, "timeMilliSeconds" : "", "fileName" : self.imgFileName, "contentType" : self.imgFileName.mimeType()]
-                    let param1 : [String : Any] = ["messageObj" : param, "groupId" : (self.recentChatUser?.groupId)!, "secretKey" : secretKey, "userId": SocketChatManager.sharedInstance.myUserId, "userName": myUserName]
+                    let param1 : [String : Any] = ["messageObj" : param, "groupId" : (self.recentChatUser?.groupId)!, "secretKey" : SocketChatManager.sharedInstance.secretKey, "userId": SocketChatManager.sharedInstance.myUserId, "userName": myUserName]
                     
                     if self.sendMessage(param: param1) {
                         let timestamp : Int = Int(NSDate().timeIntervalSince1970)

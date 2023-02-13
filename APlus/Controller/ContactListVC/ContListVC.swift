@@ -153,7 +153,7 @@ extension ContListVC : UITableViewDelegate, UITableViewDataSource {
                 arrSelectedUser.append(contectDetail)
             }
             let param = [
-                "secretKey": secretKey,
+                "secretKey": SocketChatManager.sharedInstance.secretKey,
                 "isGroup": false,
                 "createdBy": SocketChatManager.sharedInstance.myUserId,
                 "groupId": "",

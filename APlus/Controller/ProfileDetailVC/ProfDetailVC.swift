@@ -129,7 +129,7 @@ public class ProfDetailVC: UIViewController {
                 NetworkManager.sharedInstance.uploadMedia(fileName: self.imgFileName, image: imgData!, contentType: self.imgFileName.mimeType()) { url in
                     print(url)
                     if url != "" {
-                        SocketChatManager.sharedInstance.updateProfile(param: ["userId" : SocketChatManager.sharedInstance.myUserId, "secretKey" : secretKey, "name": self.txtUserName.text! , "profilePicture" : self.isPictureSelect ? url : "", "fileName" : self.imgFileName, "contentType" : self.mimeType])
+                        SocketChatManager.sharedInstance.updateProfile(param: ["userId" : SocketChatManager.sharedInstance.myUserId, "secretKey" : SocketChatManager.sharedInstance.secretKey, "name": self.txtUserName.text! , "profilePicture" : self.isPictureSelect ? url : "", "fileName" : self.imgFileName, "contentType" : self.mimeType])
                         self.isPictureSelect = false
                     }
                     else {
@@ -138,7 +138,7 @@ public class ProfDetailVC: UIViewController {
                 }
             }
             
-            //SocketChatManager.sharedInstance.updateProfile(param: ["userId" : SocketChatManager.sharedInstance.myUserId, "secretKey" : secretKey, "name": txtUserName.text! , "profilePicture" : isPictureSelect ? imgData : "", "fileName" : imgFileName, "contentType" : mimeType])
+            //SocketChatManager.sharedInstance.updateProfile(param: ["userId" : SocketChatManager.sharedInstance.myUserId, "secretKey" : SocketChatManager.sharedInstance.secretKey, "name": txtUserName.text! , "profilePicture" : isPictureSelect ? imgData : "", "fileName" : imgFileName, "contentType" : mimeType])
             //isPictureSelect = false
             
         } else {

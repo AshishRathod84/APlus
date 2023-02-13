@@ -127,11 +127,11 @@ public class GroupContVC: UIViewController {
                 arrSelectedUser.append(contectDetail)
             }
             let param = [
-              "secretKey": secretKey,
-              "groupId": groupId ?? "",
-              "members": arrUserIds,
-              "viewBy": arrUserIds,
-              "users": arrSelectedUser] as [String : Any]
+                "secretKey": SocketChatManager.sharedInstance.secretKey,
+                "groupId": groupId ?? "",
+                "members": arrUserIds,
+                "viewBy": arrUserIds,
+                "users": arrSelectedUser] as [String : Any]
             
             //["groupDetails": param]
             ProgressHUD.show()
