@@ -129,12 +129,12 @@ public class ChatVC: UIViewController {
         
         if !isDocumentPickerOpen {
             SocketChatManager.sharedInstance.joinGroup(param: groupId)
-            //SocketChatManager.sharedInstance.joinGroup(param: ["groupId" : groupId, "_id" : myUserId, "name" : "Pranay"])
+            //SocketChatManager.sharedInstance.joinGroup(param: ["groupId" : groupId, "_id" : SocketChatManager.sharedInstance.myUserId, "name" : "Pranay"])
             SocketChatManager.sharedInstance.userChatVC = {
                 return self
             }
-            SocketChatManager.sharedInstance.reqGroupDetail(param: ["userId": myUserId, "secretKey": secretKey, "groupId": groupId])
-            //SocketChatManager.sharedInstance.reqPreviousChatMsg(param: ["groupId" : groupId, "_id" : myUserId])
+            SocketChatManager.sharedInstance.reqGroupDetail(param: ["userId": SocketChatManager.sharedInstance.myUserId, "secretKey": SocketChatManager.sharedInstance.secretKey, "groupId": groupId])
+            //SocketChatManager.sharedInstance.reqPreviousChatMsg(param: ["groupId" : groupId, "_id" : SocketChatManager.sharedInstance.myUserId])
         } else {
             self.isDocumentPickerOpen = false
         }
@@ -165,7 +165,7 @@ public class ChatVC: UIViewController {
         var otherUserId : String = ""
         if !(recentChatUser?.isGroup ?? false) {
             for (_, item) in self.recentChatUser!.users!.enumerated() {
-                if item.userId != myUserId {
+                if item.userId != SocketChatManager.sharedInstance.myUserId {
                     otherUserId = item.userId!
                     break
                 }
@@ -200,7 +200,7 @@ public class ChatVC: UIViewController {
             isGroup = false
             self.imgProfilePic.image = UIImage(named: "placeholder-profile-img.png")
             for i in 0 ..< (recentChatUser?.users?.count ?? 0) {
-                if (recentChatUser?.users?[i].userId)! != myUserId {
+                if (recentChatUser?.users?[i].userId)! != SocketChatManager.sharedInstance.myUserId {
                     strDisName = (recentChatUser?.users?[i].name)!
                     strProfileImg = recentChatUser?.users?[i].profilePicture ?? ""
                 }
@@ -252,7 +252,7 @@ public class ChatVC: UIViewController {
         if !isGroup {
             SocketChatManager.sharedInstance.getOnlineRes(event: "online-status")
         }
-        SocketChatManager.sharedInstance.reqPreviousChatMsg(param: ["groupId" : groupId, "_id" : myUserId])
+        SocketChatManager.sharedInstance.reqPreviousChatMsg(param: ["groupId" : groupId, "_id" : SocketChatManager.sharedInstance.myUserId])
     }
     
     func getPreviousChat(chat : [GetPreviousChat]) {
@@ -269,7 +269,7 @@ public class ChatVC: UIViewController {
             }
         }
         SocketChatManager.sharedInstance.typingRes()
-        SocketChatManager.sharedInstance.unreadCountZero(param: ["userId" : myUserId, "secretKey" : secretKey, "groupId" : groupId])
+        SocketChatManager.sharedInstance.unreadCountZero(param: ["userId" : SocketChatManager.sharedInstance.myUserId, "secretKey" : SocketChatManager.sharedInstance.secretKey, "groupId" : groupId])
     }
     
     func setUserArray() {
@@ -329,7 +329,7 @@ public class ChatVC: UIViewController {
         print("Online Status -> \(onlineStatus.userId ?? "") - \(onlineStatus.isOnline ?? false)")
         
         for (_, item) in self.recentChatUser!.users!.enumerated() {
-            if (item.userId == onlineStatus.userId ?? "") && (item.userId != myUserId) {
+            if (item.userId == onlineStatus.userId ?? "") && (item.userId != SocketChatManager.sharedInstance.myUserId) {
                 print("Online Status -> \(onlineStatus.userId ?? "") - \(onlineStatus.isOnline ?? false)")
                 if onlineStatus.isOnline! {
                     onlineUser = "Online"
@@ -431,7 +431,7 @@ public class ChatVC: UIViewController {
         let OKAction = UIAlertAction(title: "OK", style: .default) { action in
             //Delete chat
             self.isClear = true
-            SocketChatManager.sharedInstance.clearChat(param: ["userId" : myUserId, "groupId" : self.groupId])
+            SocketChatManager.sharedInstance.clearChat(param: ["userId" : SocketChatManager.sharedInstance.myUserId, "groupId" : self.groupId])
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .default) { action in
         }
@@ -446,9 +446,9 @@ public class ChatVC: UIViewController {
             //Delete chat
             self.isClear = false
             if !self.isGroup {
-                SocketChatManager.sharedInstance.deleteChat(param: ["userId" : myUserId, "groupId" : self.groupId], from: true)
+                SocketChatManager.sharedInstance.deleteChat(param: ["userId" : SocketChatManager.sharedInstance.myUserId, "groupId" : self.groupId], from: true)
             } else {
-                SocketChatManager.sharedInstance.deleteGroup(param: ["userId" : myUserId, "groupId" : self.groupId], from: true)
+                SocketChatManager.sharedInstance.deleteGroup(param: ["userId" : SocketChatManager.sharedInstance.myUserId, "groupId" : self.groupId], from: true)
             }
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .default) { action in
@@ -511,14 +511,14 @@ public class ChatVC: UIViewController {
     
     @IBAction func btnSendTap(_ sender: UIButton) {
         if txtTypeMsg.text! != "" {
-            let param : [String : Any] = ["message": txtTypeMsg.text!, "isRead" : false, "type" : "text", "viewBy" : (recentChatUser?.members)!, "readBy" : myUserId, "sentAt" : "", "sentBy" : myUserId, "timeMilliSeconds" : ""]
-            let param1 : [String : Any] = ["messageObj" : param, "groupId" : (recentChatUser?.groupId)!, "secretKey" : secretKey, "userId": myUserId, "userName": myUserName]
+            let param : [String : Any] = ["message": txtTypeMsg.text!, "isRead" : false, "type" : "text", "viewBy" : (recentChatUser?.members)!, "readBy" : SocketChatManager.sharedInstance.myUserId, "sentAt" : "", "sentBy" : SocketChatManager.sharedInstance.myUserId, "timeMilliSeconds" : ""]
+            let param1 : [String : Any] = ["messageObj" : param, "groupId" : (recentChatUser?.groupId)!, "secretKey" : SocketChatManager.sharedInstance.secretKey, "userId": SocketChatManager.sharedInstance.myUserId, "userName": SocketChatManager.sharedInstance.myUserName]
             //SocketChatManager.sharedInstance.sendMsg(message: param1)
             
             if self.sendMessage(param: param1) {
                 let timestamp : Int = Int(NSDate().timeIntervalSince1970)
                 let sentAt : [String : Any] = ["seconds" : timestamp]
-                let msg : [String : Any] = ["sentBy" : myUserId,
+                let msg : [String : Any] = ["sentBy" : SocketChatManager.sharedInstance.myUserId,
                                             "type" : "text",
                                             "sentAt" : sentAt,
                                             "message" : txtTypeMsg.text!]

@@ -99,25 +99,25 @@ public class CreateGrpVC: UIViewController {
     @IBAction func btnCreateGroupTap(_ sender: UIButton) {
         if !Validations.isEmpty(str: txtGroupName.text!) {
             let param = [
-              "secretKey": secretKey,
-              "isGroup": true,
-              "createdBy": myUserId,
-              "groupId": "",
-              "groupImage": isPictureSelect ? (imgGroup.image)?.pngData() : "",
-              "members": arrUserIds,
-              "isDeactivateUser": false,
-              "modifiedBy": "",
-              "name": txtGroupName.text!,
-              "online": [],
-              "pinnedGroup": [],
-              "readCount": arrReadCount,
-              "typing": [],
-              "blockUsers": [],
-              "viewBy": arrUserIds,
-              "recentMessage": [],
-              "users": arrContactList,
-              "fileName" : imgFileName,
-              "contentType" : mimeType] as [String : Any]
+                "secretKey": SocketChatManager.sharedInstance.secretKey,
+                "isGroup": true,
+                "createdBy": SocketChatManager.sharedInstance.myUserId,
+                "groupId": "",
+                "groupImage": isPictureSelect ? (imgGroup.image)?.pngData() : "",
+                "members": arrUserIds,
+                "isDeactivateUser": false,
+                "modifiedBy": "",
+                "name": txtGroupName.text!,
+                "online": [],
+                "pinnedGroup": [],
+                "readCount": arrReadCount,
+                "typing": [],
+                "blockUsers": [],
+                "viewBy": arrUserIds,
+                "recentMessage": [],
+                "users": arrContactList,
+                "fileName" : imgFileName,
+                "contentType" : mimeType] as [String : Any]
             
             SocketChatManager.sharedInstance.createGroup(param: ["groupDetails": param], from: true)
         } else {

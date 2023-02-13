@@ -21,6 +21,14 @@ protocol SocketDelegate {
 public class SocketChatManager {
     
     // MARK: - Properties
+    //public var secretKey : String = "U2FsdGVkX18AsTXTniJJwZ9KaiRWQki0Gike3TN%2BQyXws0hyLIdcRN4abTk84a7r"  //-   old
+    public var secretKey : String = "U2FsdGVkX192tCACGjzd4CmNdA3zxj2OEy%2BHEvcLvaFDjpCyLnhjGDV9tt%2Fx2exZ"  //-   new
+    //public var secretKey : String = "U2FsdGVkX1%2BdKnWn5ngCut4b2pG%2FM2H8%2FdDTxTKWzmz%2FFgcSYyKoeHp83UBOkxYL"    //- GE
+
+    var myUserId : String = "63e377720d573f76b2811bce"          //  Pranay
+
+    var myUserName : String = ""
+    
     public static let sharedInstance = SocketChatManager()
     public var manager : SocketManager?
     public var socket : SocketIOClient?

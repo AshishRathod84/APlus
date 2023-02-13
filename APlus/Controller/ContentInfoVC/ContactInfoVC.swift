@@ -102,7 +102,7 @@ public class ContactInfoVC: UIViewController {
             txtUserName.text = (recentChatUser?.name)!
             txtUserName.isEnabled = false
             lblEmail.text = "\((recentChatUser?.users?.count)!) participants"
-            if (recentChatUser?.createdBy)! == myUserId {
+            if (recentChatUser?.createdBy)! == SocketChatManager.sharedInstance.myUserId {
                 isAdmin = true
                 isRemoveMember = true
                 
@@ -167,7 +167,7 @@ public class ContactInfoVC: UIViewController {
             }
             
             for i in 0 ..< (recentChatUser?.users?.count)! {
-                if (recentChatUser?.users?[i].userId)! != myUserId {
+                if (recentChatUser?.users?[i].userId)! != SocketChatManager.sharedInstance.myUserId {
                     //lblUserName.text = (recentChatUser?.users?[i].name)!
                     txtUserName.text = (recentChatUser?.users?[i].name)!
                     lblEmail.text = (recentChatUser?.users?[i].mobileEmail)!
@@ -259,7 +259,7 @@ public class ContactInfoVC: UIViewController {
                 let alertController = UIAlertController(title: "Are you sure you want to exit group ?", message: "", preferredStyle: .alert)
                 let OKAction = UIAlertAction(title: "OK", style: .default) { action in
                     ProgressHUD.show()
-                    SocketChatManager.sharedInstance.exitGroup(param: ["userId" : myUserId, "groupId" : self.groupId])
+                    SocketChatManager.sharedInstance.exitGroup(param: ["userId" : SocketChatManager.sharedInstance.myUserId, "groupId" : self.groupId])
                 }
                 let cancelAction = UIAlertAction(title: "Cancel", style: .default) { action in
                 }
@@ -274,7 +274,7 @@ public class ContactInfoVC: UIViewController {
                 let OKAction = UIAlertAction(title: "OK", style: .default) { action in
                     //Delete group
                     ProgressHUD.show()
-                    SocketChatManager.sharedInstance.deleteGroup(param: ["userId" : myUserId, "groupId" : self.groupId], from: false)
+                    SocketChatManager.sharedInstance.deleteGroup(param: ["userId" : SocketChatManager.sharedInstance.myUserId, "groupId" : self.groupId], from: false)
                 }
                 let cancelAction = UIAlertAction(title: "Cancel", style: .default) { action in
                 }
@@ -286,7 +286,7 @@ public class ContactInfoVC: UIViewController {
                 let OKAction = UIAlertAction(title: "OK", style: .default) { action in
                     //Delete chat
                     ProgressHUD.show()
-                    SocketChatManager.sharedInstance.deleteChat(param: ["userId" : myUserId, "groupId" : self.groupId], from: false)
+                    SocketChatManager.sharedInstance.deleteChat(param: ["userId" : SocketChatManager.sharedInstance.myUserId, "groupId" : self.groupId], from: false)
                 }
                 let cancelAction = UIAlertAction(title: "Cancel", style: .default) { action in
                 }

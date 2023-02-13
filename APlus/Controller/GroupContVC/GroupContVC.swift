@@ -76,7 +76,7 @@ public class GroupContVC: UIViewController {
     public override func viewWillAppear(_ animated: Bool) {
         ProgressHUD.show()
         //userId, secretKey
-        SocketChatManager.sharedInstance.getUserList(param: ["userId" : myUserId, "secretKey" : secretKey], from: false)
+        SocketChatManager.sharedInstance.getUserList(param: ["userId" : SocketChatManager.sharedInstance.myUserId, "secretKey" : SocketChatManager.sharedInstance.secretKey], from: false)
     }
     
     func getUserListRes(_ contactList : ContactList) {
@@ -84,7 +84,7 @@ public class GroupContVC: UIViewController {
         self.arrAllContactList = contactList.list
         
         for i in 0 ..< (arrAllContactList!.count) {
-            if (arrAllContactList![i].userId)! == myUserId {
+            if (arrAllContactList![i].userId)! == SocketChatManager.sharedInstance.myUserId {
                 self.myContactDetail = arrAllContactList![i]
                 arrAllContactList?.remove(at: i)
                 self.contactList?.list?.remove(at: i)

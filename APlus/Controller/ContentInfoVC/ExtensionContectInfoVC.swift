@@ -24,7 +24,7 @@ extension ContactInfoVC : UITableViewDelegate, UITableViewDataSource {
         cell.lblAdmin.isHidden = true
         cell.btnRemove.isHidden = true
         
-        if (recentChatUser?.users?[indexPath.row].userId)! == myUserId {
+        if (recentChatUser?.users?[indexPath.row].userId)! == SocketChatManager.sharedInstance.myUserId {
             cell.lblUserName.text = "\((recentChatUser?.users?[indexPath.row].name)!) (You)"
         } else {
             cell.lblUserName.text = (recentChatUser?.users?[indexPath.row].name)!
@@ -32,7 +32,7 @@ extension ContactInfoVC : UITableViewDelegate, UITableViewDataSource {
         
         /*///
         if isAdmin {
-            if (recentChatUser?.users?[indexPath.row].userId)! == myUserId {
+            if (recentChatUser?.users?[indexPath.row].userId)! == SocketChatManager.sharedInstance.myUserId {
                 cell.lblAdmin.isHidden = false
                 cell.btnRemove.isHidden = true
             } else {
@@ -44,12 +44,12 @@ extension ContactInfoVC : UITableViewDelegate, UITableViewDataSource {
         cell.lblAdmin.isHidden = true
         cell.btnRemove.isHidden = true
         if isAdmin {
-            if (recentChatUser?.users?[indexPath.row].userId)! == myUserId {
+            if (recentChatUser?.users?[indexPath.row].userId)! == SocketChatManager.sharedInstance.myUserId {
                 cell.lblAdmin.isHidden = false
             }
         }
         if isRemoveMember {
-            if (recentChatUser?.users?[indexPath.row].userId)! != myUserId {
+            if (recentChatUser?.users?[indexPath.row].userId)! != SocketChatManager.sharedInstance.myUserId {
                 cell.btnRemove.isHidden = false
             }
         }
@@ -80,7 +80,7 @@ extension ContactInfoVC : UITableViewDelegate, UITableViewDataSource {
         }   //  */
         
         let param = [
-          "secretKey": secretKey,
+            "secretKey": SocketChatManager.sharedInstance.secretKey,
           "groupId": recentChatUser?.groupId ?? "",
           "members": arrUserIds,
           "viewBy": arrUserIds,

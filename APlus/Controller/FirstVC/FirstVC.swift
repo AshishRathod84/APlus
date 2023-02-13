@@ -10,14 +10,6 @@ import SocketIO
 import ProgressHUD
 import JGProgressHUD
 
-//public var secretKey : String = "U2FsdGVkX18AsTXTniJJwZ9KaiRWQki0Gike3TN%2BQyXws0hyLIdcRN4abTk84a7r"  //-   old
-public var secretKey : String = "U2FsdGVkX192tCACGjzd4CmNdA3zxj2OEy%2BHEvcLvaFDjpCyLnhjGDV9tt%2Fx2exZ"  //-   new
-//public var secretKey : String = "U2FsdGVkX1%2BdKnWn5ngCut4b2pG%2FM2H8%2FdDTxTKWzmz%2FFgcSYyKoeHp83UBOkxYL"    //- GE
-
-var myUserId : String = "63e377720d573f76b2811bce"          //  Pranay
-
-var myUserName : String = ""
-
 let imageCache = NSCache<AnyObject, AnyObject>()
 
 public class FirstVC: UIViewController {
@@ -121,8 +113,8 @@ public class FirstVC: UIViewController {
         
         if (SocketChatManager.sharedInstance.socket?.status == .connected) {
             //isGetUserList = true
-            SocketChatManager.sharedInstance.reqProfileDetails(param: ["userId" : myUserId], from: false)
-            SocketChatManager.sharedInstance.reqRecentChatList(param: ["secretKey" : secretKey, "_id" : myUserId])
+            SocketChatManager.sharedInstance.reqProfileDetails(param: ["userId" : SocketChatManager.sharedInstance.myUserId], from: false)
+            SocketChatManager.sharedInstance.reqRecentChatList(param: ["secretKey" : SocketChatManager.sharedInstance.secretKey, "_id" : SocketChatManager.sharedInstance.myUserId])
             //self.getUserRole()
         }
     }
@@ -185,7 +177,7 @@ public class FirstVC: UIViewController {
         print("Get response of profile details.")
         self.profileDetail = profileDetail
         
-        myUserName = self.profileDetail?.name ?? ""
+        SocketChatManager.sharedInstance.myUserName = self.profileDetail?.name ?? ""
         
         imgProfilePic.image = UIImage(named: "placeholder-profile-img.png")
         if profileDetail.profilePicture! != "" {
@@ -245,7 +237,7 @@ public class FirstVC: UIViewController {
     func getNewChatMsg(isNew: Bool) {
         print("New message arrive == \(isNew)")
         if isNew {
-            SocketChatManager.sharedInstance.reqRecentChatList(param: ["secretKey" : secretKey, "_id" : myUserId])  //  ["secretKey" : secretKey, "_id" : myUserId]
+            SocketChatManager.sharedInstance.reqRecentChatList(param: ["secretKey" : SocketChatManager.sharedInstance.secretKey, "_id" : SocketChatManager.sharedInstance.myUserId])  //  ["secretKey" : SocketChatManager.sharedInstance.secretKey, "_id" : SocketChatManager.sharedInstance.myUserId]
         }
     }
 }
@@ -274,7 +266,7 @@ extension FirstVC : UITableViewDelegate, UITableViewDataSource {
             cell.configure((self.arrRecentChatUserList?[indexPath.row].name)!, self.arrRecentChatUserList?[indexPath.row].groupImage ?? "", msgType, isGroup: true)
         } else {
             for (_, item) in ((self.arrRecentChatUserList?[indexPath.row].users)!).enumerated() {
-                if (item.userId)! != myUserId {
+                if (item.userId)! != SocketChatManager.sharedInstance.myUserId {
                     cell.configure(item.name ?? "", item.profilePicture ?? "", msgType, isGroup: false)
                 }
             }
@@ -293,7 +285,7 @@ extension FirstVC : UITableViewDelegate, UITableViewDataSource {
         
         cell.lblUnreadMsgCount.isHidden = true
         for (_, item) in ((self.arrRecentChatUserList?[indexPath.row].readCount)!).enumerated() {
-            if item.userId == myUserId && item.unreadCount! != 0 {
+            if item.userId == SocketChatManager.sharedInstance.myUserId && item.unreadCount! != 0 {
                 cell.lblUnreadMsgCount.isHidden = false
                 cell.lblUnreadMsgCount.text = String(describing: item.unreadCount!)
             }
@@ -308,7 +300,7 @@ extension FirstVC : UITableViewDelegate, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        let sb = UIStoryboard(name: "Main", bundle: nil)
 //        let vc =  sb.instantiateViewController(withIdentifier: "UserChatVC") as! UserChatVC
-//        //vc.myUserId = myUserId
+//        //vc.myUserId = SocketChatManager.sharedInstance.myUserId
 //        vc.recentChatUser = self.arrRecentChatUserList?[indexPath.row]
 //        self.navigationController?.pushViewController(vc, animated: true)
         
@@ -336,7 +328,7 @@ extension FirstVC : UISearchBarDelegate, ProfileImgDelegate {
                     }
                 } else {
                     for (_, user) in ((item.users)!).enumerated() {
-                        if (user.userId)! != myUserId {
+                        if (user.userId)! != SocketChatManager.sharedInstance.myUserId {
                             if user.name!.lowercased().contains(searchText.lowercased()) {
                                 self.arrRecentChatUserList?.append(item)
                             }
@@ -381,11 +373,11 @@ extension FirstVC : SocketDelegate {
     func getRecentUser(message: String) {
         if (SocketChatManager.sharedInstance.socket?.status == .connected) && !isGetUserList {
             isGetUserList = true
-            SocketChatManager.sharedInstance.online(param: ["userId": myUserId, "secretKey": secretKey])
-            SocketChatManager.sharedInstance.getUserRole(param: ["secretKey": secretKey, "userId": myUserId])
+            SocketChatManager.sharedInstance.online(param: ["userId": SocketChatManager.sharedInstance.myUserId, "secretKey": SocketChatManager.sharedInstance.secretKey])
+            SocketChatManager.sharedInstance.getUserRole(param: ["secretKey": SocketChatManager.sharedInstance.secretKey, "userId": SocketChatManager.sharedInstance.myUserId])
             //ProgressHUD.show()
-            SocketChatManager.sharedInstance.reqProfileDetails(param: ["userId" : myUserId], from: false)
-            SocketChatManager.sharedInstance.reqRecentChatList(param: ["secretKey" : secretKey, "_id" : myUserId])  //  ["secretKey" : secretKey, "_id" : myUserId]
+            SocketChatManager.sharedInstance.reqProfileDetails(param: ["userId" : SocketChatManager.sharedInstance.myUserId], from: false)
+            SocketChatManager.sharedInstance.reqRecentChatList(param: ["secretKey" : SocketChatManager.sharedInstance.secretKey, "_id" : SocketChatManager.sharedInstance.myUserId])  //  ["secretKey" : SocketChatManager.sharedInstance.secretKey, "_id" : SocketChatManager.sharedInstance.myUserId]
         }
     }
 }
