@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GetPreviousChat: Codable {
+/*struct GetPreviousChat: Codable {
     
     enum CodingKeys: String, CodingKey {
         case video
@@ -29,6 +29,12 @@ struct GetPreviousChat: Codable {
         case isPrevious
         case name
         case fileName
+        
+        case replyUser
+        case replyMsg
+        case replyMsgId
+        case replyUserId
+        case replyMsgType
     }
     
     var video: String?
@@ -52,7 +58,12 @@ struct GetPreviousChat: Codable {
     var name: String?
     var fileName: String?
     var contentType: String?
-    //var file
+    
+    var replyUser: String?
+    var replyMsg: String?
+    var replyMsgId: String?
+    var replyUserId: String?
+    var replyMsgType: String?
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -76,6 +87,12 @@ struct GetPreviousChat: Codable {
         isPrevious = try container.decodeIfPresent(Bool.self, forKey: .isPrevious)
         name = try container.decodeIfPresent(String.self, forKey: .name)
         fileName = try container.decodeIfPresent(String.self, forKey: .fileName)
+        
+        replyUser = try container.decodeIfPresent(String.self, forKey: .replyUser)
+        replyMsg = try container.decodeIfPresent(String.self, forKey: .replyMsg)
+        replyMsgId = try container.decodeIfPresent(String.self, forKey: .replyMsgId)
+        replyUserId = try container.decodeIfPresent(String.self, forKey: .replyUserId)
+        replyMsgType = try container.decodeIfPresent(String.self, forKey: .replyMsgType)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -101,5 +118,42 @@ struct GetPreviousChat: Codable {
         try container.encodeIfPresent(isPrevious, forKey: .isPrevious)
         try container.encodeIfPresent(name, forKey: .name)
         try container.encodeIfPresent(fileName, forKey: .fileName)
+        
+        try container.encodeIfPresent(replyUser, forKey: .replyUser)
+        try container.encodeIfPresent(replyMsg, forKey: .replyMsg)
+        try container.encodeIfPresent(replyMsgId, forKey: .replyMsgId)
+        try container.encodeIfPresent(replyUserId, forKey: .replyUserId)
+        try container.encodeIfPresent(replyMsgType, forKey: .replyMsgType)
     }
+}   ///  */
+
+struct GetPreviousChat: Codable {
+    var video: String?
+    var timeMilliSeconds: TimeMilliSeconds?
+    var secretKey: String?
+    var sentBy: String?
+    var type: String?
+    var image: String?
+    var audio: String?
+    var base64Thumbnail: String?
+    var msgId: String?
+    var viewBy: [String]?
+    var isRead: Bool?
+    var thumbnail: String?
+    var sentAt: SentAt?
+    var document: String?
+    var readBy: String?
+    var message: String?
+    
+    var isPrevious: Bool? = true
+    var name: String?
+    var fileName: String?
+    var contentType: String?
+    
+    var replyUser: String?
+    var replyMsg: String?
+    var replyMsgId: String?
+    var replyUserId: String?
+    var replyMsgType: String?
+    
 }

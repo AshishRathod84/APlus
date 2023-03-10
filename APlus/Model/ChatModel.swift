@@ -21,6 +21,12 @@ struct ReceiveMessage: Codable {
     
     var fileName : String?
     var msgId : String?
+    
+    var replyUser: String?
+    var replyMsg: String?
+    var replyMsgId: String?
+    var replyUserId: String?
+    var replyMsgType: String?
 }
 
 struct ProfileDetail: Codable {

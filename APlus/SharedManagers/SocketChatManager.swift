@@ -18,15 +18,26 @@ protocol SocketDelegate {
     func getUnreadChat(noOfChat: Int)
 }
 
+/*extension SocketDelegate {
+    func getUnreadChat(noOfChat: Int) {}
+}   /// */
+
 public class SocketChatManager {
     
     // MARK: - Properties
     //public var secretKey : String = "U2FsdGVkX18AsTXTniJJwZ9KaiRWQki0Gike3TN%2BQyXws0hyLIdcRN4abTk84a7r"  //-   old
-    public var secretKey : String = "U2FsdGVkX192tCACGjzd4CmNdA3zxj2OEy%2BHEvcLvaFDjpCyLnhjGDV9tt%2Fx2exZ"  //-   new
-    //public var secretKey : String = "U2FsdGVkX1%2BdKnWn5ngCut4b2pG%2FM2H8%2FdDTxTKWzmz%2FFgcSYyKoeHp83UBOkxYL"    //- GE
-
-    var myUserId : String = "63e377720d573f76b2811bce"          //  Pranay
-
+    //public var secretKey : String = "U2FsdGVkX192tCACGjzd4CmNdA3zxj2OEy%2BHEvcLvaFDjpCyLnhjGDV9tt%2Fx2exZ"  //-   new
+    public var secretKey : String = "U2FsdGVkX1%2BdKnWn5ngCut4b2pG%2FM2H8%2FdDTxTKWzmz%2FFgcSYyKoeHp83UBOkxYL"    //- GE
+    
+    //var myUserId : String = ""          //  Pranay
+    //var myUserId : String = ""          //  Malay
+    //var myUserId : String = ""          //  Kishan D
+    
+//    var myUserId : String = "63f4adc7574b0212cfd5029b"          //  Demo 001 GE   -   GE
+//    var myUserId : String = "63f4adc6574b0212cfd50294"          //  Demo GE   -   GE
+    var myUserId : String = "63f4ada8574b0212cfd501de"          //  Test Data   -   GE
+    
+    
     var myUserName : String = ""
     
     public static let sharedInstance = SocketChatManager()
@@ -50,8 +61,6 @@ public class SocketChatManager {
     
     var userRole: UserRole?
     
-    /*let specs: SocketIOClientConfiguration = [.connectParams(["access_token": token]), .log(true), .forceNew(true), .selfSigned(true), .forcePolling(true), .secure(true), .reconnects(true), .forceWebsockets(true), .reconnectAttempts(3), .reconnectWait(3), .security(SSLSecurity(usePublicKeys: true)), .sessionDelegate(self)]  //  */
-    
     fileprivate var socketHandlerArr = [((()->Void))]()
     typealias ObjBlock = @convention(block) () -> ()
     
@@ -69,8 +78,6 @@ public class SocketChatManager {
     
     // MARK: - Socket Setup
     func initializeSocket() {
-        //let manager = SocketManager(socketURL: URL(string: "")!, config: [.log(true), .compress])
-        //private var manager = SocketManager(socketURL: URL(string: "")!, config: [.log(true), .compress,])
         manager = SocketManager(socketURL: URL(string: serverURL)!, config: [.log(true), .compress, .reconnects(true), .reconnectWait(10)])
         self.socket = manager?.defaultSocket
     }
@@ -388,7 +395,8 @@ public class SocketChatManager {
             self.userRole = try! JSONDecoder().decode(UserRole.self, from: responseData)
             self.socket?.off("user-role")
             self.socket?.off("user-role-res")
-            self.viewController!().getUserRole(userRole: self.userRole!)
+            //self.viewController!().getUserRole(userRole: self.userRole!)
+            self.viewController!().getUserRole()
         })
     }
     
@@ -416,8 +424,16 @@ public class SocketChatManager {
     // MARK: - Socket Emits
     
     public func socketLogin(userId: String, secretKey: String) {
-        print("User Id: \(userId)")
-        print("secretKey : \(secretKey)")
+        if secretKey != "" && userId != "" {
+            print("User Id: \(userId)")
+            print("secretKey : \(secretKey)")
+            self.myUserId = userId
+            self.secretKey = secretKey
+            //SocketChatManager.sharedInstance.online(param: ["userId": myUserId, "secretKey": secretKey])
+            //SocketChatManager.sharedInstance.getUserRole(param: ["secretKey": secretKey, "userId": myUserId])
+        } else {
+            print("User Id & secretKey : Not available while call function...")
+        }
     }
     
     public func socketSignUp() {

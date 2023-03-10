@@ -33,6 +33,15 @@ public class ChatVC: UIViewController {
     @IBOutlet weak var constViewTypeMsgHeight: NSLayoutConstraint!
     @IBOutlet weak var constViewUserDetailHeight: NSLayoutConstraint!
 
+    @IBOutlet weak var viewMainReply: UIView!
+    @IBOutlet weak var viewReply: UIView!
+    @IBOutlet weak var btnClose: UIButton!
+    @IBOutlet weak var lblReplySidebar: UILabel!
+    @IBOutlet weak var lblReplyUser: UILabel!
+    @IBOutlet weak var lblReplyMsg: UILabel!
+    @IBOutlet weak var imgReplyImage: UIImageView!
+    @IBOutlet weak var constTblBottom: NSLayoutConstraint!
+    
     var strDisName : String?
     var strProfileImg : String? = ""
     var isNetworkAvailable : Bool = false
@@ -44,14 +53,14 @@ public class ChatVC: UIViewController {
     var arrVideoExtension : [String] = ["mp4", "avi", "mov", "3gp", "3gpp", "mpg", "mpeg", "webm", "flv", "m4v", "wmv", "asx", "asf"]
     var isCameraClick : Bool = false
     
-    var groupId : String = "abc"    //  roomId
+    public var groupId : String = ""    //  roomId
     
     var arrGetPreviousChat : [GetPreviousChat]? = []
     var arrDtForSection : [String]? = []
     var arrSectionMsg : [[GetPreviousChat]]? = [[]]
     var isReceiveMsgOn : Bool = false
     var recentChatUser : GetUserList?
-    var isGroup : Bool = false
+    public var isGroup : Bool = false
     var isClear : Bool = false
     
     var imgFileName : String = ""
@@ -61,12 +70,18 @@ public class ChatVC: UIViewController {
     var timeSeconds = 1
     var onlineUser : String = ""
     
+    var swipeReplyMsg: GetPreviousChat?
+    var isSwipe: Bool = false
+    var imageRequest: Cancellable?
+    var isImg: Bool = false
+    
     struct AllUser: Codable {
         var userId: String?
         var userName: String?
     }
     var arrUserName : [AllUser]? = []
-    var isHideUserDetailView: Bool = false
+    public var isHideUserDetailView: Bool = false
+    public var isDirectToChat: Bool = false
     
     public init() {
         super.init(nibName: "UserChatVC", bundle: Bundle(for: ChatVC.self))
@@ -85,10 +100,43 @@ public class ChatVC: UIViewController {
         btnSend.backgroundColor = .white
         btnSend.layer.cornerRadius = btnSend.frame.width / 2
         
+        viewMainReply.backgroundColor = .clear
+        viewReply.clipsToBounds = true
+        viewReply.layer.cornerRadius = 7
+        btnClose.backgroundColor = .clear
+        viewMainReply.isHidden = true
+        //lblReplySidebar.clipsToBounds = true
+        //lblReplySidebar.layer.cornerRadius = lblReplySidebar.frame.height / 2
+        //lblReplySidebar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        constTblBottom.priority = .required
+        
         btnUserInfo.isEnabled = false
-        groupId = recentChatUser?.groupId ?? ""
-        isGroup = recentChatUser?.isGroup ?? false
-        self.setData()
+        if !isDirectToChat {
+            groupId = recentChatUser?.groupId ?? ""
+            isGroup = recentChatUser?.isGroup ?? false
+            self.setData()
+        } else {
+            
+        }
+        //self.setData()
+        
+        do {
+            try Network.reachability = Reachability(hostname: "www.google.com")
+        }
+        catch {
+            switch error as? Network.Error {
+            case let .failedToCreateWith(hostname)?:
+                print("Network error:\nFailed to create reachability object With host named:", hostname)
+            case let .failedToInitializeWith(address)?:
+                print("Network error:\nFailed to initialize reachability object With address:", address)
+            case .failedToSetCallout?:
+                print("Network error:\nFailed to set callout")
+            case .failedToSetDispatchQueue?:
+                print("Network error:\nFailed to set DispatchQueue")
+            case .none:
+                print(error)
+            }
+        }
         
         if Network.reachability.isReachable {
             isNetworkAvailable = true
@@ -107,11 +155,13 @@ public class ChatVC: UIViewController {
         tblUserChat.register(UINib(nibName: "OwnImgChatBubbleCell", bundle: bundle), forCellReuseIdentifier: "OwnImgChatBubbleCell")
         tblUserChat.register(UINib(nibName: "OwnFileBubbleCell", bundle: bundle), forCellReuseIdentifier: "OwnFileBubbleCell")
         tblUserChat.register(UINib(nibName: "OwnAudioBubbleCell", bundle: bundle), forCellReuseIdentifier: "OwnAudioBubbleCell")
+        tblUserChat.register(UINib(nibName: "OwnReplyTVCell", bundle: nil), forCellReuseIdentifier: "OwnReplyTVCell")   //  For reply msg.
         
         tblUserChat.register(UINib(nibName: "OtherChatBubbleCell", bundle: bundle), forCellReuseIdentifier: "OtherChatBubbleCell")
         tblUserChat.register(UINib(nibName: "OtherImgChatBubbleCell", bundle: bundle), forCellReuseIdentifier: "OtherImgChatBubbleCell")
         tblUserChat.register(UINib(nibName: "OtherFileBubbleCell", bundle: bundle), forCellReuseIdentifier: "OtherFileBubbleCell")
         tblUserChat.register(UINib(nibName: "OtherAudioBubbleCell", bundle: bundle), forCellReuseIdentifier: "OtherAudioBubbleCell")
+        tblUserChat.register(UINib(nibName: "OtherReplyTVCell", bundle: nil), forCellReuseIdentifier: "OtherReplyTVCell")   //  For reply msg.
         
         if isHideUserDetailView {
             self.viewBackUserName.isHidden = true
@@ -163,7 +213,7 @@ public class ChatVC: UIViewController {
         onlineUser = isGroup ? "" : "Offline"
         
         var otherUserId : String = ""
-        if !(recentChatUser?.isGroup ?? false) {
+        if !isGroup {
             for (_, item) in self.recentChatUser!.users!.enumerated() {
                 if item.userId != SocketChatManager.sharedInstance.myUserId {
                     otherUserId = item.userId!
@@ -177,7 +227,7 @@ public class ChatVC: UIViewController {
         lblOnline.text = onlineUser
         
         var isSendMsg: Bool = false
-        if recentChatUser?.isGroup ?? false {
+        if isGroup {
             self.imgProfilePic.image = UIImage(named: "group-placeholder.jpg")
             isGroup = true
             strDisName = (recentChatUser?.name)!
@@ -247,12 +297,15 @@ public class ChatVC: UIViewController {
     
     func getGroupDetail(groupDetail : GetUserList) {
         recentChatUser = groupDetail
+        groupId = recentChatUser?.groupId ?? ""
+        isGroup = recentChatUser?.isGroup ?? false
         self.setData()
         btnUserInfo.isEnabled = true
         if !isGroup {
             SocketChatManager.sharedInstance.getOnlineRes(event: "online-status")
         }
         SocketChatManager.sharedInstance.reqPreviousChatMsg(param: ["groupId" : groupId, "_id" : SocketChatManager.sharedInstance.myUserId])
+        SocketChatManager.sharedInstance.getUserRole(param: ["secretKey": SocketChatManager.sharedInstance.secretKey, "userId": SocketChatManager.sharedInstance.myUserId])
     }
     
     func getPreviousChat(chat : [GetPreviousChat]) {
@@ -511,18 +564,29 @@ public class ChatVC: UIViewController {
     
     @IBAction func btnSendTap(_ sender: UIButton) {
         if txtTypeMsg.text! != "" {
-            let param : [String : Any] = ["message": txtTypeMsg.text!, "isRead" : false, "type" : "text", "viewBy" : (recentChatUser?.members)!, "readBy" : SocketChatManager.sharedInstance.myUserId, "sentAt" : "", "sentBy" : SocketChatManager.sharedInstance.myUserId, "timeMilliSeconds" : ""]
+            let param : [String : Any] = ["message": txtTypeMsg.text!, "isRead" : false, "type" : "text", "viewBy" : (recentChatUser?.members)!, "readBy" : SocketChatManager.sharedInstance.myUserId, "sentAt" : "", "sentBy" : SocketChatManager.sharedInstance.myUserId, "timeMilliSeconds" : "",
+                                          "replyUser": self.isSwipe ? getUserName(userId: self.swipeReplyMsg?.sentBy ?? "") : "",
+                                          "replyUserId" : self.isSwipe ? self.swipeReplyMsg?.sentBy : "",
+                                          "replyMsg": self.isSwipe ? (self.isImg ? swipeReplyMsg?.image : lblReplyMsg.text) : "",
+                                          "replyMsgType": self.isSwipe ? self.swipeReplyMsg?.type : "",
+                                          "replyMsgId": self.isSwipe ? self.swipeReplyMsg?.msgId : ""] as [String : Any]
             let param1 : [String : Any] = ["messageObj" : param, "groupId" : (recentChatUser?.groupId)!, "secretKey" : SocketChatManager.sharedInstance.secretKey, "userId": SocketChatManager.sharedInstance.myUserId, "userName": SocketChatManager.sharedInstance.myUserName]
             //SocketChatManager.sharedInstance.sendMsg(message: param1)
             
             if self.sendMessage(param: param1) {
+                //self.btnCloseTap(UIButton())
                 let timestamp : Int = Int(NSDate().timeIntervalSince1970)
                 let sentAt : [String : Any] = ["seconds" : timestamp]
                 let msg : [String : Any] = ["sentBy" : SocketChatManager.sharedInstance.myUserId,
                                             "type" : "text",
                                             "sentAt" : sentAt,
-                                            "message" : txtTypeMsg.text!]
-                
+                                            "message" : txtTypeMsg.text!,
+                                            "replyUser": self.isSwipe ? getUserName(userId: self.swipeReplyMsg?.sentBy ?? "") : "",
+                                            "replyUserId": self.isSwipe ? self.swipeReplyMsg?.sentBy : "",
+                                            "replyMsg": self.isSwipe ? (self.isImg ? swipeReplyMsg?.image : lblReplyMsg.text) : "",
+                                            "replyMsgType": self.isSwipe ? self.swipeReplyMsg?.type : "",
+                                            "replyMsgId": self.isSwipe ? self.swipeReplyMsg?.msgId : ""]
+                self.btnCloseTap(UIButton())
                 if self.loadChatMsgToArray(msg: msg, timestamp: timestamp) {
                     txtTypeMsg.text = ""
                     tblUserChat.reloadData()
@@ -531,6 +595,14 @@ public class ChatVC: UIViewController {
                 }
             }
         }
+    }
+    
+    @IBAction func btnCloseTap(_ sender: UIButton) {
+        viewMainReply.isHidden = true
+        constTblBottom.priority = .required
+        self.isSwipe = false
+        self.isImg = false
+        //swipeReplyMsg = GetPreviousChat
     }
     
     func sendMessage(param : [String : Any]) -> Bool {

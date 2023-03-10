@@ -103,6 +103,7 @@ public class FirstVC: UIViewController {
             self.viewTopChatGrp.isHidden = false
             self.constHeightviewTopChatGrp.constant = 55
         }
+        callSocket()
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -219,8 +220,7 @@ public class FirstVC: UIViewController {
         }
     }
     
-    func getUserRole(userRole : UserRole) {
-        print("Get User Role - - - \(userRole)")
+    func getUserRole() {
         btnNewGroupChat.isHidden = true
         btnNewChat.isHidden = true
         
@@ -306,7 +306,10 @@ extension FirstVC : UITableViewDelegate, UITableViewDataSource {
         
         let vc = ChatVC()
         vc.isHideUserDetailView = false
+        vc.isDirectToChat = false
         vc.recentChatUser = self.arrRecentChatUserList?[indexPath.row]
+        vc.isGroup = self.arrRecentChatUserList?[indexPath.row].isGroup ?? false
+        vc.groupId = self.arrRecentChatUserList?[indexPath.row].groupId ?? ""
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }
@@ -354,6 +357,25 @@ extension FirstVC : UISearchBarDelegate, ProfileImgDelegate {
 }
 
 extension FirstVC : SocketDelegate {
+    func callSocket() {
+        if (SocketChatManager.sharedInstance.socket?.status == .connected) && !isGetUserList {
+            isGetUserList = true
+            SocketChatManager.sharedInstance.online(param: ["userId": SocketChatManager.sharedInstance.myUserId, "secretKey": SocketChatManager.sharedInstance.secretKey])
+            
+            SocketChatManager.sharedInstance.getUserRole(param: ["secretKey": SocketChatManager.sharedInstance.secretKey, "userId": SocketChatManager.sharedInstance.myUserId])
+            
+            SocketChatManager.sharedInstance.reqProfileDetails(param: ["userId" : SocketChatManager.sharedInstance.myUserId], from: false)
+            
+            SocketChatManager.sharedInstance.reqRecentChatList(param: ["secretKey" : SocketChatManager.sharedInstance.secretKey, "_id" : SocketChatManager.sharedInstance.myUserId])  //  ["secretKey" : secretKey, "_id" : myUserId]
+            
+            //Update while new message arrive.
+            SocketChatManager.sharedInstance.joinChatRefer(param: SocketChatManager.sharedInstance.myUserId)
+            
+            //Unread chat count
+            SocketChatManager.sharedInstance.getUnreadChat(event: "user-unread-count", param: ["userId": SocketChatManager.sharedInstance.myUserId, "secretKey": SocketChatManager.sharedInstance.secretKey])
+        }
+    }
+    
     func getUnreadChat(noOfChat: Int) {
     }
     
@@ -371,13 +393,6 @@ extension FirstVC : SocketDelegate {
     }
     
     func getRecentUser(message: String) {
-        if (SocketChatManager.sharedInstance.socket?.status == .connected) && !isGetUserList {
-            isGetUserList = true
-            SocketChatManager.sharedInstance.online(param: ["userId": SocketChatManager.sharedInstance.myUserId, "secretKey": SocketChatManager.sharedInstance.secretKey])
-            SocketChatManager.sharedInstance.getUserRole(param: ["secretKey": SocketChatManager.sharedInstance.secretKey, "userId": SocketChatManager.sharedInstance.myUserId])
-            //ProgressHUD.show()
-            SocketChatManager.sharedInstance.reqProfileDetails(param: ["userId" : SocketChatManager.sharedInstance.myUserId], from: false)
-            SocketChatManager.sharedInstance.reqRecentChatList(param: ["secretKey" : SocketChatManager.sharedInstance.secretKey, "_id" : SocketChatManager.sharedInstance.myUserId])  //  ["secretKey" : SocketChatManager.sharedInstance.secretKey, "_id" : SocketChatManager.sharedInstance.myUserId]
-        }
+        callSocket()
     }
 }

@@ -126,6 +126,13 @@
 		FA35EC4D299A1CF700B75EF4 /* document.png in Resources */ = {isa = PBXBuildFile; fileRef = FA35EC3D299A1CF700B75EF4 /* document.png */; };
 		FA35EC4E299A1CF700B75EF4 /* document@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA35EC3E299A1CF700B75EF4 /* document@3x.png */; };
 		FA35EC4F299A1CF700B75EF4 /* document@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA35EC3F299A1CF700B75EF4 /* document@1x.png */; };
+		FA9817DD29BA0CE4007C59AB /* reply.png in Resources */ = {isa = PBXBuildFile; fileRef = FA9817DA29BA0CE4007C59AB /* reply.png */; };
+		FA9817DE29BA0CE4007C59AB /* reply@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA9817DB29BA0CE4007C59AB /* reply@2x.png */; };
+		FA9817DF29BA0CE4007C59AB /* reply@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA9817DC29BA0CE4007C59AB /* reply@3x.png */; };
+		FA9817E329BA19F8007C59AB /* OwnReplyTVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA9817E129BA19F8007C59AB /* OwnReplyTVCell.xib */; };
+		FA9817E429BA19F8007C59AB /* OwnReplyTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9817E229BA19F8007C59AB /* OwnReplyTVCell.swift */; };
+		FA9817E729BA1A0F007C59AB /* OtherReplyTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9817E529BA1A0F007C59AB /* OtherReplyTVCell.swift */; };
+		FA9817E829BA1A0F007C59AB /* OtherReplyTVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA9817E629BA1A0F007C59AB /* OtherReplyTVCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -261,6 +268,13 @@
 		FA35EC3D299A1CF700B75EF4 /* document.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = document.png; sourceTree = "<group>"; };
 		FA35EC3E299A1CF700B75EF4 /* document@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "document@3x.png"; sourceTree = "<group>"; };
 		FA35EC3F299A1CF700B75EF4 /* document@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "document@1x.png"; sourceTree = "<group>"; };
+		FA9817DA29BA0CE4007C59AB /* reply.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reply.png; sourceTree = "<group>"; };
+		FA9817DB29BA0CE4007C59AB /* reply@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reply@2x.png"; sourceTree = "<group>"; };
+		FA9817DC29BA0CE4007C59AB /* reply@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reply@3x.png"; sourceTree = "<group>"; };
+		FA9817E129BA19F8007C59AB /* OwnReplyTVCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OwnReplyTVCell.xib; sourceTree = "<group>"; };
+		FA9817E229BA19F8007C59AB /* OwnReplyTVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OwnReplyTVCell.swift; sourceTree = "<group>"; };
+		FA9817E529BA1A0F007C59AB /* OtherReplyTVCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherReplyTVCell.swift; sourceTree = "<group>"; };
+		FA9817E629BA1A0F007C59AB /* OtherReplyTVCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OtherReplyTVCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -514,6 +528,7 @@
 				129197BC28F6FAAB000AD9D4 /* OwnImgChatBubbleCell */,
 				129197C528F6FAAB000AD9D4 /* OwnFileBubbleCell */,
 				129197C228F6FAAB000AD9D4 /* OwnAudioBubbleCell */,
+				FA9817E929BA1A18007C59AB /* OwnReplyTVCell */,
 			);
 			path = OwnChatCell;
 			sourceTree = "<group>";
@@ -561,6 +576,7 @@
 				129197C928F6FAAB000AD9D4 /* OtherImgChatBubbleCell */,
 				129197D228F6FAAB000AD9D4 /* OtherFileBubbleCell */,
 				129197CF28F6FAAB000AD9D4 /* OtherAudioBubbleCell */,
+				FA9817EA29BA1A25007C59AB /* OtherReplyTVCell */,
 			);
 			path = OtherChatCell;
 			sourceTree = "<group>";
@@ -688,6 +704,7 @@
 				12B8FAAC2976D109001680DB /* Checked */,
 				12B8FAB92976D10A001680DB /* Play */,
 				12B8FAB02976D109001680DB /* Unchecked */,
+				FA9817E029BA0CF0007C59AB /* reply */,
 				12B8FABD2976D10A001680DB /* chat-bg.png */,
 				12B8FAC32976D10A001680DB /* group-placeholder.jpg */,
 				12B8FAB82976D109001680DB /* placeholder-profile-img.png */,
@@ -788,6 +805,34 @@
 				FA35EC3E299A1CF700B75EF4 /* document@3x.png */,
 			);
 			path = Document;
+			sourceTree = "<group>";
+		};
+		FA9817E029BA0CF0007C59AB /* reply */ = {
+			isa = PBXGroup;
+			children = (
+				FA9817DA29BA0CE4007C59AB /* reply.png */,
+				FA9817DB29BA0CE4007C59AB /* reply@2x.png */,
+				FA9817DC29BA0CE4007C59AB /* reply@3x.png */,
+			);
+			path = reply;
+			sourceTree = "<group>";
+		};
+		FA9817E929BA1A18007C59AB /* OwnReplyTVCell */ = {
+			isa = PBXGroup;
+			children = (
+				FA9817E229BA19F8007C59AB /* OwnReplyTVCell.swift */,
+				FA9817E129BA19F8007C59AB /* OwnReplyTVCell.xib */,
+			);
+			path = OwnReplyTVCell;
+			sourceTree = "<group>";
+		};
+		FA9817EA29BA1A25007C59AB /* OtherReplyTVCell */ = {
+			isa = PBXGroup;
+			children = (
+				FA9817E529BA1A0F007C59AB /* OtherReplyTVCell.swift */,
+				FA9817E629BA1A0F007C59AB /* OtherReplyTVCell.xib */,
+			);
+			path = OtherReplyTVCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -901,6 +946,7 @@
 				1291981B28F6FAAC000AD9D4 /* OtherChatBubbleCell.xib in Resources */,
 				1263237A296D4F15001AD625 /* OpenSans-Bold.ttf in Resources */,
 				12B8FAD02976D10A001680DB /* Unchecked@3x.png in Resources */,
+				FA9817E329BA19F8007C59AB /* OwnReplyTVCell.xib in Resources */,
 				FA35EC4C299A1CF700B75EF4 /* document@2x.png in Resources */,
 				12632379296D4F15001AD625 /* OpenSans-LightItalic.ttf in Resources */,
 				1263237D296D4F15001AD625 /* OpenSans-Regular.ttf in Resources */,
@@ -910,10 +956,12 @@
 				12B8FACD2976D10A001680DB /* Checked@3x.png in Resources */,
 				12B8FAD72976D10A001680DB /* Play@2x.png in Resources */,
 				FA35EC4A299A1CF700B75EF4 /* audio.png in Resources */,
+				FA9817DE29BA0CE4007C59AB /* reply@2x.png in Resources */,
 				129197F128F6FAAC000AD9D4 /* UserChatVC.xib in Resources */,
 				12B8FAD92976D10A001680DB /* chat-bg.png in Resources */,
 				12B8FACE2976D10A001680DB /* Checked@2x.png in Resources */,
 				FA35EC44299A1CF700B75EF4 /* image@3x.png in Resources */,
+				FA9817DF29BA0CE4007C59AB /* reply@3x.png in Resources */,
 				FA35EC45299A1CF700B75EF4 /* image@2x.png in Resources */,
 				FA35EC47299A1CF700B75EF4 /* image.png in Resources */,
 				129197F428F6FAAC000AD9D4 /* AudioPlayVC.xib in Resources */,
@@ -925,6 +973,7 @@
 				129197FB28F6FAAC000AD9D4 /* ImageViewerVC.xib in Resources */,
 				1291982328F6FAAC000AD9D4 /* ContactTVCell.xib in Resources */,
 				1291982628F6FAAC000AD9D4 /* GrpContactTVCell.xib in Resources */,
+				FA9817E829BA1A0F007C59AB /* OtherReplyTVCell.xib in Resources */,
 				1291981D28F6FAAC000AD9D4 /* OtherAudioBubbleCell.xib in Resources */,
 				12B8FAD52976D10A001680DB /* placeholder-profile-img.png in Resources */,
 				FA35EC40299A1CF700B75EF4 /* video@1x.png in Resources */,
@@ -935,6 +984,7 @@
 				129197F728F6FAAC000AD9D4 /* ProfileDetail.xib in Resources */,
 				FA35EC4D299A1CF700B75EF4 /* document.png in Resources */,
 				FA35EC42299A1CF700B75EF4 /* video@2x.png in Resources */,
+				FA9817DD29BA0CE4007C59AB /* reply.png in Resources */,
 				12898DB428F7D8BB00DA4F75 /* Media.xcassets in Resources */,
 				12B8FAD62976D10A001680DB /* Play@3x.png in Resources */,
 				129197F528F6FAAC000AD9D4 /* GroupContVC.xib in Resources */,
@@ -1052,6 +1102,7 @@
 				125237DC298D124E0063E538 /* GroupPermission.swift in Sources */,
 				1291982228F6FAAC000AD9D4 /* ParticipantsTVCell.swift in Sources */,
 				1291982F28F6FAAC000AD9D4 /* ExtensionUserChatVC.swift in Sources */,
+				FA9817E429BA19F8007C59AB /* OwnReplyTVCell.swift in Sources */,
 				1291983328F6FAAC000AD9D4 /* Cancellable.swift in Sources */,
 				1263237F296D4F15001AD625 /* Enum.swift in Sources */,
 				1291981128F6FAAC000AD9D4 /* OwnImgChatBubbleCell.swift in Sources */,
@@ -1060,6 +1111,7 @@
 				12632339296D4896001AD625 /* SocketChatManager.swift in Sources */,
 				12632362296D4EB6001AD625 /* List.swift in Sources */,
 				129197F828F6FAAC000AD9D4 /* ProfDetailVC.swift in Sources */,
+				FA9817E729BA1A0F007C59AB /* OtherReplyTVCell.swift in Sources */,
 				129197F628F6FAAC000AD9D4 /* GroupContVC.swift in Sources */,
 				1291981428F6FAAC000AD9D4 /* OwnAudioBubbleCell.swift in Sources */,
 				12632342296D4A5A001AD625 /* GetPreviousChat.swift in Sources */,
